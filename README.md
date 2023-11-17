@@ -4,5 +4,5 @@ Gemaakt door:
 
 Ruben Struijlaart,
 Joris de Jong,
-Ethan Dekker,
+Ethan Dekker klaar,
 Damian Buskens.
