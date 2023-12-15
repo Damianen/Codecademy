@@ -4,12 +4,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="351.0" prefWidth="388.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="351.0" prefWidth="388.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javafx.GUIController">
     <children>
-        <Button layoutX="36.0" layoutY="228.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="131.0" text="Update" />
-        <Button layoutX="219.0" layoutY="117.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="131.0" text="Read" />
-        <Button layoutX="219.0" layoutY="228.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="131.0" text="Delete" />
-        <Button layoutX="36.0" layoutY="117.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="131.0" text="Create" />
+        <Button fx:id="updateButton" layoutX="36.0" layoutY="228.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="131.0" text="Update" onAction="#switchPage"/>
+        <Button fx:id="readButton" layoutX="219.0" layoutY="117.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="131.0" text="Read" onAction="#switchPage"/>
+        <Button fx:id="deleteButton" layoutX="219.0" layoutY="228.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="131.0" text="Delete" onAction="#switchPage"/>
+        <Button fx:id="createButton" layoutX="36.0" layoutY="117.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="131.0" text="Create" onAction="#switchPage"/>
         <TextField alignment="CENTER" layoutX="118.0" layoutY="43.0" text="Course" />
     </children>
 </AnchorPane>

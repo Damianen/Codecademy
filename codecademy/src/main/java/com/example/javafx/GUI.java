@@ -10,9 +10,9 @@ public class GUI extends Application {
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafx/fxml/Start.fxml"));
         Parent root = loader.load();
-        
-        primaryStage.setTitle("New Scene");
-        primaryStage.setScene(new Scene(root, 800, 600));
+
+        primaryStage.setTitle("Codecademy");
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();   
     }
 
