@@ -3,15 +3,56 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="346.0" prefWidth="408.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx.GUIController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javafx.GUIController">
    <children>
-      <TextField alignment="CENTER" layoutX="117.0" layoutY="44.0" text="Update" />
       <TextField alignment="CENTER" layoutX="42.0" layoutY="137.0" text="Name" />
       <TextField alignment="CENTER" layoutX="42.0" layoutY="188.0" text="Subject" />
       <TextField alignment="CENTER" layoutX="42.0" layoutY="240.0" text="introText" />
-      <Button layoutX="266.0" layoutY="188.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="95.0" text="Update" />
+      <Button layoutX="760.0" layoutY="365.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="95.0" text="Update" />
       <TextField alignment="CENTER" layoutX="43.0" layoutY="288.0" text="difficultyLevel" />
-      <Button fx:id="homeButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="home" onAction="#switchPage"/>
+      <Button fx:id="homeButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchPage" text="home" />
+      <Text layoutX="43.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like to update?" wrappingWidth="177.537109375">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <GridPane layoutX="232.0" layoutY="57.0" prefHeight="440.0" prefWidth="434.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="49.0" minHeight="0.0" prefHeight="37.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="74.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
+      <Text layoutX="711.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like to update it to?" wrappingWidth="208.537109375">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <TextField alignment="CENTER" layoutX="733.0" layoutY="288.0" text="difficultyLevel" />
+      <TextField alignment="CENTER" layoutX="733.0" layoutY="240.0" text="introText" />
+      <TextField alignment="CENTER" layoutX="733.0" layoutY="188.0" text="Subject" />
+      <TextField alignment="CENTER" layoutX="733.0" layoutY="137.0" text="Name" />
+      <Button layoutX="69.0" layoutY="365.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="95.0" text="Search" />
    </children>
 </AnchorPane>
