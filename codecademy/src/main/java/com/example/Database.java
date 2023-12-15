@@ -1,14 +1,17 @@
 package com.example;
+
 import java.sql.*;
 
 public class Database {
+
     public static void main(String[] args) {
-        // Dit zijn de instellingen voor de verbinding. Vervang de databaseName indien deze voor jou anders is.
+        // Dit zijn de instellingen voor de verbinding. Vervang de databaseName indien
+        // deze voor jou anders is.
         String connectionUrl = "jdbc:sqlserver://localhost;databaseName=Codecademy;integratedSecurity=false;encrypt=true;trustServerCertificate=true;";
 
-        String username = "bibliotheek";
+        String username = "group1";
 
-        String password = "Justapassword8!";
+        String password = "group12345";
 
         // Connection beheert informatie over de connectie met de database.
         Connection con = null;
@@ -24,28 +27,25 @@ public class Database {
             // 'Importeer' de driver die je gedownload hebt.
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             // Maak de verbinding met de database.
-            con = DriverManager.getConnection(connectionUrl);
+            con = DriverManager.getConnection(connectionUrl, username, password);
 
             // Stel een SQL query samen.
-            String SQL = "SELECT TOP 10 * FROM Boek";
+            String SQL = "SELECT * FROM Course";
             stmt = con.createStatement();
             // Voer de query uit op de database.
             rs = stmt.executeQuery(SQL);
 
-
-            // Als de resultset waarden bevat dan lopen we hier door deze waarden en printen ze.
+            // Als de resultset waarden bevat dan lopen we hier door deze waarden en printen
+            // ze.
             while (rs.next()) {
                 // Vraag per row de kolommen in die row op.
-                int ISBN = rs.getInt("ISBN");
-                String title = rs.getString("Titel");
-                String author = rs.getString("Auteur");
+                String name = rs.getString("name");
+                String subject = rs.getString("subject");
+                String introText = rs.getString("introText");
+                int level = rs.getInt("level");
 
                 // Print de kolomwaarden.
-                // System.out.println(ISBN + " " + title + " " + author);
-
-                // Met 'format' kun je de string die je print het juiste formaat geven, als je dat wilt.
-                // %d = decimal, %s = string, %-32s = string, links uitgelijnd, 32 characters breed.
-                System.out.format("| %7d | %-32s | %-24s | \n", ISBN, title, author);
+                System.out.println(name + " " + subject + " " + introText + " " + level);
             }
 
         }
@@ -53,11 +53,22 @@ public class Database {
         // Handle any errors that may have occurred.
         catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
-            if (rs != null) try { rs.close(); } catch(Exception e) {}
-            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
-            if (con != null) try { con.close(); } catch(Exception e) {}
+        } finally {
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                }
+            if (stmt != null)
+                try {
+                    stmt.close();
+                } catch (Exception e) {
+                }
+            if (con != null)
+                try {
+                    con.close();
+                } catch (Exception e) {
+                }
         }
     }
 }
