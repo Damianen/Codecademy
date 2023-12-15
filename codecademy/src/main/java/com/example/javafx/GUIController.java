@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class GUIController {
@@ -23,17 +25,33 @@ public class GUIController {
     }
 
     private String getFXMLPath(Object obj) {
-        String objString = obj.toString();
-        if (objString.contains("id=updateButton")) { 
-            return "/com/example/javafx/fxml/Update.fxml"; 
-        } else if (objString.contains("id=createButton")) { 
-            return "/com/example/javafx/fxml/Create.fxml"; 
-        } else if (objString.contains("id=deleteButton")) { 
-            return "/com/example/javafx/fxml/Delete.fxml"; 
-        } else if (objString.contains("id=readButton")) { 
-            return "/com/example/javafx/fxml/Read.fxml"; 
-        } else {
-            return "/com/example/javafx/fxml/Start.fxml";
+        Button clickedButton = (Button) obj;
+        switch (clickedButton.getId()) {
+            case ("updateButton"): return "/com/example/javafx/fxml/Update.fxml";
+            case ("createButton"): return "/com/example/javafx/fxml/Create.fxml";
+            case ("deleteButton"): return "/com/example/javafx/fxml/Delete.fxml";
+            case ("readButton"):   return "/com/example/javafx/fxml/Read.fxml";
+            case ("homeButton"):   return "/com/example/javafx/fxml/Start.fxml";
         }
+
+        return "";
+    }
+
+    public void search(ActionEvent event) throws IOException {
+        scene = ((Node)event.getSource()).getScene();
+        TextField name = (TextField) scene.lookup("#name");
+        System.out.println(name.getText());
+    }
+
+    public void create(ActionEvent event) throws IOException {
+        
+    }
+
+    public void delete(ActionEvent event) throws IOException {
+
+    }
+
+    public void Update(ActionEvent event) throws IOException {
+
     }
 }
