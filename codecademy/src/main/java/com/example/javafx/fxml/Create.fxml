@@ -6,13 +6,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javafx.GUIController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx.GUIController">
    <children>
-      <TextField alignment="CENTER" layoutX="282.0" layoutY="118.0" prefHeight="44.0" prefWidth="397.0" text="Name" />
-      <TextField alignment="CENTER" layoutX="282.0" layoutY="179.0" prefHeight="44.0" prefWidth="397.0" text="Subject" />
-      <TextField alignment="CENTER" layoutX="282.0" layoutY="239.0" prefHeight="44.0" prefWidth="397.0" text="introText" />
+      <TextField alignment="CENTER" layoutX="282.0" layoutY="118.0" prefHeight="44.0" prefWidth="397.0" promptText="Name" />
+      <TextField alignment="CENTER" layoutX="282.0" layoutY="179.0" prefHeight="44.0" prefWidth="397.0" promptText="Subject" />
+      <TextField alignment="CENTER" layoutX="282.0" layoutY="239.0" prefHeight="44.0" prefWidth="397.0" promptText="introText" />
       <Button layoutX="282.0" layoutY="403.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="New" />
-      <TextField alignment="CENTER" layoutX="282.0" layoutY="298.0" prefHeight="44.0" prefWidth="397.0" text="difficultyLevel" />
+      <TextField alignment="CENTER" layoutX="282.0" layoutY="298.0" prefHeight="44.0" prefWidth="397.0" promptText="difficultyLevel" />
       <Button fx:id="homeButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchPage" text="home" />
       <Text layoutX="110.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new course?">
          <font>
