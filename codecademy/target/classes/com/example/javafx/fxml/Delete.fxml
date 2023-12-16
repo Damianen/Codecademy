@@ -5,7 +5,6 @@
 <?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -43,12 +42,7 @@
                            </items>
                         </SplitMenuButton>
                         <Button fx:id="searchButton2" layoutX="684.0" layoutY="21.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="150.0" text="Delete" />
-                        <TableView layoutX="240.0" layoutY="52.0" prefHeight="420.0" prefWidth="708.0">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
-                          </columns>
-                        </TableView>
+                        <TableView layoutX="240.0" layoutY="52.0" prefHeight="420.0" prefWidth="708.0" />
                      </children>
                   </AnchorPane>
                </content>

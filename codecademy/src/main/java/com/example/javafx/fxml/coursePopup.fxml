@@ -6,13 +6,14 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -40,12 +41,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView prefHeight="323.0" prefWidth="419.0">
-                          <columns>
-                            <TableColumn prefWidth="213.0" text="Name" />
-                            <TableColumn minWidth="0.0" prefWidth="205.0" text="Email" />
-                          </columns>
-                        </TableView>
+                        <TableView prefHeight="323.0" prefWidth="419.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -54,17 +50,17 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView prefHeight="323.0" prefWidth="419.0">
-                           <columns>
-                              <TableColumn prefWidth="190.0" text="Title" />
-                              <TableColumn prefWidth="228.0" text="Version" />
-                           </columns>
-                        </TableView>
+                        <TableView prefHeight="323.0" prefWidth="419.0" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
         </tabs>
       </TabPane>
+      <Text layoutX="265.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Course">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

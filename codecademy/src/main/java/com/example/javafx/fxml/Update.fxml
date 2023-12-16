@@ -5,7 +5,6 @@
 <?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -28,7 +27,7 @@
                         <TextField fx:id="name" alignment="CENTER" layoutX="32.0" layoutY="115.0" promptText="Name" />
                         <TextField alignment="CENTER" layoutX="32.0" layoutY="159.0" promptText="Subject" />
                         <TextField alignment="CENTER" layoutX="32.0" layoutY="202.0" promptText="intro Text" />
-                        <Button fx:id="searchButton" layoutX="32.0" layoutY="298.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="150.0" text="Search!" />
+                        <Button fx:id="searchButton" layoutX="32.0" layoutY="298.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Search!" />
                         <Text layoutX="38.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What are you looking for?" wrappingWidth="137.537109375">
                            <font>
                               <Font size="22.0" />
@@ -47,12 +46,7 @@
                               <MenuItem mnemonicParsing="false" text="Action 2" />
                            </items>
                         </SplitMenuButton>
-                        <TableView layoutX="240.0" layoutY="50.0" prefHeight="420.0" prefWidth="705.0">
-                           <columns>
-                              <TableColumn prefWidth="75.0" text="C1" />
-                              <TableColumn prefWidth="75.0" text="C2" />
-                           </columns>
-                        </TableView>
+                        <TableView layoutX="240.0" layoutY="50.0" prefHeight="420.0" prefWidth="705.0" />
                      </children>
                   </AnchorPane>
                </content>
