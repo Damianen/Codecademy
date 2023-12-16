@@ -5,6 +5,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -28,18 +29,13 @@
                               <Font size="16.0" />
                            </font>
                         </TextField>
-                        <TextField alignment="CENTER" layoutX="266.0" layoutY="241.0" prefHeight="44.0" prefWidth="397.0" promptText="intro Text">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </TextField>
-                        <Button layoutX="266.0" layoutY="376.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="New" />
+                        <Button layoutX="266.0" layoutY="422.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="New" />
                         <Text layoutX="94.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new course?">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <MenuButton layoutX="266.0" layoutY="307.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Difficulty level" textAlignment="CENTER">
+                        <MenuButton layoutX="266.0" layoutY="364.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Difficulty level" textAlignment="CENTER">
                           <items>
                             <MenuItem mnemonicParsing="false" text="Beginner" />
                             <MenuItem mnemonicParsing="false" text="Advanced" />
@@ -49,6 +45,7 @@
                               <Font size="16.0" />
                            </font>
                         </MenuButton>
+                        <TextArea layoutX="266.0" layoutY="238.0" prefHeight="116.0" prefWidth="398.0" promptText="Intro text" />
                      </children>
                   </AnchorPane>
             </content>

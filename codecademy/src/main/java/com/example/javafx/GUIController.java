@@ -48,7 +48,6 @@ public class GUIController {
         rootAnchorPane.getChildren().addAll(rect, pane);
         pane.setLayoutX(180);
         pane.setLayoutY(70);
-        
     }
 
     public void create(ActionEvent event) throws IOException {
