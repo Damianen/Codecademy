@@ -11,6 +11,8 @@ import static com.example.course.Course.DifficultyLevel.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -19,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -51,7 +54,6 @@ public class GUIController {
     }
 
     public void search(ActionEvent event) throws IOException {
-        Course c = new Course("Java", "Java", "welcome to java", BEGINNER);
         AnchorPane node = (AnchorPane)((Node)((Node)event.getSource()).getParent());
         System.out.println(node);
         TableView table = (TableView)node.lookup("#table");
@@ -61,7 +63,9 @@ public class GUIController {
         table.getColumns().addAll(name, subject, difficultyLevel);
 
         final ObservableList<Course> data = FXCollections.observableArrayList(
-            c
+            new Course("Java", "Java", "welcome to java", BEGINNER),
+            new Course("Python", "Python", "welcome to Python", BEGINNER),
+            new Course("c", "c", "welcome to c", BEGINNER)
         );
 
         name.setCellValueFactory(new PropertyValueFactory<Course, String>("name"));
@@ -69,6 +73,15 @@ public class GUIController {
         difficultyLevel.setCellValueFactory(new PropertyValueFactory<Course, String>("difficultyLevelString"));
 
         table.setItems(data);
+
+        table.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getClickCount()>1) {
+                    System.out.println(((Course)table.getSelectionModel().getSelectedItem()).getName());
+                }
+            }
+        });
 
     }
 
