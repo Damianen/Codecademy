@@ -8,6 +8,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class GUIController {
@@ -37,6 +41,13 @@ public class GUIController {
     }
 
     public void search(ActionEvent event) throws IOException {
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("/com/example/javafx/fxml/coursePopup.fxml"));
+        scene = ((Node)event.getSource()).getScene();
+        AnchorPane rootAnchorPane = (AnchorPane)scene.getRoot();
+        Rectangle rect = new Rectangle(960, 540, Paint.valueOf("#0000008f"));
+        rootAnchorPane.getChildren().addAll(rect, pane);
+        pane.setLayoutX(180);
+        pane.setLayoutY(70);
         
     }
 
