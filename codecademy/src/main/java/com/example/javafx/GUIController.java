@@ -56,7 +56,8 @@ public class GUIController {
     public void search(ActionEvent event) throws IOException {
         AnchorPane node = (AnchorPane)((Node)((Node)event.getSource()).getParent());
         TableView table = (TableView)node.lookup("#table");
-
+        table.getItems().clear();
+        table.getColumns().clear();
         Course c = new Course("c++", "c++", "welcome to C++", ADVANCED);
         c.generateTable(table, false);
 
