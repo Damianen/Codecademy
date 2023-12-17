@@ -55,44 +55,28 @@ public class GUIController {
 
     public void search(ActionEvent event) throws IOException {
         AnchorPane node = (AnchorPane)((Node)((Node)event.getSource()).getParent());
-        System.out.println(node);
         TableView table = (TableView)node.lookup("#table");
-        TableColumn name = new TableColumn("Name");
-        TableColumn subject = new TableColumn("Subject");
-        TableColumn difficultyLevel = new TableColumn("Difficulty level");
-        table.getColumns().addAll(name, subject, difficultyLevel);
+
+        Course c = new Course("c++", "c++", "welcome to C++", ADVANCED);
+        c.generateTable(table, false);
 
         final ObservableList<Course> data = FXCollections.observableArrayList(
             new Course("Java", "Java", "welcome to java", BEGINNER),
             new Course("Python", "Python", "welcome to Python", BEGINNER),
-            new Course("c", "c", "welcome to c", BEGINNER)
+            new Course("c", "c", "welcome to c", BEGINNER),
+            c
         );
 
-        name.setCellValueFactory(new PropertyValueFactory<Course, String>("name"));
-        subject.setCellValueFactory(new PropertyValueFactory<Course, String>("subject"));
-        difficultyLevel.setCellValueFactory(new PropertyValueFactory<Course, String>("difficultyLevelString"));
-
         table.setItems(data);
-
-        table.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getClickCount()>1) {
-                    System.out.println(((Course)table.getSelectionModel().getSelectedItem()).getName());
-                }
-            }
-        });
-
     }
 
+    public static void closePopupWindow(AnchorPane popupPane, Rectangle rect) {
+        AnchorPane root = (AnchorPane)popupPane.getScene().getRoot();
+        root.getChildren().removeAll(popupPane, rect);
+    }
+    
     public void create(ActionEvent event) throws IOException {
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("/com/example/javafx/fxml/coursePopup.fxml"));
-        scene = ((Node)event.getSource()).getScene();
-        AnchorPane rootAnchorPane = (AnchorPane)scene.getRoot();
-        Rectangle rect = new Rectangle(960, 540, Paint.valueOf("#0000008f"));
-        rootAnchorPane.getChildren().addAll(rect, pane);
-        pane.setLayoutX(180);
-        pane.setLayoutY(70);
+        
     }
 
     public void delete(ActionEvent event) throws IOException {
