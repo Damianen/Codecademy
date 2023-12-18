@@ -47,11 +47,17 @@ public class GUIController {
 
     public void search(ActionEvent event) throws IOException {
         AnchorPane node = (AnchorPane)((Node)((Node)event.getSource()).getParent());
-        TableView<Course> table = (TableView)node.lookup("#table");
+        @SuppressWarnings("unchecked")
+        TableView<Course> table = (TableView<Course>)node.lookup("#table");
         table.getItems().clear();
         table.getColumns().clear();
         Course c = new Course("c++", "c++", "welcome to C++", ADVANCED);
-        c.generateTable(table, true);
+        
+        boolean editable = false;
+        if (node.getScene().getRoot().getId().equals("updateRoot")) {
+            editable = true;
+        }
+        c.generateTable(table, editable);
 
         final ObservableList<Course> data = FXCollections.observableArrayList(
             new Course("Java", "Java", "welcome to java", BEGINNER),
