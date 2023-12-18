@@ -2,14 +2,19 @@ package com.example.course;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Observable;
+
+import javax.swing.Action;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -117,8 +122,23 @@ public class Course {
             textArea.setText(course.introText);
 
             MenuButton menuButton = (MenuButton)pane.lookup("#difficultyLevel");
-            menuButton.setOnAction(null);
-            menuButton.setText(course.difficultyLevel.toString().toLowerCase());
+            for (MenuItem item : menuButton.getItems()) {
+                if (!editable) {
+                    item.setOnAction(null);
+                } else {
+                    item.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            menuButton.setText(item.getText());
+                        }
+                    });
+                }
+            }
+            
+            menuButton.setText(difficultyLevel.toString().toLowerCase());
+
+            Button updateButton = (Button)pane.lookup("#updateButton");
+            updateButton.setVisible(editable);
 
             ToolBar toolbar = (ToolBar)pane.lookup("#toolBar");
             ((Button)toolbar.getItems().get(0)).setOnAction(new EventHandler<ActionEvent>() {

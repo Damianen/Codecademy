@@ -59,7 +59,7 @@ public class GUIController {
         table.getItems().clear();
         table.getColumns().clear();
         Course c = new Course("c++", "c++", "welcome to C++", ADVANCED);
-        c.generateTable(table, false);
+        c.generateTable(table, true);
 
         final ObservableList<Course> data = FXCollections.observableArrayList(
             new Course("Java", "Java", "welcome to java", BEGINNER),
