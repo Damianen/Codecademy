@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 
-import javax.swing.Action;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -74,12 +73,17 @@ public class Course {
         return null;
     }
 
-    public void generateTable(TableView table, boolean editable) {
+    public void generateTable(TableView<Course> table, boolean editable) {
         
-        TableColumn name = new TableColumn("Name");
-        TableColumn subject = new TableColumn("Subject");
-        TableColumn difficultyLevel = new TableColumn("Difficulty level");
-        table.getColumns().addAll(name, subject, difficultyLevel);
+        TableColumn<Course, String> name = new TableColumn<Course, String>("Name");
+        TableColumn<Course, String> subject = new TableColumn<Course, String>("Subject");
+        TableColumn<Course, String> difficultyLevel = new TableColumn<Course, String>("Difficulty level");
+        
+        final ObservableList<TableColumn<Course, String>> columns = FXCollections.observableArrayList();
+        columns.add(name);
+        columns.add(subject);
+        columns.add(difficultyLevel);
+        table.getColumns().addAll(columns);
 
         name.setCellValueFactory(new PropertyValueFactory<Course, String>("name"));
         subject.setCellValueFactory(new PropertyValueFactory<Course, String>("subject"));
