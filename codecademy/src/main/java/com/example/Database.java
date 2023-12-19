@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class Database {
 
-    public static void main(String[] args) {
+    public static ResultSet runSQL(String SQL) {
         // Dit zijn de instellingen voor de verbinding. Vervang de databaseName indien
         // deze voor jou anders is.
         String connectionUrl = "jdbc:sqlserver://localhost;databaseName=Codecademy;integratedSecurity=false;encrypt=true;trustServerCertificate=true;";
@@ -29,14 +29,26 @@ public class Database {
             // Maak de verbinding met de database.
             con = DriverManager.getConnection(connectionUrl, username, password);
 
-            // Stel een SQL query samen.
-            String SQL = "SELECT * FROM Course";
             stmt = con.createStatement();
             // Voer de query uit op de database.
             rs = stmt.executeQuery(SQL);
 
-            // Als de resultset waarden bevat dan lopen we hier door deze waarden en printen
-            // ze.
+            return rs;
+
+        }
+
+        // Handle any errors that may have occurred.
+        catch (Exception e) {
+            return rs;
+        }
+    }
+
+    public static void main(String[] args) {
+        
+        String SQL = "SELECT * FROM Course";
+        ResultSet rs = runSQL(SQL);
+
+        try{
             while (rs.next()) {
                 // Vraag per row de kolommen in die row op.
                 String name = rs.getString("name");
@@ -47,28 +59,9 @@ public class Database {
                 // Print de kolomwaarden.
                 System.out.println(name + " " + subject + " " + introText + " " + level);
             }
-
-        }
-
-        // Handle any errors that may have occurred.
-        catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
-        } finally {
-            if (rs != null)
-                try {
-                    rs.close();
-                } catch (Exception e) {
-                }
-            if (stmt != null)
-                try {
-                    stmt.close();
-                } catch (Exception e) {
-                }
-            if (con != null)
-                try {
-                    con.close();
-                } catch (Exception e) {
-                }
         }
+        
     }
 }
