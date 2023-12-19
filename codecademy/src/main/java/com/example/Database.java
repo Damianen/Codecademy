@@ -1,10 +1,18 @@
 package com.example;
 
+import static com.example.course.Course.DifficultyLevel.ADVANCED;
+import static com.example.course.Course.DifficultyLevel.BEGINNER;
+
 import java.sql.*;
+
+import com.example.course.Course;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Database {
 
-    public static void main(String[] args) {
+    public static void test(String[] args) {
         // Dit zijn de instellingen voor de verbinding. Vervang de databaseName indien
         // deze voor jou anders is.
         String connectionUrl = "jdbc:sqlserver://localhost;databaseName=Codecademy;integratedSecurity=false;encrypt=true;trustServerCertificate=true;";
@@ -70,5 +78,17 @@ public class Database {
                 } catch (Exception e) {
                 }
         }
+    }
+
+    static public final ObservableList<Course> getCourseList(String name, String subject, String introText, String difficultyLevel) {
+        difficultyLevel.toLowerCase();
+        final ObservableList<Course> data = FXCollections.observableArrayList(
+            new Course("Java", "Java", "welcome to java", BEGINNER),
+            new Course("Python", "Python", "welcome to Python", BEGINNER),
+            new Course("c", "c", "welcome to c", BEGINNER),
+            new Course("c++", "c++", "welcome to C++", ADVANCED)
+        );
+        
+        return data;
     }
 }

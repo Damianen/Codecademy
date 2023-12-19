@@ -4,16 +4,17 @@ import java.io.IOException;
 
 import com.example.course.Course;
 
-import static com.example.course.Course.DifficultyLevel.*;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
@@ -23,13 +24,33 @@ public class GUIController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private boolean skip = false;
 
     public void switchPage(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource(getFXMLPath(event.getSource())));
+        try {
+            root = FXMLLoader.load(getClass().getResource(getFXMLPath(event.getSource())));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void switchTab(Event event) throws IOException {
+        if (!skip) {
+            skip = true;
+            AnchorPane pane = (AnchorPane)((Tab)event.getSource()).getContent();
+            for (Node node : pane.getChildren()) {
+                if (node instanceof MenuButton) {
+                    setMenuButtonActions((MenuButton)node, skip);
+                }
+            }
+        } else {
+            skip = false;
+        }
     }
 
     private String getFXMLPath(Object obj) {
@@ -46,32 +67,45 @@ public class GUIController {
     }
 
     public void search(ActionEvent event) throws IOException {
-        AnchorPane node = (AnchorPane)((Node)((Node)event.getSource()).getParent());
-        @SuppressWarnings("unchecked")
-        TableView<Course> table = (TableView<Course>)node.lookup("#table");
+        AnchorPane tabRootNode = (AnchorPane)((Node)event.getSource()).getParent();
+        TableView table = (TableView)tabRootNode.lookup("#table");
         table.getItems().clear();
         table.getColumns().clear();
-        Course c = new Course("c++", "c++", "welcome to C++", ADVANCED);
-        
+
         boolean editable = false;
-        if (node.getScene().getRoot().getId().equals("updateRoot")) {
-            editable = true;
+        if (tabRootNode.getScene().getRoot().getId().equals("updateRoot")) { editable = true; }
+
+        switch (tabRootNode.getId()) {
+            case "course":
+                Course.generateTable(table, editable, tabRootNode);
+                break;
+            case "module":
+                break;
+            case "user":
+                break;
+            case "enrolment":
+                break;
         }
-        c.generateTable(table, editable);
-
-        final ObservableList<Course> data = FXCollections.observableArrayList(
-            new Course("Java", "Java", "welcome to java", BEGINNER),
-            new Course("Python", "Python", "welcome to Python", BEGINNER),
-            new Course("c", "c", "welcome to c", BEGINNER),
-            c
-        );
-
-        table.setItems(data);
     }
 
     public static void closePopupWindow(AnchorPane popupPane, Rectangle rect) {
         AnchorPane root = (AnchorPane)popupPane.getScene().getRoot();
         root.getChildren().removeAll(popupPane, rect);
+    }
+
+    public static void setMenuButtonActions(MenuButton menuButton, boolean editable) {
+        for (MenuItem item : menuButton.getItems()) {
+            if (!editable) {
+                item.setOnAction(null);
+            } else {
+                item.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        menuButton.setText(item.getText());
+                    }
+                });
+            }
+        }
     }
     
     public void create(ActionEvent event) throws IOException {

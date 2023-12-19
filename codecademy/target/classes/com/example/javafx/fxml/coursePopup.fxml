@@ -40,7 +40,7 @@
         <tabs>
           <Tab text="Enroments">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="enrolments" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TableView prefHeight="323.0" prefWidth="419.0" />
                      </children>
@@ -49,7 +49,7 @@
           </Tab>
           <Tab text="Modules">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TableView prefHeight="323.0" prefWidth="419.0" />
                      </children>

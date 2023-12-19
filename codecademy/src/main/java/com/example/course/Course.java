@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import com.example.Database;
+import com.example.javafx.GUIController;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -73,7 +76,7 @@ public class Course {
         return null;
     }
 
-    public void generateTable(TableView<Course> table, boolean editable) {
+    static public void generateTable(TableView<Course> table, boolean editable, AnchorPane rootPane) {
         
         TableColumn<Course, String> name = new TableColumn<Course, String>("Name");
         TableColumn<Course, String> subject = new TableColumn<Course, String>("Subject");
@@ -95,17 +98,26 @@ public class Course {
                 generatePopupWindow(event, editable, (Course)table.getSelectionModel().getSelectedItem());
             }
         });
+
+        String nameString = ((TextField)rootPane.lookup("#name")).getText();
+        String subjectString = ((TextField)rootPane.lookup("#subject")).getText();
+        String introTextString = ((TextArea)rootPane.lookup("#introText")).getText();
+        String difficultyLevelString = ((MenuButton)rootPane.lookup("#difficultyLevel")).getText();
+
+        table.setItems(Database.getCourseList(nameString, subjectString, introTextString, difficultyLevelString));
     }
 
-    private void generatePopupWindow(MouseEvent event, boolean editable, Course course) {
+    static private void generatePopupWindow(MouseEvent event, boolean editable, Course course) {
         if (event.getClickCount()>1) {
             AnchorPane pane;
+            
             try {
-                pane = FXMLLoader.load(getClass().getResource("/com/example/javafx/fxml/coursePopup.fxml"));
+                pane = FXMLLoader.load(course.getClass().getResource("/com/example/javafx/fxml/coursePopup.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
             }
+            
             Scene scene = ((Node)event.getSource()).getScene();
             AnchorPane rootAnchorPane = (AnchorPane)scene.getRoot();
             Rectangle rect = new Rectangle(960, 540, Paint.valueOf("#0000008f"));
@@ -126,20 +138,8 @@ public class Course {
             textArea.setText(course.introText);
 
             MenuButton menuButton = (MenuButton)pane.lookup("#difficultyLevel");
-            for (MenuItem item : menuButton.getItems()) {
-                if (!editable) {
-                    item.setOnAction(null);
-                } else {
-                    item.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            menuButton.setText(item.getText());
-                        }
-                    });
-                }
-            }
-            
-            menuButton.setText(difficultyLevel.toString().toLowerCase());
+            GUIController.setMenuButtonActions(menuButton, editable);
+            menuButton.setText(course.difficultyLevel.toString().toLowerCase());
 
             Button updateButton = (Button)pane.lookup("#updateButton");
             updateButton.setVisible(editable);
