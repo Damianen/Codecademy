@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -22,13 +23,12 @@
             </Tab>
             <Tab text="Courses">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane fx:id="course" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="name" alignment="CENTER" layoutX="32.0" layoutY="115.0" promptText="Name" />
-                        <TextField alignment="CENTER" layoutX="32.0" layoutY="159.0" promptText="Subject" />
-                        <TextField alignment="CENTER" layoutX="32.0" layoutY="202.0" promptText="intro Text" />
-                        <Button fx:id="searchButton" layoutX="32.0" layoutY="298.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="150.0" text="Search!" />
-                        <Text layoutX="38.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What are you looking for?" wrappingWidth="137.537109375">
+                        <TextField fx:id="name" alignment="CENTER" layoutX="32.0" layoutY="111.0" promptText="Name" />
+                        <TextField fx:id="subject" alignment="CENTER" layoutX="32.0" layoutY="151.0" promptText="Subject" />
+                        <Button fx:id="searchButton" layoutX="32.0" layoutY="412.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="150.0" text="Search!" />
+                        <Text layoutX="39.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What are you looking for?" wrappingWidth="137.537109375">
                            <font>
                               <Font size="22.0" />
                            </font>
@@ -40,7 +40,7 @@
                         </Text>
                         <Button fx:id="searchButton1" layoutX="241.0" layoutY="479.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="150.0" text="Previous page" />
                         <Button fx:id="searchButton11" layoutX="795.0" layoutY="479.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="150.0" text="Next page" />
-                        <SplitMenuButton layoutX="32.0" layoutY="247.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Difficulty Level">
+                        <SplitMenuButton fx:id="difficultyLevel" layoutX="32.0" layoutY="370.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Difficulty Level">
                            <items>
                               <MenuItem mnemonicParsing="false" text="Beginner" />
                               <MenuItem mnemonicParsing="false" text="Advanced" />
@@ -48,6 +48,7 @@
                            </items>
                         </SplitMenuButton>
                         <TableView fx:id="table" layoutX="240.0" layoutY="50.0" prefHeight="420.0" prefWidth="705.0" />
+                        <TextArea fx:id="introText" layoutX="32.0" layoutY="187.0" prefHeight="168.0" prefWidth="150.0" promptText="Intro Text" />
                      </children>
                   </AnchorPane>
                </content>

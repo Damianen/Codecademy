@@ -119,11 +119,8 @@ public class Course {
             }
             
             Scene scene = ((Node)event.getSource()).getScene();
-            AnchorPane rootAnchorPane = (AnchorPane)scene.getRoot();
-            Rectangle rect = new Rectangle(960, 540, Paint.valueOf("#0000008f"));
-            rootAnchorPane.getChildren().addAll(rect, pane);
-            pane.setLayoutX(180);
-            pane.setLayoutY(70);
+            GUIController.setupPopupWindow(editable, pane, (AnchorPane)scene.getRoot());
+            
             
             TextField textField = (TextField)pane.lookup("#name");
             textField.setEditable(editable);
@@ -140,18 +137,6 @@ public class Course {
             MenuButton menuButton = (MenuButton)pane.lookup("#difficultyLevel");
             GUIController.setMenuButtonActions(menuButton, editable);
             menuButton.setText(course.difficultyLevel.toString().toLowerCase());
-
-            Button updateButton = (Button)pane.lookup("#updateButton");
-            updateButton.setVisible(editable);
-
-            ToolBar toolbar = (ToolBar)pane.lookup("#toolBar");
-            ((Button)toolbar.getItems().get(0)).setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    AnchorPane root = (AnchorPane)pane.getScene().getRoot();
-                    root.getChildren().removeAll(pane, rect);
-                }   
-            });
         }
     }
 }

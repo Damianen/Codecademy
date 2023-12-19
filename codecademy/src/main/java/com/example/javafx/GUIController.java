@@ -16,7 +16,9 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -106,6 +108,25 @@ public class GUIController {
                 });
             }
         }
+    }
+
+    public static void setupPopupWindow(boolean editable, AnchorPane popupPane, AnchorPane rootPane) {
+        Rectangle rect = new Rectangle(960, 540, Paint.valueOf("#0000008f"));
+        rootPane.getChildren().addAll(rect, popupPane);
+        popupPane.setLayoutX(180);
+        popupPane.setLayoutY(70);
+
+        Button updateButton = (Button)popupPane.lookup("#updateButton");
+        updateButton.setVisible(editable);
+
+        ToolBar toolbar = (ToolBar)popupPane.lookup("#toolBar");
+        ((Button)toolbar.getItems().get(0)).setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                AnchorPane root = (AnchorPane)popupPane.getScene().getRoot();
+                root.getChildren().removeAll(popupPane, rect);
+            }   
+        });
     }
     
     public void create(ActionEvent event) throws IOException {
