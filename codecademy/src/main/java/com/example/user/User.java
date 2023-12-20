@@ -1,3 +1,5 @@
+package com.example.user;
+
 import java.util.ArrayList;
 
 public class User {
@@ -65,11 +67,11 @@ public class User {
         return country;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
