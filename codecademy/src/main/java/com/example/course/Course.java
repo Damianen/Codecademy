@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import javax.jws.WebParam.Mode;
+
 import com.example.Database;
 import com.example.javafx.GUIController;
 
@@ -17,6 +19,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -137,6 +141,17 @@ public class Course {
             MenuButton menuButton = (MenuButton)pane.lookup("#difficultyLevel");
             GUIController.setMenuButtonActions(menuButton, editable);
             menuButton.setText(course.difficultyLevel.toString().toLowerCase());
+
+            ObservableList<Tab> tabs = ((TabPane)pane.lookup("#tables")).getTabs();
+            for (Tab tab : tabs) {
+                AnchorPane rootTabPane = (AnchorPane)tab.getContent();
+                TableView table = (TableView)rootTabPane.lookup("#table");
+                if (tab.getId().equals("module")) {
+                    Module.generateTable(table, editable, (AnchorPane)scene.getRoot());
+                } else {
+                    
+                }
+            }
         }
     }
 }
