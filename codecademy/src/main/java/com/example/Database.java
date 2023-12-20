@@ -51,7 +51,7 @@ public class Database {
         }
     }
 
-    public static void main(String[] args) {
+    public static void createCourse(String[] args) {
 
         String SQL = "SELECT * FROM Course";
         ResultSet rs = runSQL(SQL);
