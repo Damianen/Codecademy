@@ -1,3 +1,5 @@
+package com.example.course;
+
 public class Webcast {
     private String title;
     private String url;

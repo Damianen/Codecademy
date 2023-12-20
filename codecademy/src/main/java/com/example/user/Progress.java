@@ -1,3 +1,5 @@
+package com.example.user;
+
 import java.util.HashMap;
 
 public class Progress {

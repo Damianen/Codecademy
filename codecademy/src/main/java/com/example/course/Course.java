@@ -82,7 +82,7 @@ public class Course {
         TableColumn<Course, String> subject = new TableColumn<Course, String>("Subject");
         TableColumn<Course, String> difficultyLevel = new TableColumn<Course, String>("Difficulty level");
         
-        final ObservableList<TableColumn<Course, String>> columns = FXCollections.observableArrayList();
+        final ObservableList<TableColumn<Course, ?>> columns = FXCollections.observableArrayList();
         columns.add(name);
         columns.add(subject);
         columns.add(difficultyLevel);

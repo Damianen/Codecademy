@@ -1,3 +1,5 @@
+package com.example.course;
+
 import java.time.LocalDate;
 
 public class ContentItem {

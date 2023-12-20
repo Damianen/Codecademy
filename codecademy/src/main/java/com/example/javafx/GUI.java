@@ -13,7 +13,8 @@ public class GUI extends Application {
 
         primaryStage.setTitle("Codecademy");
         primaryStage.setScene(new Scene(root));
-        primaryStage.show();   
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 
     public void startGui(String args[]) {

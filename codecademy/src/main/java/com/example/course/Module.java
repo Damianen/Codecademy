@@ -1,3 +1,5 @@
+package com.example.course;
+
 public class Module {
     private String tile;
     private String version;

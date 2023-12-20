@@ -1,13 +1,17 @@
+package com.example.user;
+
+import java.time.LocalDate;
+
 public class Enrollment {
     private LocalDate enrollDate;
     private String certificate;
     private String course;
     private String progresses;
 
-    public void setEnrollDate(String enrollDate) {
+    public void setEnrollDate(LocalDate enrollDate) {
         this.enrollDate = enrollDate;
     } 
-    public String getEnrollDate() {
+    public LocalDate getEnrollDate() {
         return enrollDate;
     }
 

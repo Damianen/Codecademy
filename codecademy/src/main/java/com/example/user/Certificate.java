@@ -1,3 +1,5 @@
+package com.example.user;
+
 public class Certificate {
     private int id;
     private float rating;
