@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 
-import com.example.Database;
+import com.example.database.Database;
+import com.example.database.DatabaseCourse;
 import com.example.javafx.GUIController;
 
 import javafx.collections.FXCollections;
@@ -104,7 +105,7 @@ public class Course {
         String introTextString = ((TextArea)rootPane.lookup("#introText")).getText();
         String difficultyLevelString = ((MenuButton)rootPane.lookup("#difficultyLevel")).getText();
 
-        table.setItems(Database.getCourseList(nameString, subjectString, introTextString, difficultyLevelString));
+        table.setItems(DatabaseCourse.getCourseList(nameString));
     }
 
     static private void generatePopupWindow(MouseEvent event, boolean editable, Course course) {
