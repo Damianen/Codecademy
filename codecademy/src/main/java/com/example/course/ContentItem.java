@@ -44,10 +44,7 @@ public class ContentItem {
         return trackingNumber;
     }
 
-    
-
-
-    public void ContentItem(){
+    public ContentItem(){
         
     }
 }

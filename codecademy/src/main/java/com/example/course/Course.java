@@ -103,12 +103,19 @@ public class Course {
             }
         });
 
-        String nameString = ((TextField)rootPane.lookup("#name")).getText();
-        String subjectString = ((TextField)rootPane.lookup("#subject")).getText();
-        String introTextString = ((TextArea)rootPane.lookup("#introText")).getText();
-        String difficultyLevelString = ((MenuButton)rootPane.lookup("#difficultyLevel")).getText();
+        if (rootPane.getId().equals("course")) {
+            String nameString = ((TextField)rootPane.lookup("#name")).getText();
+            String subjectString = ((TextField)rootPane.lookup("#subject")).getText();
+            String introTextString = ((TextArea)rootPane.lookup("#introText")).getText();
+            String difficultyLevelString = ((MenuButton)rootPane.lookup("#difficultyLevel")).getText();
+            table.setItems(Database.getCourseList(nameString, subjectString, introTextString, difficultyLevelString, null, null));
+        }
 
-        table.setItems(Database.getCourseList(nameString, subjectString, introTextString, difficultyLevelString));
+        if (rootPane.getId().equals("modulePopup")) {
+            table.setItems(Database.getCourseList(null, null, null, null, ((TextField)rootPane.lookup("#title")).getText(), null));
+        }
+
+        
     }
 
     static private void generatePopupWindow(MouseEvent event, boolean editable, Course course) {
@@ -116,7 +123,7 @@ public class Course {
             AnchorPane pane;
             
             try {
-                pane = FXMLLoader.load(course.getClass().getResource("/com/example/javafx/fxml/coursePopup.fxml"));
+                pane = FXMLLoader.load(course.getClass().getResource("/com/example/javafx/fxml/course.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -124,7 +131,6 @@ public class Course {
             
             Scene scene = ((Node)event.getSource()).getScene();
             GUIController.setupPopupWindow(editable, pane, (AnchorPane)scene.getRoot());
-            
             
             TextField textField = (TextField)pane.lookup("#name");
             textField.setEditable(editable);
@@ -147,7 +153,7 @@ public class Course {
                 AnchorPane rootTabPane = (AnchorPane)tab.getContent();
                 TableView table = (TableView)rootTabPane.lookup("#table");
                 if (tab.getId().equals("module")) {
-                    Module.generateTable(table, editable, (AnchorPane)scene.getRoot());
+                    Module.generateTable(table, editable, pane);
                 } else {
                     
                 }

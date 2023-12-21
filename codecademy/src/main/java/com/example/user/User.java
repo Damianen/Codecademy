@@ -11,7 +11,7 @@ public class User {
     private String residence;
     private String country;
     private Gender gender;
-    private ArrayList<Integer> enrollments = new ArrayList<Integer>();
+    private ArrayList<Enrollment> enrollments = new ArrayList<Enrollment>();
     
     enum Gender{
         M,
@@ -75,18 +75,8 @@ public class User {
         return gender;
     }
 
-    public void setEnrollments(ArrayList<Integer> enrollments) {
-        this.enrollments = enrollments;
-    }
-
-    public ArrayList<Integer> getEnrollments() {
-        return enrollments;
-    }
-
-    
-
-    public void User(){
-
+    public User(){
+        
     }
 
     public void addEnrollment(){

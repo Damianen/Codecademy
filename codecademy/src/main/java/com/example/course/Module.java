@@ -10,6 +10,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -90,7 +92,7 @@ public class Module {
             AnchorPane pane;
             
             try {
-                pane = FXMLLoader.load(module.getClass().getResource("/com/example/javafx/fxml/modulePopup.fxml"));
+                pane = FXMLLoader.load(module.getClass().getResource("/com/example/javafx/fxml/module.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -114,6 +116,15 @@ public class Module {
             TextField contactPersonEmail = (TextField)pane.lookup("#contactPersonEmail");
             contactPersonEmail.setEditable(editable);
             contactPersonEmail.setText(module.contactPersonEmail);
+
+            ObservableList<Tab> tabs = ((TabPane)pane.lookup("#tables")).getTabs();
+            for (Tab tab : tabs) {
+                AnchorPane rootTabPane = (AnchorPane)tab.getContent();
+                TableView table = (TableView)rootTabPane.lookup("#table");
+                if (tab.getId().equals("course")) {
+                    Course.generateTable(table, editable, pane);
+                }
+            }
         }
     }
 }

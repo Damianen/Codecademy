@@ -1,12 +1,15 @@
 package com.example.user;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+
+import com.example.course.Course;
 
 public class Enrollment {
     private LocalDate enrollDate;
-    private String certificate;
-    private String course;
-    private String progresses;
+    private Certificate certificate;
+    private Course course;
+    private ArrayList<Progress> progresses;
 
     public void setEnrollDate(LocalDate enrollDate) {
         this.enrollDate = enrollDate;
@@ -15,31 +18,22 @@ public class Enrollment {
         return enrollDate;
     }
 
-    public void setCertificate(String certificate) {
+    public void setCertificate(Certificate certificate) {
         this.certificate = certificate;
     }
-    public String getCertificate() {
+    public Certificate getCertificate() {
         return certificate;
     }
 
-    public void setCourse(String course) {
+    public void setCourse(Course course) {
         this.course = course;
     }
-    public String getCourse() {
+    public Course getCourse() {
         return course;
     }
 
-    public void setProgresses(String progresses) {
-        this.progresses = progresses;
-    }
-    public String getProgresses() {
-        return progresses;
-    }
-
-
-
-    public void Enrollment(){
-
+    public Enrollment(){
+        
     }
 
     public void addCertificate(){

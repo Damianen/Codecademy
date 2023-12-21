@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="coursePopup" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ToolBar fx:id="toolBar" prefHeight="40.0" prefWidth="600.0">
         <items>
@@ -38,11 +38,7 @@
       </MenuButton>
       <TabPane fx:id="tables" layoutX="174.0" layoutY="47.0" prefHeight="348.0" prefWidth="419.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-<<<<<<< HEAD
           <Tab fx:id="enrolment" text="Enrolments">
-=======
-          <Tab text="Enrolments">
->>>>>>> aaf7f91 (add new fxml files for popup windows)
             <content>
               <AnchorPane fx:id="enrolments" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -55,11 +51,7 @@
             <content>
               <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-<<<<<<< HEAD
                         <TableView fx:id="table" prefHeight="323.0" prefWidth="419.0" />
-=======
-                        <TableView prefHeight="299.0" prefWidth="419.0" />
->>>>>>> aaf7f91 (add new fxml files for popup windows)
                      </children>
                   </AnchorPane>
             </content>

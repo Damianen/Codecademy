@@ -74,8 +74,10 @@ public class Database {
     }
 
     static public final ObservableList<Course> getCourseList(String name, String subject, String introText,
-            String difficultyLevel) {
-        difficultyLevel.toLowerCase();
+            String difficultyLevel, String userName, String ModuleTitle) {
+        if (difficultyLevel != null) {
+            difficultyLevel.toLowerCase();
+        } 
         final ObservableList<Course> data = FXCollections.observableArrayList(
                 new Course("Java", "Java", "welcome to java", BEGINNER),
                 new Course("Python", "Python", "welcome to Python", BEGINNER),
