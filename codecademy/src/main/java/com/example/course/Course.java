@@ -8,6 +8,7 @@ import javax.jws.WebParam.Mode;
 
 import com.example.Database;
 import com.example.javafx.GUIController;
+import com.example.user.Enrollment;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -155,7 +156,7 @@ public class Course {
                 if (tab.getId().equals("module")) {
                     Module.generateTable(table, editable, pane);
                 } else {
-                    
+                    Enrollment.generateTable(table, editable, pane);
                 }
             }
         }

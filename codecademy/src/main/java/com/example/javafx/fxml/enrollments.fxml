@@ -21,7 +21,7 @@
       </ToolBar>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="330.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" width="600.0" />
       <Label layoutX="14.0" layoutY="60.0" text="Enrolldate" />
-      <TabPane layoutX="174.0" layoutY="47.0" prefHeight="348.0" prefWidth="419.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPane" layoutX="174.0" layoutY="47.0" prefHeight="348.0" prefWidth="419.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
             <Tab text="Progress">
                <content>
@@ -50,6 +50,15 @@
                   </AnchorPane>
                </content>
             </Tab>
+            <Tab fx:id="table" text="User">
+               <content>
+                  <AnchorPane fx:id="enrolments11" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="table1" prefHeight="286.0" prefWidth="419.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
          </tabs>
       </TabPane>
       <Text layoutX="265.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enrollments">
@@ -58,6 +67,6 @@
          </font>
       </Text>
       <Button fx:id="updateButton" layoutX="11.0" layoutY="133.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Update" />
-      <DatePicker fx:id="enrolldate" layoutX="11.0" layoutY="85.0" prefHeight="26.0" prefWidth="150.0" />
+      <DatePicker fx:id="enrollDate" layoutX="11.0" layoutY="85.0" prefHeight="26.0" prefWidth="150.0" />
    </children>
 </AnchorPane>
