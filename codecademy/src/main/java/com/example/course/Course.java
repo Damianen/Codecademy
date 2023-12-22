@@ -117,6 +117,12 @@ public class Course {
         }
 
         
+        String nameString = ((TextField)rootPane.lookup("#name")).getText();
+        String subjectString = ((TextField)rootPane.lookup("#subject")).getText();
+        String introTextString = ((TextArea)rootPane.lookup("#introText")).getText();
+        String difficultyLevelString = ((MenuButton)rootPane.lookup("#difficultyLevel")).getText();
+
+        table.setItems(DatabaseCourse.getCourseList(nameString));
     }
 
     static private void generatePopupWindow(MouseEvent event, boolean editable, Course course) {
