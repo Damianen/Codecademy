@@ -35,13 +35,14 @@
             <MenuItem mnemonicParsing="false" text="Expert" />
          </items>
       </MenuButton>
-      <TabPane layoutX="174.0" layoutY="47.0" prefHeight="348.0" prefWidth="419.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tables" layoutX="174.0" layoutY="47.0" prefHeight="417.0" prefWidth="419.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
             <Tab text="Enroments">
                <content>
                   <AnchorPane fx:id="enrolments" minHeight="0.0" minWidth="0.0" prefHeight="389.0" prefWidth="419.0">
                      <children>
-                        <TableView prefHeight="322.0" prefWidth="419.0" />
+                        <TableView prefHeight="354.0" prefWidth="419.0" />
+                        <Button layoutY="362.0" mnemonicParsing="false" text="Enrol in course" />
                      </children>
                   </AnchorPane>
                </content>

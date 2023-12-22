@@ -26,7 +26,7 @@ public class Certificate {
         return employeeName;
     }
 
-    public void Certificate(){
+    public Certificate(){
         
     }
 }

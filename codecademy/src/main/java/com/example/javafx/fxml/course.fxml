@@ -42,7 +42,7 @@
             <content>
               <AnchorPane fx:id="enrolments" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="table" prefHeight="323.0" prefWidth="419.0" />
+                        <TableView fx:id="table" prefHeight="322.0" prefWidth="419.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -51,7 +51,10 @@
             <content>
               <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="table" prefHeight="323.0" prefWidth="419.0" />
+                        <Button fx:id="updateButton1" layoutX="7.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Add Modules" />
+                        <Button fx:id="updateButton11" layoutX="262.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Remove modules" />
+                        <Label fx:id="promptText" layoutX="75.0" layoutY="266.0" prefHeight="17.0" prefWidth="264.0" textAlignment="CENTER" />
+                        <TableView fx:id="table" prefHeight="261.0" prefWidth="419.0" />
                      </children>
                   </AnchorPane>
             </content>

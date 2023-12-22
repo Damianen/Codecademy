@@ -20,9 +20,6 @@ public class Progress {
         return contentItem;
     }
     
-
-
-
     public void progress(){
 
     }

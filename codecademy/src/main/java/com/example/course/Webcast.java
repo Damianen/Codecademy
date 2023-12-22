@@ -1,17 +1,9 @@
 package com.example.course;
 
-public class Webcast {
-    private String title;
+public class Webcast extends ContentItem {
     private String url;
     private String speaker;
     private String orginization;
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public String getTitle() {
-        return title;
-    }
 
     public void setUrl(String url) {
         this.url = url;
@@ -34,10 +26,7 @@ public class Webcast {
         return orginization;
     }
 
-
-
-
-    public void Webcast(){
+    public Webcast(){
         
     }
 }

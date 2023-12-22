@@ -2,36 +2,27 @@ package com.example.course;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Observable;
 
-import javax.jws.WebParam.Mode;
-
-import com.example.Database;
+import com.example.database.DatabaseCourse;
 import com.example.javafx.GUIController;
 import com.example.user.Enrollment;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToolBar;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 
 
 
@@ -104,25 +95,7 @@ public class Course {
             }
         });
 
-        if (rootPane.getId().equals("course")) {
-            String nameString = ((TextField)rootPane.lookup("#name")).getText();
-            String subjectString = ((TextField)rootPane.lookup("#subject")).getText();
-            String introTextString = ((TextArea)rootPane.lookup("#introText")).getText();
-            String difficultyLevelString = ((MenuButton)rootPane.lookup("#difficultyLevel")).getText();
-            table.setItems(Database.getCourseList(nameString, subjectString, introTextString, difficultyLevelString, null, null));
-        }
-
-        if (rootPane.getId().equals("modulePopup")) {
-            table.setItems(Database.getCourseList(null, null, null, null, ((TextField)rootPane.lookup("#title")).getText(), null));
-        }
-
-        
-        String nameString = ((TextField)rootPane.lookup("#name")).getText();
-        String subjectString = ((TextField)rootPane.lookup("#subject")).getText();
-        String introTextString = ((TextArea)rootPane.lookup("#introText")).getText();
-        String difficultyLevelString = ((MenuButton)rootPane.lookup("#difficultyLevel")).getText();
-
-        table.setItems(DatabaseCourse.getCourseList(nameString));
+        table.setItems(DatabaseCourse.getCourseList(""));
     }
 
     static private void generatePopupWindow(MouseEvent event, boolean editable, Course course) {
@@ -159,6 +132,9 @@ public class Course {
             for (Tab tab : tabs) {
                 AnchorPane rootTabPane = (AnchorPane)tab.getContent();
                 TableView table = (TableView)rootTabPane.lookup("#table");
+                if (!editable) {
+                    table.setPrefHeight(320);
+                }
                 if (tab.getId().equals("module")) {
                     Module.generateTable(table, editable, pane);
                 } else {

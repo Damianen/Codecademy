@@ -3,11 +3,19 @@ package com.example.course;
 import java.time.LocalDate;
 
 public class ContentItem {
+    protected String title;
     protected int id;
     protected LocalDate publicationDate;
     protected String status;
     protected String description;
     protected int trackingNumber;
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public String getTitle() {
+        return title;
+    }
 
     public void setId(int id) {
         this.id = id;

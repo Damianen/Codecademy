@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import com.example.javafx.GUIController;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -18,19 +20,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 
-public class Module {
-    private String title;
+public class Module extends ContentItem{
     private String version;
     private String contactPersonName;
     private String contactPersonEmail;
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public String getTitle() {
-        return title;
-    }
 
     public void setVersion(String version) {
         this.version = version;
@@ -54,22 +49,30 @@ public class Module {
     }
     
     public Module(){
-        this.title = "test";
         this.version = "test";
         this.contactPersonEmail = "test";
         this.contactPersonName = "test";
+        this.title = "test";
     }
 
     static public void generateTable(TableView<Module> table, boolean editable, AnchorPane rootPane) {
         TableColumn<Module, String> title = new TableColumn<Module, String>("Title");
         TableColumn<Module, String> version = new TableColumn<Module, String>("Version");
 
+        Callback<TableColumn.CellDataFeatures<Module, String>, ObservableValue<String>> titleCallback;
+        titleCallback = cellDataFeatures -> {
+            Module module = cellDataFeatures.getValue();
+            String titleString = module.getTitle();
+            ObservableValue<String> titleObservableValue = new SimpleStringProperty(titleString);
+            return titleObservableValue;
+        };
+
         final ObservableList<TableColumn<Module, ?>> columns = FXCollections.observableArrayList();
         columns.add(title);
         columns.add(version);
         table.getColumns().addAll(columns);
 
-        title.setCellValueFactory(new PropertyValueFactory<Module, String>("title"));
+        title.setCellValueFactory(titleCallback);
         version.setCellValueFactory(new PropertyValueFactory<Module, String>("version"));
 
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {

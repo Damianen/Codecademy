@@ -146,7 +146,9 @@ public class Enrollment {
             for (Tab tab : tabs) {
                 AnchorPane rootTabPane = (AnchorPane)tab.getContent();
                 TableView table = (TableView)rootTabPane.lookup("#table");
-                
+                if (tab.getId().equals("course")) {
+                    Course.generateTable(table, editable, pane);
+                }
             }
         }
     }

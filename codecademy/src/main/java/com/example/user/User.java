@@ -3,7 +3,6 @@ package com.example.user;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.example.Database;
 import com.example.javafx.GUIController;
 
 import javafx.collections.FXCollections;
@@ -184,11 +183,6 @@ public class User {
             for (Tab tab : tabs) {
                 AnchorPane rootTabPane = (AnchorPane)tab.getContent();
                 TableView table = (TableView)rootTabPane.lookup("#table");
-                if (tab.getId().equals("module")) {
-                    
-                } else {
-                    
-                }
             }
         }
     }

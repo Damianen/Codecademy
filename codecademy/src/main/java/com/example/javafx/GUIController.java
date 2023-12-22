@@ -3,6 +3,7 @@ package com.example.javafx;
 import java.io.IOException;
 
 import com.example.course.Course;
+import com.example.user.User;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -81,11 +82,11 @@ public class GUIController {
             case "course":
                 Course.generateTable(table, editable, tabRootNode);
                 break;
-            case "module":
+            case "contentItem":
+                
                 break;
             case "user":
-                break;
-            case "enrolment":
+                User.generateTable(table, editable, tabRootNode);
                 break;
         }
     }
