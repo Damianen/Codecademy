@@ -1,8 +1,12 @@
 package com.example.javafx;
 
+import static com.example.course.Course.DifficultyLevel.valueOf;
+
 import java.io.IOException;
 
 import com.example.course.Course;
+import com.example.course.Course.DifficultyLevel;
+import com.example.database.DatabaseCourse;
 import com.example.user.User;
 
 import javafx.event.ActionEvent;
@@ -17,10 +21,13 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class GUIController {
@@ -64,6 +71,7 @@ public class GUIController {
             case ("deleteButton"): return "/com/example/javafx/fxml/Delete.fxml";
             case ("readButton"):   return "/com/example/javafx/fxml/Read.fxml";
             case ("homeButton"):   return "/com/example/javafx/fxml/Start.fxml";
+            case ("new"):          return "/com/example/javafx/fxml/Start.fxml";
         }
 
         return "";
@@ -119,7 +127,6 @@ public class GUIController {
 
         Button updateButton = (Button)popupPane.lookup("#updateButton");
         updateButton.setVisible(editable);
-
         ToolBar toolbar = (ToolBar)popupPane.lookup("#toolBar");
         ((Button)toolbar.getItems().get(0)).setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -131,14 +138,57 @@ public class GUIController {
     }
     
     public void create(ActionEvent event) throws IOException {
-        
+        AnchorPane tabRoot = (AnchorPane)((Node)event.getSource()).getParent();
+
+        switch (tabRoot.getId()) {
+            case "coursePane":
+                DatabaseCourse.createCourse(((TextField)tabRoot.lookup("#name")).getText(),
+                ((TextField)tabRoot.lookup("#subject")).getText(), 
+                ((TextArea)tabRoot.lookup("#introText")).getText(), 
+                DifficultyLevel.valueOf(((MenuButton)tabRoot.lookup("#difficultyLevel")).getText()));
+                break;
+            case "userPane":
+                break;
+            case "modulePane":
+                break;
+            case "webcastPane":
+                break;
+        }
+
+        switchPage(event);
     }
 
     public void delete(ActionEvent event) throws IOException {
+        AnchorPane tabRoot = (AnchorPane)((Node)event.getSource()).getParent();        
+        TableView table = (TableView)tabRoot.lookup("#table");
 
+        switch (tabRoot.getId()) {
+            case "coursePane":
+                DatabaseCourse.deleteCourse(((Course)table.getSelectionModel().getSelectedCells()).getName());
+                break;
+            case "userPane":
+                break;
+            case "contentItem":
+                break;
+        }
     }
 
     public void Update(ActionEvent event) throws IOException {
+        AnchorPane tabRoot = (AnchorPane)((Node)event.getSource()).getParent();        
+        TableView table = (TableView)tabRoot.lookup("#table");
 
+        switch (tabRoot.getId()) {
+            case "coursePane":
+                DatabaseCourse.updateCourse(((Course)table.getSelectionModel().getSelectedCells()).getName(),
+                ((TextField)tabRoot.lookup("#name")).getText(),
+                ((TextField)tabRoot.lookup("#subject")).getText(), 
+                ((TextArea)tabRoot.lookup("#introText")).getText(), 
+                DifficultyLevel.valueOf(((MenuButton)tabRoot.lookup("#difficultyLevel")).getText()));
+                break;
+            case "userPane":
+                break;
+            case "contentItem":
+                break;
+        }
     }
 }

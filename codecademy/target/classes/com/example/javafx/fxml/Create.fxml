@@ -30,7 +30,7 @@
                               <Font size="16.0" />
                            </font>
                         </TextField>
-                        <Button layoutX="266.0" layoutY="422.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="New" />
+                        <Button fx:id="new" layoutX="266.0" layoutY="422.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="New" />
                         <Text layoutX="94.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new course?">
                            <font>
                               <Font size="26.0" />
@@ -58,7 +58,7 @@
                         <TextField fx:id="name" alignment="CENTER" layoutX="238.0" layoutY="119.0" prefHeight="36.0" prefWidth="397.0" promptText="Name" />
                         <TextField fx:id="email" alignment="CENTER" layoutX="238.0" layoutY="167.0" prefHeight="36.0" prefWidth="397.0" promptText="Email" />
                         <TextField fx:id="adress" alignment="CENTER" layoutX="238.0" layoutY="273.0" prefHeight="36.0" prefWidth="397.0" promptText="adress" />
-                        <Button layoutX="238.0" layoutY="440.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="New" />
+                        <Button fx:id="new" layoutX="238.0" layoutY="440.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="New" />
                         <Text layoutX="110.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new user?">
                            <font>
                               <Font size="26.0" />
@@ -78,11 +78,11 @@
           </Tab>
             <Tab text="Module">
                <content>
-                  <AnchorPane fx:id="userPane1" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane fx:id="modulePane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="title" alignment="CENTER" layoutX="60.0" layoutY="119.0" prefHeight="36.0" prefWidth="373.0" promptText="Title" />
                         <TextField fx:id="status" alignment="CENTER" layoutX="60.0" layoutY="170.0" prefHeight="36.0" prefWidth="374.0" promptText="Status" />
-                        <Button layoutX="238.0" layoutY="440.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="New" />
+                        <Button fx:id="new" layoutX="238.0" layoutY="440.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="New" />
                         <Text layoutX="60.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new module?">
                            <font>
                               <Font size="26.0" />
@@ -99,11 +99,11 @@
             </Tab>
             <Tab text="Webcast">
                <content>
-                  <AnchorPane fx:id="userPane11" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane fx:id="webcastPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="title" alignment="CENTER" layoutX="60.0" layoutY="119.0" prefHeight="36.0" prefWidth="373.0" promptText="Title" />
                         <TextField fx:id="status" alignment="CENTER" layoutX="60.0" layoutY="170.0" prefHeight="36.0" prefWidth="374.0" promptText="Status" />
-                        <Button layoutX="238.0" layoutY="440.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="New" />
+                        <Button fx:id="new" layoutX="238.0" layoutY="440.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="New" />
                         <Text layoutX="60.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new module?">
                            <font>
                               <Font size="26.0" />
