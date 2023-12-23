@@ -2,6 +2,7 @@ package com.example.database;
 
 import com.example.course.Course;
 import com.example.course.Course.DifficultyLevel;
+import com.example.exeptions.NameConflictException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,9 +11,13 @@ import java.sql.*;
 
 public class DatabaseCourse extends Database{
     
-    public static boolean createCourse(String name, String subject, String introText, DifficultyLevel difficultyLevel) {
+    public static boolean createCourse(String title, String subject, String introText, DifficultyLevel difficultyLevel) throws NameConflictException {
 
-        String SQL = "INSERT INTO Course VALUES ('" + name + "', '" + subject + "', '" + introText + "', '" + difficultyLevel
+        if(readCourse(title) != null){
+            throw new NameConflictException(title);
+        }
+
+        String SQL = "INSERT INTO Course VALUES ('" + title + "', '" + subject + "', '" + introText + "', '" + difficultyLevel
                 + "')";
 
         Connection con = getDbConnection();
@@ -36,9 +41,9 @@ public class DatabaseCourse extends Database{
 
     }
 
-    public static Course readCourse(String name) {
+    public static Course readCourse(String title) {
 
-        String SQL = "SELECT * FROM Course WHERE name = '" + name + "'";
+        String SQL = "SELECT * FROM Course WHERE title = '" + title + "'";
 
         Connection con = getDbConnection();
 
@@ -52,12 +57,12 @@ public class DatabaseCourse extends Database{
             rs = stmt.executeQuery(SQL);
 
             while (rs.next()) {
-                String nameDB = rs.getString("name");
+                String titleDB = rs.getString("title");
                 String subjectDB = rs.getString("subject");
                 String introTextDB = rs.getString("introText");
-                DifficultyLevel difficultyLevelDB = DifficultyLevel.valueOf(rs.getString("level"));
+                DifficultyLevel difficultyLevelDB = DifficultyLevel.valueOf(rs.getString("difficultyLevel"));
 
-                data = new Course(nameDB, subjectDB, introTextDB, difficultyLevelDB);
+                data = new Course(titleDB, subjectDB, introTextDB, difficultyLevelDB);
             }
             
             return data;
@@ -72,9 +77,13 @@ public class DatabaseCourse extends Database{
         }
     }
 
-    public static boolean updateCourse(String name, String newName, String newSubject, String newIntroText, DifficultyLevel newDifficultyLevel) {
+    public static boolean updateCourse(String title, String newtitle, String newSubject, String newIntroText, DifficultyLevel newDifficultyLevel) throws NameConflictException {
 
-        String SQL = "UPDATE Course SET name = '" + newName + "', subject = '" + newSubject + "', introText = '" + newIntroText + "', level = '" + newDifficultyLevel + "' WHERE name = '" + name + "'";
+        if(readCourse(newtitle) != null){
+            throw new NameConflictException(newtitle);
+        }
+
+        String SQL = "UPDATE Course SET title = '" + newtitle + "', subject = '" + newSubject + "', introText = '" + newIntroText + "', difficultyLevel = '" + newDifficultyLevel + "' WHERE title = '" + title + "'";
 
         Connection con = getDbConnection();
 
@@ -97,9 +106,9 @@ public class DatabaseCourse extends Database{
 
     }
 
-    public static boolean deleteCourse(String name) {
+    public static boolean deleteCourse(String title) {
         
-        String SQL = "DELETE FROM Course WHERE name = '" + name + "'";
+        String SQL = "DELETE FROM Course WHERE title = '" + title + "'";
 
         Connection con = getDbConnection();
 
@@ -122,9 +131,9 @@ public class DatabaseCourse extends Database{
 
     }
 
-    public static final ObservableList<Course> getCourseList(String nameSearch) {
+    public static final ObservableList<Course> getCourseList(String titleSearch) {
 
-        String SQL = "SELECT * FROM Course WHERE name LIKE '%" + nameSearch + "%'";
+        String SQL = "SELECT * FROM Course WHERE title LIKE '%" + titleSearch + "%'";
 
         Connection con = getDbConnection();
 
@@ -139,12 +148,12 @@ public class DatabaseCourse extends Database{
             rs = stmt.executeQuery(SQL);
 
             while (rs.next()) {
-                String nameDB = rs.getString("name");
+                String titleDB = rs.getString("title");
                 String subjectDB = rs.getString("subject");
                 String introTextDB = rs.getString("introText");
-                DifficultyLevel difficultyLevelDB = DifficultyLevel.valueOf(rs.getString("level"));
+                DifficultyLevel difficultyLevelDB = DifficultyLevel.valueOf(rs.getString("difficultyLevel"));
 
-                data.add(new Course(nameDB, subjectDB, introTextDB, difficultyLevelDB));
+                data.add(new Course(titleDB, subjectDB, introTextDB, difficultyLevelDB));
             }
 
             return data;

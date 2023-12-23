@@ -39,22 +39,22 @@ public class Course {
         EXPERT
     }
 
-    private String name;
+    private String title;
     private String subject;
     private String introText;
     private DifficultyLevel difficultyLevel;
     private ArrayList<Module> modules;
 
-    public Course(String name, String subject, String introText, DifficultyLevel difficulty) {
-        this.name = name;
+    public Course(String title, String subject, String introText, DifficultyLevel difficulty) {
+        this.title = title;
         this.subject = subject;
         this.introText = introText;
         this.difficultyLevel = difficulty;
         this.modules = new ArrayList<Module>();
     }
 
-    public String getName() {
-        return name;
+    public String gettitle() {
+        return title;
     }
 
     public String getSubject() {
@@ -79,17 +79,17 @@ public class Course {
 
     static public void generateTable(TableView<Course> table, boolean editable, AnchorPane rootPane) {
         
-        TableColumn<Course, String> name = new TableColumn<Course, String>("Name");
+        TableColumn<Course, String> title = new TableColumn<Course, String>("title");
         TableColumn<Course, String> subject = new TableColumn<Course, String>("Subject");
         TableColumn<Course, String> difficultyLevel = new TableColumn<Course, String>("Difficulty level");
         
         final ObservableList<TableColumn<Course, ?>> columns = FXCollections.observableArrayList();
-        columns.add(name);
+        columns.add(title);
         columns.add(subject);
         columns.add(difficultyLevel);
         table.getColumns().addAll(columns);
 
-        name.setCellValueFactory(new PropertyValueFactory<Course, String>("name"));
+        title.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
         subject.setCellValueFactory(new PropertyValueFactory<Course, String>("subject"));
         difficultyLevel.setCellValueFactory(new PropertyValueFactory<Course, String>("difficultyLevelString"));
 
@@ -100,12 +100,12 @@ public class Course {
             }
         });
 
-        String nameString = ((TextField)rootPane.lookup("#name")).getText();
+        String titleString = ((TextField)rootPane.lookup("#title")).getText();
         String subjectString = ((TextField)rootPane.lookup("#subject")).getText();
         String introTextString = ((TextArea)rootPane.lookup("#introText")).getText();
         String difficultyLevelString = ((MenuButton)rootPane.lookup("#difficultyLevel")).getText();
 
-        table.setItems(DatabaseCourse.getCourseList(nameString));
+        table.setItems(DatabaseCourse.getCourseList(titleString));
     }
 
     static private void generatePopupWindow(MouseEvent event, boolean editable, Course course) {
@@ -123,9 +123,9 @@ public class Course {
             GUIController.setupPopupWindow(editable, pane, (AnchorPane)scene.getRoot());
             
             
-            TextField textField = (TextField)pane.lookup("#name");
+            TextField textField = (TextField)pane.lookup("#title");
             textField.setEditable(editable);
-            textField.setText(course.name);
+            textField.setText(course.title);
 
             TextField textField2 = (TextField)pane.lookup("#subject");
             textField2.setEditable(editable);
