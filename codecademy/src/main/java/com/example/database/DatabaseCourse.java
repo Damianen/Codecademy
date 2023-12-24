@@ -2,7 +2,7 @@ package com.example.database;
 
 import com.example.course.Course;
 import com.example.course.Course.DifficultyLevel;
-import com.example.exeptions.NameConflictException;
+import com.example.exeptions.AlreadyExistsException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,10 +11,10 @@ import java.sql.*;
 
 public class DatabaseCourse extends Database{
     
-    public static boolean createCourse(String title, String subject, String introText, DifficultyLevel difficultyLevel) throws NameConflictException {
+    public static boolean createCourse(String title, String subject, String introText, DifficultyLevel difficultyLevel) throws AlreadyExistsException {
 
         if(readCourse(title) != null){
-            throw new NameConflictException(title);
+            throw new AlreadyExistsException("The course \"" + title + "\" already exists");
         }
 
         String SQL = "INSERT INTO Course VALUES ('" + title + "', '" + subject + "', '" + introText + "', '" + difficultyLevel
@@ -77,10 +77,10 @@ public class DatabaseCourse extends Database{
         }
     }
 
-    public static boolean updateCourse(String title, String newtitle, String newSubject, String newIntroText, DifficultyLevel newDifficultyLevel) throws NameConflictException {
+    public static boolean updateCourse(String title, String newtitle, String newSubject, String newIntroText, DifficultyLevel newDifficultyLevel) throws AlreadyExistsException {
 
         if(readCourse(newtitle) != null){
-            throw new NameConflictException(newtitle);
+            throw new AlreadyExistsException("The course \"" + title + "\" already exists");
         }
 
         String SQL = "UPDATE Course SET title = '" + newtitle + "', subject = '" + newSubject + "', introText = '" + newIntroText + "', difficultyLevel = '" + newDifficultyLevel + "' WHERE title = '" + title + "'";

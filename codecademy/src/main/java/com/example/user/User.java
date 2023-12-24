@@ -1,23 +1,37 @@
 package com.example.user;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+
+import com.example.database.DatabaseEnrollment;
 
 public class User {
 
     private String email;
     private String name;
-    private String dateOfBirth;
-    private String adress;
+    private LocalDate dateOfBirth;
+    private String address;
     private String residence;
     private String country;
     private Gender gender;
-    private ArrayList<Integer> enrollments = new ArrayList<Integer>();
+    private ArrayList<Enrollment> enrollments;
     
-    enum Gender{
+    public enum Gender{
         M,
         F
     }
 
+     public User(String email, String name, LocalDate dateOfBirth, Gender gender, String address, String residence, String country){
+        this.email = email;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.address = address;
+        this.residence = residence;
+        this.country = country;
+
+        this.enrollments = DatabaseEnrollment.getUserEnrollments(email);
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -35,20 +49,20 @@ public class User {
         return name;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAdress(String address) {
+        this.address = address;
     }
 
     public String getAdress() {
-        return adress;
+        return address;
     }
 
     public void setResidence(String residence) {
@@ -75,18 +89,12 @@ public class User {
         return gender;
     }
 
-    public void setEnrollments(ArrayList<Integer> enrollments) {
+    public void setEnrollments(ArrayList<Enrollment> enrollments) {
         this.enrollments = enrollments;
     }
 
-    public ArrayList<Integer> getEnrollments() {
+    public ArrayList<Enrollment> getEnrollments() {
         return enrollments;
-    }
-
-    
-
-    public void User(){
-
     }
 
     public void addEnrollment(){

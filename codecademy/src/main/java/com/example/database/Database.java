@@ -1,14 +1,6 @@
 package com.example.database;
 
-import static org.junit.Assert.assertTrue;
-
 import java.sql.*;
-
-import com.example.course.Course;
-import com.example.course.Course.DifficultyLevel;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class Database {
 
