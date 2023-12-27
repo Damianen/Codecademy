@@ -48,21 +48,8 @@ public class Enrollment {
         this.certificate = DatabaseCertificate.getEnrollmentCertificate(this.id);
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setEnrollmentDate(LocalDate enrollmentDate) {
-        this.enrollmentDate = enrollmentDate;
-    } 
-    public LocalDate getEnrollmentDate() {
-        return enrollmentDate;
-    }
-
     public void setCertificate(Certificate certificate) {
         this.certificate = certificate;
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getId() {

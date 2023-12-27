@@ -100,7 +100,7 @@ public class Course {
         String introTextString = ((TextArea)rootPane.lookup("#introText")).getText();
         String difficultyLevelString = ((MenuButton)rootPane.lookup("#difficultyLevel")).getText();
 
-        table.setItems(DatabaseCourse.getCourseList(nameString));
+        table.setItems(DatabaseCourse.getCourseListSearch(nameString));
     }
 
     static private void generatePopupWindow(MouseEvent event, boolean editable, Course course) {

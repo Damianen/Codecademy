@@ -11,7 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-public abstract abstract class ContentItem {
+public abstract class ContentItem {
     protected final int id;
     protected String title;
     protected LocalDate publicationDate;

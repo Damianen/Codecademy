@@ -10,8 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class Certificate {
-<<<<<<< HEAD
-    private int id;
+    private final int id;
     private int rating;
     private String employeeName;
 
@@ -21,15 +20,6 @@ public class Certificate {
         this.employeeName = employeeName;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-=======
-    private final int id;
-    private float rating;
-    private String employeeName;
-
->>>>>>> main
     public int getId() {
         return id;
     }
@@ -46,14 +36,6 @@ public class Certificate {
     }
     public String getEmployeeName() {
         return employeeName;
-    }
-<<<<<<< HEAD
-=======
-
-    public Certificate(int id, float rating, String employeeName){
-        this.id = id;
-        this.rating = rating;
-        this.employeeName = employeeName;
     }
 
     static public void generateTable(TableView<Certificate> table, boolean editable, AnchorPane rootPane) {
@@ -74,5 +56,4 @@ public class Certificate {
 
         table.setItems(data);
     }
->>>>>>> main
 }

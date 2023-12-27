@@ -51,9 +51,8 @@ public class Module extends ContentItem{
         return contactPersonEmail;
     }
     
-    public Module(String title, int id, LocalDate publicationDate, String status, String description, 
-    int trackingNumber, String version, String contactPersonEmail, String contactPersonName){
-        super(title, id, publicationDate, status, description, trackingNumber);
+    public Module(String title, int id, LocalDate publicationDate, Status status, String description, String version, String contactPersonEmail, String contactPersonName){
+        super(id, title, publicationDate, status ,description);
         this.version = version;
         this.contactPersonEmail = contactPersonName;
         this.contactPersonName = contactPersonEmail;
@@ -87,7 +86,7 @@ public class Module extends ContentItem{
         });
 
         final ObservableList<ContentItem> data = FXCollections.observableArrayList(
-            new Module("test", 0, LocalDate.now(), "test", "test", 0, "test", "test", "test")
+            new Module("test", 0, LocalDate.now(), Status.ACTIVE, "test", "test", "test", "test")
         );
 
         table.setItems(data);
