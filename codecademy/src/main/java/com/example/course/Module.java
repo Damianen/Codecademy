@@ -1,8 +1,10 @@
 package com.example.course;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import com.example.javafx.GUIController;
+import com.example.user.Progress;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -23,6 +25,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
 public class Module extends ContentItem{
+    protected static Object table;
     private String version;
     private String contactPersonName;
     private String contactPersonEmail;
@@ -48,54 +51,55 @@ public class Module extends ContentItem{
         return contactPersonEmail;
     }
     
-    public Module(){
-        this.version = "test";
-        this.contactPersonEmail = "test";
-        this.contactPersonName = "test";
-        this.title = "test";
+    public Module(String title, int id, LocalDate publicationDate, String status, String description, 
+    int trackingNumber, String version, String contactPersonEmail, String contactPersonName){
+        super(title, id, publicationDate, status, description, trackingNumber);
+        this.version = version;
+        this.contactPersonEmail = contactPersonName;
+        this.contactPersonName = contactPersonEmail;
     }
 
-    static public void generateTable(TableView<Module> table, boolean editable, AnchorPane rootPane) {
-        TableColumn<Module, String> title = new TableColumn<Module, String>("Title");
-        TableColumn<Module, String> version = new TableColumn<Module, String>("Version");
+    static public void generateTable(TableView<ContentItem> table, boolean editable, AnchorPane rootPane) {
+        generateContentTable(table);
+        
+        TableColumn<ContentItem, String> version = new TableColumn<ContentItem, String>("Version");
 
-        Callback<TableColumn.CellDataFeatures<Module, String>, ObservableValue<String>> titleCallback;
-        titleCallback = cellDataFeatures -> {
-            Module module = cellDataFeatures.getValue();
-            String titleString = module.getTitle();
-            ObservableValue<String> titleObservableValue = new SimpleStringProperty(titleString);
-            return titleObservableValue;
-        };
-
-        final ObservableList<TableColumn<Module, ?>> columns = FXCollections.observableArrayList();
-        columns.add(title);
+        final ObservableList<TableColumn<ContentItem, ?>> columns = FXCollections.observableArrayList();
         columns.add(version);
         table.getColumns().addAll(columns);
 
-        title.setCellValueFactory(titleCallback);
-        version.setCellValueFactory(new PropertyValueFactory<Module, String>("version"));
+        Callback<TableColumn.CellDataFeatures<ContentItem, String>, ObservableValue<String>> moduleCallback;
+        moduleCallback = cellDataFeatures -> {
+            Module m = (Module)cellDataFeatures.getValue();
+            String versionString = m.getVersion();
+            ObservableValue<String> titleObservableValue = new SimpleStringProperty(versionString);
+            return titleObservableValue;
+        };
+
+        version.setCellValueFactory(moduleCallback);
 
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                generatePopupWindow(event, editable, (Module)table.getSelectionModel().getSelectedItem());
+                Module module = (Module)table.getSelectionModel().getSelectedItem();
+                module.generatePopupWindow(event, editable);
             }
         });
 
-        final ObservableList<Module> data = FXCollections.observableArrayList(
-            new Module(),
-            new Module()
+        final ObservableList<ContentItem> data = FXCollections.observableArrayList(
+            new Module("test", 0, LocalDate.now(), "test", "test", 0, "test", "test", "test")
         );
 
         table.setItems(data);
     }
 
-    static public void generatePopupWindow(MouseEvent event, boolean editable, Module module) {
+    @Override
+    public void generatePopupWindow(MouseEvent event, boolean editable) {
         if (event.getClickCount()>1) {
             AnchorPane pane;
             
             try {
-                pane = FXMLLoader.load(module.getClass().getResource("/com/example/javafx/fxml/module.fxml"));
+                pane = FXMLLoader.load(getClass().getResource("/com/example/javafx/fxml/module.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -106,19 +110,19 @@ public class Module extends ContentItem{
 
             TextField title = (TextField)pane.lookup("#title");
             title.setEditable(editable);
-            title.setText(module.title);
+            title.setText(this.title);
 
             TextField version = (TextField)pane.lookup("#version");
             version.setEditable(editable);
-            version.setText(module.version);
+            version.setText(this.version);
 
             TextField contactPersonName = (TextField)pane.lookup("#contactPersonName");
             contactPersonName.setEditable(editable);
-            contactPersonName.setText(module.contactPersonName);
+            contactPersonName.setText(this.contactPersonName);
 
             TextField contactPersonEmail = (TextField)pane.lookup("#contactPersonEmail");
             contactPersonEmail.setEditable(editable);
-            contactPersonEmail.setText(module.contactPersonEmail);
+            contactPersonEmail.setText(this.contactPersonEmail);
 
             ObservableList<Tab> tabs = ((TabPane)pane.lookup("#tables")).getTabs();
             for (Tab tab : tabs) {

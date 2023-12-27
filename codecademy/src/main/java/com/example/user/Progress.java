@@ -1,26 +1,96 @@
 package com.example.user;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 
+import com.example.course.Module;
+import com.example.javafx.GUIController;
+
+import com.example.course.ContentItem;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
+
 public class Progress {
-    private HashMap<String, String> enrollDate = new HashMap<String, String>();
-    private String contentItem;
+    private ContentItem contentItem;
+    private Integer progressPercentage;
+    private final int id;
 
-    public void setEnrollDate(HashMap<String, String> enrollDate) {
-        this.enrollDate = enrollDate;
-    }
-    public HashMap<String, String> getEnrollDate() {
-        return enrollDate;
-    }
-
-    public void setContentItem(String contentItem) {
+    public void setContentItem(ContentItem contentItem) {
         this.contentItem = contentItem;
     }
-    public String getContentItem() {
+
+    public ContentItem getContentItem() {
         return contentItem;
     }
     
-    public void progress(){
+    public void setProgressPercentage(int progressPercentage) {
+        this.progressPercentage = progressPercentage;
+    }
 
+    public int getProgressPercentage() {
+        return progressPercentage;
+    }
+
+    public Progress(int id, ContentItem contentItem, int progressPercentage) {
+        this.id = id;
+        this.contentItem = contentItem;
+        this.progressPercentage = progressPercentage;
+    }
+
+    static public void generateTable(TableView<Progress> table, boolean editable, AnchorPane rootPane) {
+        
+        TableColumn<Progress, String> contentItemName = new TableColumn<Progress, String>("Content item name");
+        TableColumn<Progress, Integer> progressPercentage = new TableColumn<Progress ,Integer>("Progress percentage");
+        
+        Callback<TableColumn.CellDataFeatures<Progress, String>, ObservableValue<String>> contentItemCallback;
+        contentItemCallback = cellDataFeatures -> {
+            Progress p = cellDataFeatures.getValue();
+            String ciName = p.contentItem.getTitle();
+            ObservableValue<String> titleObservableValue = new SimpleStringProperty(ciName);
+            return titleObservableValue;
+        };
+
+        final ObservableList<TableColumn<Progress, ?>> columns = FXCollections.observableArrayList();
+        columns.add(contentItemName);
+        columns.add(progressPercentage);
+        table.getColumns().addAll(columns);
+
+
+
+        contentItemName.setCellValueFactory(contentItemCallback);
+        progressPercentage.setCellValueFactory(new PropertyValueFactory<Progress, Integer>("progressPercentage"));
+
+        table.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Progress progress = (Progress)table.getSelectionModel().getSelectedItem();
+                progress.contentItem.generatePopupWindow(event, editable);
+            }
+        });
+
+        final ObservableList<Progress> data = FXCollections.observableArrayList(
+            new Progress(0, new Module("test", 0, LocalDate.now(), "test", "test", 0, "test", "test", "test") , 0)
+        );
+
+        table.setItems(data);
+        
     }
 }

@@ -32,12 +32,12 @@ public class User {
     private String country;
     private Gender gender;
     private ArrayList<Enrollment> enrollments = new ArrayList<Enrollment>();
+    private Progress progress;
     
     enum Gender{
         M,
         F
     }
-
 
     public void setEmail(String email) {
         this.email = email;

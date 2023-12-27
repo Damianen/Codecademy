@@ -91,19 +91,20 @@ public class Course {
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                generatePopupWindow(event, editable, (Course)table.getSelectionModel().getSelectedItem());
+                Course course = (Course)table.getSelectionModel().getSelectedItem();
+                course.generatePopupWindow(event, editable);
             }
         });
 
         table.setItems(DatabaseCourse.getCourseList(""));
     }
 
-    static private void generatePopupWindow(MouseEvent event, boolean editable, Course course) {
+    public void generatePopupWindow(MouseEvent event, boolean editable) {
         if (event.getClickCount()>1) {
             AnchorPane pane;
             
             try {
-                pane = FXMLLoader.load(course.getClass().getResource("/com/example/javafx/fxml/course.fxml"));
+                pane = FXMLLoader.load(getClass().getResource("/com/example/javafx/fxml/course.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -114,19 +115,19 @@ public class Course {
             
             TextField textField = (TextField)pane.lookup("#name");
             textField.setEditable(editable);
-            textField.setText(course.name);
+            textField.setText(name);
 
             TextField textField2 = (TextField)pane.lookup("#subject");
             textField2.setEditable(editable);
-            textField2.setText(course.subject);
+            textField2.setText(subject);
 
             TextArea textArea = (TextArea)pane.lookup("#introText");
             textArea.setEditable(editable);
-            textArea.setText(course.introText);
+            textArea.setText(introText);
 
             MenuButton menuButton = (MenuButton)pane.lookup("#difficultyLevel");
             GUIController.setMenuButtonActions(menuButton, editable);
-            menuButton.setText(course.difficultyLevel.toString().toLowerCase());
+            menuButton.setText(difficultyLevel.toString().toLowerCase());
 
             ObservableList<Tab> tabs = ((TabPane)pane.lookup("#tables")).getTabs();
             for (Tab tab : tabs) {

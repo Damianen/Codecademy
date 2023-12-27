@@ -23,15 +23,6 @@
       <Label layoutX="14.0" layoutY="60.0" text="Enrolldate" />
       <TabPane fx:id="tabPane" layoutX="174.0" layoutY="47.0" prefHeight="348.0" prefWidth="419.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
-            <Tab fx:id="progress" text="Progress">
-               <content>
-                  <AnchorPane fx:id="enrolments" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TableView fx:id="table" prefHeight="286.0" prefWidth="419.0" />
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
             <Tab fx:id="certificate" text="Certificate">
                <content>
                   <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="313.0" prefWidth="419.0">
