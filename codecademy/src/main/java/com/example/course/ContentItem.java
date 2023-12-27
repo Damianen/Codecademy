@@ -12,7 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public abstract abstract class ContentItem {
-    protected String title;
     protected final int id;
     protected String title;
     protected LocalDate publicationDate;
