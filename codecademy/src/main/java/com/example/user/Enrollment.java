@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.example.database.DatabaseCourse;
 import com.example.database.DatabaseEnrollment;
+import com.example.database.DatabaseCertificate;
 
 public class Enrollment {
     private int id;
@@ -14,18 +15,16 @@ public class Enrollment {
 
     private Course course;
     private ArrayList<Progress> progresses;
-    private Certificate certificate;
+    private Certificate certificate = null;
 
-    public Enrollment(int id, LocalDate enrollmentDate, String courseTitle, int certificateID){
+    public Enrollment(int id, LocalDate enrollmentDate, String courseTitle){
         this.id = id;
         this.enrollmentDate = enrollmentDate;
         
         this.course = DatabaseCourse.readCourse(courseTitle);
         //this.progresses = DatabaseProgress.getEnrollmentProgresses();
 
-        if(certificateID != 0){
-            //this.certificate = readCertificate(certificateID);
-        }
+        this.certificate = DatabaseCertificate.getEnrollmentCertificate(this.id);
     }
 
     public void setId(int id) {
@@ -67,12 +66,12 @@ public class Enrollment {
     }
 
     public boolean addCertificate(){
-
-        //Certificate certificate = DatabaseCertificate.createCertificate(bla bla bla);
-
-        if(DatabaseEnrollment.addCertificate(certificate)){
+        
+        try {
+            DatabaseCertificate.createCertificate(this);
             return true;
-        }else{
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

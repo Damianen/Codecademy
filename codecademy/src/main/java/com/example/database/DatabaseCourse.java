@@ -131,7 +131,7 @@ public class DatabaseCourse extends Database{
 
     }
 
-    public static final ObservableList<Course> getCourseList(String titleSearch) {
+    public static final ObservableList<Course> getCourseListSearch(String titleSearch) {
 
         String SQL = "SELECT * FROM Course WHERE title LIKE '%" + titleSearch + "%'";
 

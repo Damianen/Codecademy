@@ -2,6 +2,7 @@ package com.example.database;
 
 import com.example.user.Enrollment;
 import com.example.user.User;
+import com.example.course.Speaker;
 import com.example.user.User.Gender;
 import com.example.exeptions.AlreadyExistsException;
 
@@ -10,18 +11,19 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
-public class DatabaseUser extends Database{
+public class DatabaseSpeaker extends Database{
 
-    public static User readUser(String email) {
+    public static Speaker readSpeaker(int id) {
 
-        String SQL = "SELECT * FROM [User] WHERE email = '" + email + "'";
+        String SQL = "SELECT * FROM [Speaker] WHERE ID = " + id;
 
         Connection con = getDbConnection();
 
         Statement stmt = null;
         ResultSet rs = null;
-        User data = null;
+        Speaker data = null;
 
         try {
 
@@ -29,15 +31,10 @@ public class DatabaseUser extends Database{
             rs = stmt.executeQuery(SQL);
 
             while (rs.next()) {
-                String emailDB = rs.getString("email");
-                String nameDB = rs.getString("name");
-                LocalDate dateOfBirthDB = rs.getDate("dateOfBirth").toLocalDate();
-                Gender genderDB = Gender.valueOf(rs.getString("gender"));
-                String addressDB = rs.getString("address");
-                String residenceDB = rs.getString("residence");
-                String countryDB = rs.getString("country");
+                String name = rs.getString("name");
+                String organization = rs.getString("organization");
 
-                data = new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, residenceDB, countryDB);
+                data = new Speaker(id, name, organization);
             }
             
             return data;
@@ -52,13 +49,9 @@ public class DatabaseUser extends Database{
         }
     }
     
-    public static boolean createUser(String email, String name, LocalDate dateOfBirth, Gender gender, String address, String residence, String country) throws AlreadyExistsException {
+    public static boolean createSpeaker(String speaker, String organization) {
 
-        if(readUser(email) != null){
-            throw new AlreadyExistsException("The email \"" + email + "\" already exists");
-        }
-
-        String SQL = "INSERT INTO [User] VALUES ('" + email + "', '" + name + "', '" + dateOfBirth + "', '" + gender + "', '" + address + "', '" + residence + "', '" + country + "')";
+        String SQL = "INSERT INTO [Speaker] VALUES ('" + speaker + "', '" + organization + "')";
 
         Connection con = getDbConnection();
 
@@ -81,13 +74,9 @@ public class DatabaseUser extends Database{
 
     }
 
-    public static boolean updateUser(String email, String newEmail, String newName, LocalDate newDateOfBirth, Gender newGender, String newAddress, String newResidence, String newCountry) throws AlreadyExistsException {
+    public static boolean updateSpeaker(int id, String speaker, String organization) {
 
-        if(readUser(newEmail) != null){
-            throw new AlreadyExistsException("The email \"" + email + "\" already exists");
-        }
-
-        String SQL = "UPDATE [User] SET email = '" + newEmail + "', name = '" + newName + "', dateOfBirth = '" + newDateOfBirth + "', gender = '" + newGender + "', address = '" + newAddress + "', residence = '" + newResidence + "', country = '" + newCountry + "' WHERE email = '" + email + "'";
+        String SQL = "UPDATE [Speaker] SET email = '" + speaker + "', name = '" + organization + "' WHERE id = " + id;
 
         Connection con = getDbConnection();
 
@@ -110,9 +99,9 @@ public class DatabaseUser extends Database{
 
     }
 
-    public static boolean deleteUser(String email) {
+    public static boolean deleteSpeaker(int id) {
         
-        String SQL = "DELETE FROM [User] WHERE email = '" + email + "'";
+        String SQL = "DELETE FROM [Speaker] WHERE id = " + id;
 
         Connection con = getDbConnection();
 
@@ -135,16 +124,16 @@ public class DatabaseUser extends Database{
 
     }
 
-    public static final ObservableList<User> getUserListSearch(String nameSearch) {
+    public static ArrayList<Speaker> getSpeakerList() {
 
-        String SQL = "SELECT * FROM [User] WHERE name LIKE '%" + nameSearch + "%'";
+        String SQL = "SELECT * FROM [Speaker]";
 
         Connection con = getDbConnection();
 
         Statement stmt = null;
         ResultSet rs = null;
 
-        final ObservableList<User> data = FXCollections.observableArrayList();
+        ArrayList<Speaker> data = new ArrayList<Speaker>();
 
         try{
 
@@ -152,15 +141,11 @@ public class DatabaseUser extends Database{
             rs = stmt.executeQuery(SQL);
 
             while (rs.next()) {
-                String emailDB = rs.getString("email");
-                String nameDB = rs.getString("name");
-                LocalDate dateOfBirthDB = rs.getDate("dateOfBirth").toLocalDate();
-                Gender genderDB = Gender.valueOf(rs.getString("gender"));
-                String addressDB = rs.getString("address");
-                String residenceDB = rs.getString("residence");
-                String countryDB = rs.getString("country");
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String organization = rs.getString("organization");
 
-                data.add(new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, residenceDB, countryDB));
+                data.add(new Speaker(id, name, organization));
             }
 
             return data;

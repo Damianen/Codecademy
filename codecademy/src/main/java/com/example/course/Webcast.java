@@ -1,16 +1,35 @@
 package com.example.course;
 
-public class Webcast {
-    private String title;
-    private String url;
-    private String speaker;
-    private String orginization;
+import com.example.database.DatabaseSpeaker;
 
-    public void setTitle(String title) {
-        this.title = title;
+import java.time.LocalDate;
+
+public class Webcast extends ContentItem{
+    private int id;
+    private String url;
+    private Speaker speaker;
+
+    public Webcast(int contentItemID, String title, LocalDate publicationDate, Status status, String description, int id, String url, int speakerID){
+        super(contentItemID, title, publicationDate, status, description);
+        this.id = id;
+        this.url = url;
+        this.speaker = DatabaseSpeaker.readSpeaker(speakerID);
     }
-    public String getTitle() {
-        return title;
+
+    public int getContentItemId() {
+        return super.id;
+    }
+    
+    public void setContentItemId(int id) {
+        super.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setUrl(String url) {
@@ -20,24 +39,11 @@ public class Webcast {
         return url;
     }
 
-    public void setSpeaker(String speaker) {
+    public void setSpeaker(Speaker speaker) {
         this.speaker = speaker;
     }
-    public String getSpeaker() {
+    public Speaker getSpeaker() {
         return speaker;
     }
 
-    public void setOrginization(String orginization) {
-        this.orginization = orginization;
-    }
-    public String getOrginization() {
-        return orginization;
-    }
-
-
-
-
-    public void Webcast(){
-        
-    }
 }

@@ -1,32 +1,28 @@
 package com.example.database;
 
-import com.example.user.Enrollment;
-import com.example.exeptions.AlreadyExistsException;
 import com.example.user.Certificate;
+import com.example.user.Enrollment;
 import com.example.user.User;
 import com.example.user.User.Gender;
+import com.example.exeptions.AlreadyExistsException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
-
 import java.time.LocalDate;
 
-import java.util.ArrayList;
+public class DatabaseCertificate extends Database{
 
+    public static Certificate readCertificate(int id) {
 
-public class DatabaseEnrollment extends Database{
-
-    public static Enrollment readEnrollment(int id) {
-
-        String SQL = "SELECT * FROM [Enrollment] WHERE ID = '" + id + "'";
+        String SQL = "SELECT * FROM [Certificate] WHERE ID = '" + id + "'";
 
         Connection con = getDbConnection();
 
         Statement stmt = null;
         ResultSet rs = null;
-        Enrollment data = null;
+        Certificate data = null;
 
         try {
 
@@ -34,11 +30,11 @@ public class DatabaseEnrollment extends Database{
             rs = stmt.executeQuery(SQL);
 
             while (rs.next()) {
-                int idDB = rs.getInt("ID");
-                LocalDate enrollmentDate = rs.getDate("enrollmentDate").toLocalDate();
-                String courseTitle = rs.getString("courseTitle");
 
-                data = new Enrollment(idDB, enrollmentDate, courseTitle);
+                int ratingDB = rs.getInt("rating");
+                String employeeName = rs.getString("employeeName");
+
+                data = new Certificate(id, ratingDB, employeeName);
             }
             
             return data;
@@ -53,15 +49,21 @@ public class DatabaseEnrollment extends Database{
         }
     }
     
-    public static boolean createEnrollment(String userEmail, String courseTitle) throws AlreadyExistsException {
+    public static boolean createCertificate(Enrollment enrollment) throws AlreadyExistsException {
 
-        if(checkIfExists(userEmail, courseTitle) == true){
-            throw new AlreadyExistsException("The user \"" + userEmail + "\" has already enrolled in the course \"" + courseTitle + "\"");
+        if(enrollment.getCertificate() != null){
+            throw new AlreadyExistsException("This enrollment already has a certificate");
         }
 
-        LocalDate enrollmentDate = LocalDate.now();
-        
-        String SQL = "INSERT INTO [Enrollment] (enrollmentDate, userEmail, courseTitle, certificateID) VALUES ('" + enrollmentDate + "', '" + userEmail + "', '" + courseTitle + "', " + null + ")";
+        String[] randomName = {"Alice", "Bob", "Charlie", "David"};
+            
+        int rangeEmployee = 3 - 0 + 1;
+        int rangeRating = 10 - 1 + 1;
+
+        int randEmployee = (int) (Math.random() * rangeEmployee) + 0;
+        int randRating = (int) (Math.random() * rangeRating) + 1;
+            
+        String SQL = "INSERT INTO [Certificate] VALUES ('" + randRating + "', '" + randomName[randEmployee] + "', '" + enrollment.getId() + "')";
 
         Connection con = getDbConnection();
 
@@ -84,9 +86,9 @@ public class DatabaseEnrollment extends Database{
 
     }
 
-    public static boolean deleteEnrollment(int id) {
+    public static boolean deleteCertificate(int id) {
         
-        String SQL = "DELETE FROM [Enrollment] WHERE ID = '" + id + "'";
+        String SQL = "DELETE FROM [Certificate] WHERE ID = '" + id + "'";
 
         Connection con = getDbConnection();
 
@@ -109,16 +111,16 @@ public class DatabaseEnrollment extends Database{
 
     }
 
-    public static ArrayList<Enrollment> getUserEnrollments(String userEmail) {
+    public static final ObservableList<User> getUserCertificates(String userEmail) {
 
-        String SQL = "SELECT * FROM [Enrollment] WHERE userEmail = '"+ userEmail + "'";
+        String SQL = "SELECT * FROM [Certificate] WHERE name LIKE '%" + userEmail + "%'";
 
         Connection con = getDbConnection();
 
         Statement stmt = null;
         ResultSet rs = null;
 
-        ArrayList<Enrollment> data = new ArrayList<Enrollment>();
+        final ObservableList<User> data = FXCollections.observableArrayList();
 
         try{
 
@@ -126,11 +128,15 @@ public class DatabaseEnrollment extends Database{
             rs = stmt.executeQuery(SQL);
 
             while (rs.next()) {
-                int idDB = rs.getInt("ID");
-                LocalDate enrollmentDate = rs.getDate("enrollmentDate").toLocalDate();
-                String courseTitle = rs.getString("courseTitle");
+                String emailDB = rs.getString("email");
+                String nameDB = rs.getString("name");
+                LocalDate dateOfBirthDB = rs.getDate("dateOfBirth").toLocalDate();
+                Gender genderDB = Gender.valueOf(rs.getString("gender"));
+                String addressDB = rs.getString("address");
+                String residenceDB = rs.getString("residence");
+                String countryDB = rs.getString("country");
 
-                data.add(new Enrollment(idDB, enrollmentDate, courseTitle));
+                data.add(new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, residenceDB, countryDB));
             }
 
             return data;
@@ -145,29 +151,35 @@ public class DatabaseEnrollment extends Database{
         }
     }
 
-    public static boolean checkIfExists(String userEmail, String courseTitle) {
+    public static Certificate getEnrollmentCertificate(int enrollmentID) {
 
-        String SQL = "SELECT * FROM [Enrollment] WHERE userEmail = '" + userEmail + "' AND courseTitle = '" + courseTitle + "'";
+        String SQL = "SELECT * FROM [Certificate] WHERE enrollmentID = '" + enrollmentID + "'";
 
         Connection con = getDbConnection();
 
         Statement stmt = null;
         ResultSet rs = null;
+        Certificate data = null;
 
         try {
 
             stmt = con.createStatement();
             rs = stmt.executeQuery(SQL);
-            
-            if(rs == null){
-                return false;
-            }else{
-                return true;
+
+            while (rs.next()) {
+
+                int idDB = rs.getInt("id");
+                int ratingDB = rs.getInt("rating");
+                String employeeName = rs.getString("employeeName");
+
+                data = new Certificate(idDB, ratingDB, employeeName);
             }
+            
+            return data;
 
         } catch (Exception e) {
             e.printStackTrace();
-            return true;
+            return data;
         }finally {
             if (rs != null) try { rs.close(); } catch(Exception e) {}
             if (stmt != null) try { stmt.close(); } catch(Exception e) {}
