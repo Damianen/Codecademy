@@ -3,6 +3,7 @@ package com.example.database;
 import com.example.course.Course;
 import com.example.course.Course.DifficultyLevel;
 import com.example.exeptions.AlreadyExistsException;
+import static com.example.course.Course.DifficultyLevel.*;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

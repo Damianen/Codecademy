@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="coursePopup" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ToolBar fx:id="toolBar" prefHeight="40.0" prefWidth="600.0">
         <items>
@@ -36,22 +36,25 @@
           <MenuItem mnemonicParsing="false" text="Expert" />
         </items>
       </MenuButton>
-      <TabPane layoutX="174.0" layoutY="47.0" prefHeight="348.0" prefWidth="419.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tables" layoutX="174.0" layoutY="47.0" prefHeight="348.0" prefWidth="419.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Enroments">
+          <Tab fx:id="enrolment" text="Enrolments">
             <content>
               <AnchorPane fx:id="enrolments" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView prefHeight="323.0" prefWidth="419.0" />
+                        <TableView fx:id="table" prefHeight="322.0" prefWidth="419.0" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Modules">
+          <Tab fx:id="module" text="Modules">
             <content>
               <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView prefHeight="323.0" prefWidth="419.0" />
+                        <Button fx:id="updateButton1" layoutX="7.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Add Modules" />
+                        <Button fx:id="updateButton11" layoutX="262.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Remove modules" />
+                        <Label fx:id="promptText" layoutX="75.0" layoutY="266.0" prefHeight="17.0" prefWidth="264.0" textAlignment="CENTER" />
+                        <TableView fx:id="table" prefHeight="261.0" prefWidth="419.0" />
                      </children>
                   </AnchorPane>
             </content>

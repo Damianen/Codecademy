@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ToolBar fx:id="toolBar" prefHeight="40.0" prefWidth="600.0">
+         <items>
+            <Button fx:id="closeButton" mnemonicParsing="false" text="Close" />
+         </items>
+      </ToolBar>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="330.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" width="600.0" />
+      <Label layoutX="14.0" layoutY="60.0" text="Enrolldate" />
+      <TabPane fx:id="tabPane" layoutX="174.0" layoutY="47.0" prefHeight="348.0" prefWidth="419.0" tabClosingPolicy="UNAVAILABLE">
+         <tabs>
+            <Tab fx:id="certificate" text="Certificate">
+               <content>
+                  <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="313.0" prefWidth="419.0">
+                     <children>
+                        <Button layoutX="157.0" layoutY="258.0" mnemonicParsing="false" text="Create certificate" />
+                        <TableView fx:id="table" layoutX="1.0" prefHeight="250.0" prefWidth="419.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="course" text="Course">
+               <content>
+                  <AnchorPane fx:id="enrolments1" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="table" prefHeight="286.0" prefWidth="419.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="user" text="User">
+               <content>
+                  <AnchorPane fx:id="enrolments11" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="table" prefHeight="286.0" prefWidth="419.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+      <Text layoutX="265.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enrollments">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Text>
+      <Button fx:id="updateButton" layoutX="11.0" layoutY="133.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Update" />
+      <DatePicker fx:id="enrollDate" layoutX="11.0" layoutY="85.0" prefHeight="26.0" prefWidth="150.0" />
+   </children>
+</AnchorPane>
