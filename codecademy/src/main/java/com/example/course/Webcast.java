@@ -38,18 +38,21 @@ public class Webcast extends ContentItem {
         this.speaker = DatabaseSpeaker.readSpeaker(speakerID);
     }
 
-    public Speaker getSpeaker() {
-        return speaker;
+    public int getId() {
+        return id;
     }
 
     public int getContentItemId() {
         return super.id;
     }
-
-    public int getId() {
-        return id;
-    }
     
+    public Speaker getSpeaker() {
+        return speaker;
+    }
+
+    public void setSpeaker(Speaker speaker) {
+        this.speaker = speaker;
+    }
 
     public void setUrl(String url) {
         this.url = url;

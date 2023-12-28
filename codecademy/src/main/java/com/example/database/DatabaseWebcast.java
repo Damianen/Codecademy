@@ -56,6 +56,48 @@ public class DatabaseWebcast extends Database{
             if (con != null) try { con.close(); } catch(Exception e) {}
         }
     }
+
+    public static Webcast readWebcastWithContentItemID(int id) {
+
+        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Webcast.ID AS WebcastID, Webcast.URL, Webcast.speakerID FROM ContentItem INNER JOIN Webcast ON ContentItem.ID = Webcast.contentItemID WHERE Webcast.contentItemID = " + id;
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        Webcast data = null;
+
+        try {
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                
+                int contentItemID = rs.getInt("ContentItemID");
+                String title = rs.getString("title");
+                LocalDate publicationDate = rs.getDate("publicationDate").toLocalDate();
+                Status status = Status.valueOf(rs.getString("status"));
+                String description = rs.getString("description");
+                
+                String url = rs.getString("URL");
+                int speakerID = rs.getInt("speakerID");
+
+                data = new Webcast(contentItemID, title, publicationDate, status, description, id, url, speakerID);
+
+            }
+            
+            return data;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+    }
     
     public static boolean createWebcast(String title, LocalDate publicationDate, Status status, String description, String url, int speakerID) {
 

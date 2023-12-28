@@ -32,7 +32,7 @@ public abstract class ContentItem {
         this.description = description;
     }
 
-    public int getContentItemId() {
+    public int getId() {
         return id;
     }
 

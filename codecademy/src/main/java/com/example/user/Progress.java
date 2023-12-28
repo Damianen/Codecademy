@@ -8,6 +8,7 @@ import com.example.course.Module;
 import com.example.course.Webcast;
 import com.example.course.ContentItem.Status;
 import com.example.database.DatabaseContentItem;
+import com.example.database.DatabaseWebcast;
 import com.example.javafx.GUIController;
 
 import com.example.course.ContentItem;
@@ -35,11 +36,25 @@ public class Progress {
     private int id;
     private int progressPercentage;
     private ContentItem contentItem;
-    private String userEmail;
 
-    public Progress(int id, int progressPercentage, int contentItemID, String userEmail){
+    public Progress(int id, int progressPercentage, int contentItemID){
+
+        this.id = id;
         this.progressPercentage = progressPercentage;
-        //this.contentItem = DatabaseContentItem.;
+
+        switch (DatabaseContentItem.getContentItemType()) {
+            case "Webcast":
+                this.contentItem = DatabaseWebcast.readWebcastWithContentItemID(contentItemID);
+                break;
+
+            case "Module":
+                //this.contentItem = DatabaseModule.readModuleWithContentItemID(contentItemID);
+                break;
+
+            default:
+                this.contentItem = null;
+                break;
+        }
     }
 
     public int getId() {
@@ -64,14 +79,6 @@ public class Progress {
 
     public int getProgressPercentage() {
         return progressPercentage;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-    
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
     }
 
     static public void generateTable(TableView<Progress> table, boolean editable) {
@@ -106,7 +113,7 @@ public class Progress {
         });
 
         final ObservableList<Progress> data = FXCollections.observableArrayList(
-            new Progress(0, 0, new Webcast(0, "test", LocalDate.now(), Status.ACTIVE, "test", 0, "test", 0), null)
+            new Progress(0, 0, 0)
         );
 
         table.setItems(data);
