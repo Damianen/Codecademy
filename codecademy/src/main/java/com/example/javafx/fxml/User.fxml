@@ -30,19 +30,28 @@
       <Label layoutX="16.0" layoutY="165.0" text="Date of Brirth" />
       <MenuButton fx:id="gender" layoutX="14.0" layoutY="382.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Gender">
          <items>
-            <MenuItem mnemonicParsing="false" text="Beginner" />
-            <MenuItem mnemonicParsing="false" text="Advanced" />
-            <MenuItem mnemonicParsing="false" text="Expert" />
+            <MenuItem mnemonicParsing="false" text="M" />
+            <MenuItem mnemonicParsing="false" text="F" />
          </items>
       </MenuButton>
       <TabPane fx:id="tables" layoutX="174.0" layoutY="47.0" prefHeight="417.0" prefWidth="419.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
-            <Tab text="Enroments">
+            <Tab fx:id="enrolment" text="Enrolments">
                <content>
                   <AnchorPane fx:id="enrolments" minHeight="0.0" minWidth="0.0" prefHeight="389.0" prefWidth="419.0">
                      <children>
-                        <TableView prefHeight="354.0" prefWidth="419.0" />
+                        <TableView fx:id="table" prefHeight="354.0" prefWidth="419.0" />
                         <Button layoutY="362.0" mnemonicParsing="false" text="Enrol in course" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="progress" text="progress">
+               <content>
+                  <AnchorPane fx:id="enrolments1" minHeight="0.0" minWidth="0.0" prefHeight="389.0" prefWidth="419.0">
+                     <children>
+                        <TableView fx:id="table" prefHeight="354.0" prefWidth="419.0" />
+                        <Button layoutY="362.0" mnemonicParsing="false" text="Add webcast" />
                      </children>
                   </AnchorPane>
                </content>
@@ -55,13 +64,12 @@
          </font>
       </Text>
       <Button fx:id="updateButton" layoutX="13.0" layoutY="419.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Update" />
-      <TextField fx:id="dateOfBirth" layoutX="13.0" layoutY="187.0" />
       <Label layoutX="16.0" layoutY="221.0" text="Address" />
       <TextField fx:id="address" layoutX="13.0" layoutY="239.0" />
       <Label layoutX="16.0" layoutY="273.0" text="Residence" />
       <TextField fx:id="residence" layoutX="13.0" layoutY="291.0" />
       <Label layoutX="16.0" layoutY="327.0" text="Country" />
       <TextField fx:id="country" layoutX="14.0" layoutY="345.0" />
-      <DatePicker fx:id="dateOfbirth" layoutX="14.0" layoutY="187.0" prefHeight="26.0" prefWidth="150.0" />
+      <DatePicker fx:id="dateOfBirth" layoutX="14.0" layoutY="182.0" prefHeight="25.0" prefWidth="149.0" />
    </children>
 </AnchorPane>

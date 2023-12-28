@@ -4,6 +4,7 @@ import static com.example.course.Course.DifficultyLevel.valueOf;
 
 import java.io.IOException;
 
+import com.example.course.ContentItem;
 import com.example.course.Course;
 import com.example.course.Course.DifficultyLevel;
 import com.example.database.DatabaseCourse;
@@ -88,13 +89,13 @@ public class GUIController {
 
         switch (tabRootNode.getId()) {
             case "course":
-                Course.generateTable(table, editable, tabRootNode);
+                Course.generateTable(table, editable);
                 break;
             case "contentItem":
-                
+                ContentItem.generateContentItemTable(table, editable);
                 break;
             case "user":
-                User.generateTable(table, editable, tabRootNode);
+                User.generateTable(table, editable);
                 break;
         }
     }
@@ -142,10 +143,7 @@ public class GUIController {
 
         switch (tabRoot.getId()) {
             case "coursePane":
-                DatabaseCourse.createCourse(((TextField)tabRoot.lookup("#name")).getText(),
-                ((TextField)tabRoot.lookup("#subject")).getText(), 
-                ((TextArea)tabRoot.lookup("#introText")).getText(), 
-                DifficultyLevel.valueOf(((MenuButton)tabRoot.lookup("#difficultyLevel")).getText()));
+                
                 break;
             case "userPane":
                 break;
@@ -164,7 +162,7 @@ public class GUIController {
 
         switch (tabRoot.getId()) {
             case "coursePane":
-                DatabaseCourse.deleteCourse(((Course)table.getSelectionModel().getSelectedCells()).getName());
+                //DatabaseCourse.deleteCourse(((Course)table.getSelectionModel().getSelectedCells()).getTitle());
                 break;
             case "userPane":
                 break;
@@ -179,11 +177,11 @@ public class GUIController {
 
         switch (tabRoot.getId()) {
             case "coursePane":
-                DatabaseCourse.updateCourse(((Course)table.getSelectionModel().getSelectedCells()).getName(),
-                ((TextField)tabRoot.lookup("#name")).getText(),
-                ((TextField)tabRoot.lookup("#subject")).getText(), 
-                ((TextArea)tabRoot.lookup("#introText")).getText(), 
-                DifficultyLevel.valueOf(((MenuButton)tabRoot.lookup("#difficultyLevel")).getText()));
+                //DatabaseCourse.updateCourse(((Course)table.getSelectionModel().getSelectedCells()).getTitle(),
+                //((TextField)tabRoot.lookup("#name")).getText(),
+                //((TextField)tabRoot.lookup("#subject")).getText(), 
+                //((TextArea)tabRoot.lookup("#introText")).getText(), 
+                //DifficultyLevel.valueOf(((MenuButton)tabRoot.lookup("#difficultyLevel")).getText()));
                 break;
             case "userPane":
                 break;

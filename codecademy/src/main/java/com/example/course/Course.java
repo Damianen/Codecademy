@@ -1,6 +1,7 @@
 package com.example.course;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import com.example.database.DatabaseCourse;
@@ -72,7 +73,7 @@ public class Course {
         return null;
     }
 
-    static public void generateTable(TableView<Course> table, boolean editable, AnchorPane rootPane) {
+    static public void generateTable(TableView<Course> table, boolean editable) {
         
         TableColumn<Course, String> title = new TableColumn<Course, String>("title");
         TableColumn<Course, String> subject = new TableColumn<Course, String>("Subject");
@@ -91,19 +92,19 @@ public class Course {
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                generatePopupWindow(event, editable, (Course)table.getSelectionModel().getSelectedItem());
+                Course course = (Course)table.getSelectionModel().getSelectedItem();
+                course.generatePopupWindow(event, editable);
             }
         });
 
-        String nameString = ((TextField)rootPane.lookup("#name")).getText();
-        String subjectString = ((TextField)rootPane.lookup("#subject")).getText();
-        String introTextString = ((TextArea)rootPane.lookup("#introText")).getText();
-        String difficultyLevelString = ((MenuButton)rootPane.lookup("#difficultyLevel")).getText();
+        final ObservableList<Course> data = FXCollections.observableArrayList(
+            new Course("test", "test", "test", DifficultyLevel.BEGINNER)
+        );
 
-        table.setItems(DatabaseCourse.getCourseListSearch(nameString));
+        table.setItems(data);
     }
 
-    static private void generatePopupWindow(MouseEvent event, boolean editable, Course course) {
+    private void generatePopupWindow(MouseEvent event, boolean editable) {
         if (event.getClickCount()>1) {
             AnchorPane pane;
             
@@ -137,13 +138,13 @@ public class Course {
             for (Tab tab : tabs) {
                 AnchorPane rootTabPane = (AnchorPane)tab.getContent();
                 TableView table = (TableView)rootTabPane.lookup("#table");
-                if (!editable) {
-                    table.setPrefHeight(320);
-                }
                 if (tab.getId().equals("module")) {
-                    Module.generateTable(table, editable, pane);
+                    if (!editable) {
+                        table.setPrefHeight(320);
+                    }
+                    Module.generateTable(table, editable);
                 } else {
-                    Enrollment.generateTable(table, editable, pane);
+                    Enrollment.generateTable(table, editable);
                 }
             }
         }

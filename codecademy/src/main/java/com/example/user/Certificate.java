@@ -38,7 +38,7 @@ public class Certificate {
         return employeeName;
     }
 
-    static public void generateTable(TableView<Certificate> table, boolean editable, AnchorPane rootPane) {
+    static public void generateTable(TableView<Certificate> table, boolean editable) {
         TableColumn<Certificate, Float> employeeName = new TableColumn<Certificate, Float>("employee Name");
         TableColumn<Certificate, String> rating = new TableColumn<Certificate, String>("Rating");     
 

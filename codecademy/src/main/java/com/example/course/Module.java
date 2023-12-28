@@ -10,14 +10,17 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -25,7 +28,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
 public class Module extends ContentItem{
-    protected static Object table;
     private String version;
     private String contactPersonName;
     private String contactPersonEmail;
@@ -58,7 +60,7 @@ public class Module extends ContentItem{
         this.contactPersonName = contactPersonEmail;
     }
 
-    static public void generateTable(TableView<ContentItem> table, boolean editable, AnchorPane rootPane) {
+    static public void generateTable(TableView<ContentItem> table, boolean editable) {
         generateContentTable(table);
         
         TableColumn<ContentItem, String> version = new TableColumn<ContentItem, String>("Version");
@@ -123,12 +125,28 @@ public class Module extends ContentItem{
             contactPersonEmail.setEditable(editable);
             contactPersonEmail.setText(this.contactPersonEmail);
 
+            DatePicker pubDate = (DatePicker)pane.lookup("#publicationDate");
+            pubDate.setEditable(editable);
+            if (!editable) {
+                pubDate.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        pubDate.setValue(publicationDate);
+                    }
+                });
+            }
+            pubDate.setValue(publicationDate);
+
+            TextArea description = (TextArea)pane.lookup("#description");
+            description.setEditable(editable);
+            description.setText(this.description);
+
             ObservableList<Tab> tabs = ((TabPane)pane.lookup("#tables")).getTabs();
             for (Tab tab : tabs) {
                 AnchorPane rootTabPane = (AnchorPane)tab.getContent();
                 TableView table = (TableView)rootTabPane.lookup("#table");
                 if (tab.getId().equals("course")) {
-                    Course.generateTable(table, editable, pane);
+                    Course.generateTable(table, editable);
                 }
             }
         }

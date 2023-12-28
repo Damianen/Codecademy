@@ -79,8 +79,6 @@ public abstract class ContentItem {
         title.setCellValueFactory(new PropertyValueFactory<ContentItem, String>("title"));
         status.setCellValueFactory(new PropertyValueFactory<ContentItem, String>("status"));
         description.setCellValueFactory(new PropertyValueFactory<ContentItem, String>("description"));
-
-        
     }
 
     static public void generateContentItemTable(TableView<ContentItem> table, boolean editable) {
@@ -95,7 +93,7 @@ public abstract class ContentItem {
         });
 
         final ObservableList<ContentItem> data = FXCollections.observableArrayList(
-            new Module("test", 0, LocalDate.now(), "test", "test", 0, "test", "test", "test")
+            new Module("test", 0, LocalDate.now(), Status.ACTIVE, "test", "test", "test", "test")
         );
 
         table.setItems(data);

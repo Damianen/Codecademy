@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.util.HashMap;
 
 import com.example.course.Module;
+import com.example.course.Webcast;
+import com.example.course.ContentItem.Status;
+import com.example.database.DatabaseContentItem;
 import com.example.javafx.GUIController;
 
 import com.example.course.ContentItem;
@@ -31,12 +34,12 @@ import javafx.util.Callback;
 public class Progress {
     private int id;
     private int progressPercentage;
-    private int contentItemID;
+    private ContentItem contentItem;
     private String userEmail;
 
     public Progress(int id, int progressPercentage, int contentItemID, String userEmail){
         this.progressPercentage = progressPercentage;
-        this.contentItemID = contentItemID;
+        //this.contentItem = DatabaseContentItem.;
     }
 
     public int getId() {
@@ -47,12 +50,12 @@ public class Progress {
         this.id = id;
     }
 
-    public void setContentItemID(int contentItemID) {
-        this.contentItemID = contentItemID;
+    public void setContentItemID(ContentItem contentItem) {
+        this.contentItem = contentItem;
     }
 
-    public int getContentItemID() {
-        return contentItemID;
+    public ContentItem getContentItemID() {
+        return contentItem;
     }
 
     public void setProgressPercentage(int progressPercentage) {
@@ -71,7 +74,7 @@ public class Progress {
         this.userEmail = userEmail;
     }
 
-    static public void generateTable(TableView<Progress> table, boolean editable, AnchorPane rootPane) {
+    static public void generateTable(TableView<Progress> table, boolean editable) {
         
         TableColumn<Progress, String> contentItemName = new TableColumn<Progress, String>("Content item name");
         TableColumn<Progress, Integer> progressPercentage = new TableColumn<Progress ,Integer>("Progress percentage");
@@ -79,7 +82,7 @@ public class Progress {
         Callback<TableColumn.CellDataFeatures<Progress, String>, ObservableValue<String>> contentItemCallback;
         contentItemCallback = cellDataFeatures -> {
             Progress p = cellDataFeatures.getValue();
-            //String ciName = p.contentItem.getTitle();
+            String ciName = p.contentItem.getTitle();
             ObservableValue<String> titleObservableValue = new SimpleStringProperty(ciName);
             return titleObservableValue;
         };
@@ -98,12 +101,12 @@ public class Progress {
             @Override
             public void handle(MouseEvent event) {
                 Progress progress = (Progress)table.getSelectionModel().getSelectedItem();
-                //progress.contentItem.generatePopupWindow(event, editable);
+                progress.contentItem.generatePopupWindow(event, editable);
             }
         });
 
         final ObservableList<Progress> data = FXCollections.observableArrayList(
-            
+            new Progress(0, 0, new Webcast(0, "test", LocalDate.now(), Status.ACTIVE, "test", 0, "test", 0), null)
         );
 
         table.setItems(data);

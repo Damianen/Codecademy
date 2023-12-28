@@ -4,15 +4,18 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import com.example.course.Course;
 import com.example.database.DatabaseEnrollment;
 import com.example.javafx.GUIController;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -50,6 +53,10 @@ public class User {
         this.country = country;
 
         this.enrollments = DatabaseEnrollment.getUserEnrollments(email);
+    }
+
+    public String getGenderString() {
+        return gender.toString();
     }
 
     public void setEmail(String email) {
@@ -124,7 +131,7 @@ public class User {
        
     }
 
-    static public void generateTable(TableView<User> table, boolean editable, AnchorPane rootPane) {
+    static public void generateTable(TableView<User> table, boolean editable) {
         
         TableColumn<User, String> name = new TableColumn<User, String>("Name");
         TableColumn<User, String> email = new TableColumn<User, String>("E-mail");
@@ -146,24 +153,25 @@ public class User {
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                generatePopupWindow(event, editable, (User)table.getSelectionModel().getSelectedItem());
+                User user = (User)table.getSelectionModel().getSelectedItem();
+                user.generatePopupWindow(event, editable);
             }
         });
 
         final ObservableList<User> data = FXCollections.observableArrayList(
-            
+            new User("test", "test", LocalDate.now(), Gender.M, "test", "test", "test")
         );
 
         table.setItems(data);
         
     }
 
-    static private void generatePopupWindow(MouseEvent event, boolean editable, User User) {
+    private void generatePopupWindow(MouseEvent event, boolean editable) {
         if (event.getClickCount()>1) {
             AnchorPane pane;
             
             try {
-                pane = FXMLLoader.load(User.getClass().getResource("/com/example/javafx/fxml/User.fxml"));
+                pane = FXMLLoader.load(getClass().getResource("/com/example/javafx/fxml/User.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -174,24 +182,49 @@ public class User {
             
             TextField textField = (TextField)pane.lookup("#name");
             textField.setEditable(editable);
-            textField.setText(User.name);
+            textField.setText(name);
 
             TextField textField2 = (TextField)pane.lookup("#email");
             textField2.setEditable(editable);
-            textField2.setText(User.email);
+            textField2.setText(email);
 
-            TextField textArea = (TextField)pane.lookup("#dateOfBirth");
-            textArea.setEditable(editable);
-            textArea.setText(User.dateOfBirth.toString());
+            TextField address = (TextField)pane.lookup("#address");
+            address.setEditable(editable);
+            address.setText(this.address);
+
+            TextField residence = (TextField)pane.lookup("#residence");
+            residence.setEditable(editable);
+            residence.setText(this.residence);
+
+            TextField country = (TextField)pane.lookup("#country");
+            country.setEditable(editable);
+            country.setText(this.country);
 
             MenuButton menuButton = (MenuButton)pane.lookup("#gender");
             GUIController.setMenuButtonActions(menuButton, editable);
-            menuButton.setText(User.gender.toString().toLowerCase());
+            menuButton.setText(gender.toString().toLowerCase());
+
+            DatePicker birthDate = (DatePicker)pane.lookup("#dateOfBirth");
+            birthDate.setEditable(editable);
+            if (!editable) {
+                birthDate.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        birthDate.setValue(dateOfBirth);
+                    }
+                });
+            }
+            birthDate.setValue(dateOfBirth);
 
             ObservableList<Tab> tabs = ((TabPane)pane.lookup("#tables")).getTabs();
             for (Tab tab : tabs) {
                 AnchorPane rootTabPane = (AnchorPane)tab.getContent();
                 TableView table = (TableView)rootTabPane.lookup("#table");
+                if (tab.getId().equals("enrolment")) {
+                    Enrollment.generateTable(table, editable);
+                } else {
+                    Progress.generateTable(table, editable);
+                }
             }
         }
     }

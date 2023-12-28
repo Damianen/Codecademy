@@ -11,6 +11,7 @@ import com.example.database.DatabaseCertificate;
 import com.example.database.DatabaseCourse;
 import com.example.course.*;
 import com.example.javafx.GUIController;
+import com.example.user.User.Gender;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,7 +45,7 @@ public class Enrollment {
         
         this.course = DatabaseCourse.readCourse(courseTitle);
         //this.progresses = DatabaseProgress.getEnrollmentProgresses();
-
+        this.user = new User(courseTitle, courseTitle, enrollmentDate, Gender.M, courseTitle, courseTitle, courseTitle);
         this.certificate = DatabaseCertificate.getEnrollmentCertificate(this.id);
     }
 
@@ -98,41 +99,42 @@ public class Enrollment {
 
     }
 
-    static public void generateTable(TableView<Enrollment> table, boolean editable, AnchorPane rootPane) {
+    static public void generateTable(TableView<Enrollment> table, boolean editable) {
         TableColumn<Enrollment, String> userName = new TableColumn<Enrollment, String>("User Name");
-        TableColumn<Enrollment, String> courseName = new TableColumn<Enrollment, String>("Course Name");
+        TableColumn<Enrollment, String> courseTitle = new TableColumn<Enrollment, String>("Course Title");
         TableColumn<Enrollment, String> EnrolmentDate = new TableColumn<Enrollment, String>("Enrolment Date");     
 
         final ObservableList<TableColumn<Enrollment, ?>> columns = FXCollections.observableArrayList();
         columns.add(userName);
         columns.add(EnrolmentDate);
-        columns.add(courseName);
+        columns.add(courseTitle);
         table.getColumns().addAll(columns);
 
         userName.setCellValueFactory(new PropertyValueFactory<Enrollment, String>("userName"));
-        courseName.setCellValueFactory(new PropertyValueFactory<Enrollment, String>("courseName"));
+        courseTitle.setCellValueFactory(new PropertyValueFactory<Enrollment, String>("courseTitle"));
         EnrolmentDate.setCellValueFactory(new PropertyValueFactory<Enrollment, String>("enrolmentDateString"));
 
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                generatePopupWindow(event, editable, (Enrollment)table.getSelectionModel().getSelectedItem());
+                Enrollment enrollment = (Enrollment)table.getSelectionModel().getSelectedItem();
+                enrollment.generatePopupWindow(event, editable);
             }
         });
 
         final ObservableList<Enrollment> data = FXCollections.observableArrayList(
-            
+            new Enrollment(0, LocalDate.now(), "test")
         );
 
         table.setItems(data);
     }
 
-    static public void generatePopupWindow(MouseEvent event, boolean editable, Enrollment enrollment) {
+    public void generatePopupWindow(MouseEvent event, boolean editable) {
         if (event.getClickCount()>1) {
             AnchorPane pane;
             
             try {
-                pane = FXMLLoader.load(enrollment.getClass().getResource("/com/example/javafx/fxml/enrollments.fxml"));
+                pane = FXMLLoader.load(getClass().getResource("/com/example/javafx/fxml/enrollments.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -147,18 +149,22 @@ public class Enrollment {
                 EnrolmentDate.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        EnrolmentDate.setValue(enrollment.enrollmentDate);
+                        EnrolmentDate.setValue(enrollmentDate);
                     }
                 });
             }
-            EnrolmentDate.setValue(enrollment.enrollmentDate);
+            EnrolmentDate.setValue(enrollmentDate);
 
             ObservableList<Tab> tabs = ((TabPane)pane.lookup("#tabPane")).getTabs();
             for (Tab tab : tabs) {
                 AnchorPane rootTabPane = (AnchorPane)tab.getContent();
                 TableView table = (TableView)rootTabPane.lookup("#table");
                 if (tab.getId().equals("course")) {
-                    Course.generateTable(table, editable, pane);
+                    Course.generateTable(table, editable);
+                } else if (tab.getId().equals("user")) {
+                    User.generateTable(table, editable);
+                } else {
+                    Certificate.generateTable(table, editable);
                 }
             }
         }
