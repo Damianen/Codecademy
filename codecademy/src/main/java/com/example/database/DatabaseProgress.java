@@ -16,7 +16,7 @@ public class DatabaseProgress extends Database{
 
     public static Progress readProgress(int id) {
 
-        String SQL = "SELECT * FROM [Progress] WHERE email = " + id;
+        String SQL = "SELECT * FROM [Progress] WHERE id = " + id;
 
         Connection con = getDbConnection();
 
@@ -34,8 +34,6 @@ public class DatabaseProgress extends Database{
                 int progressPercentage = rs.getInt("progressPercentage");
                 int contentItemID = rs.getInt("contentItemID");
                 
-                
-
                 data = new Progress(id, progressPercentage, contentItemID);
             }
             
@@ -103,7 +101,7 @@ public class DatabaseProgress extends Database{
 
     public static boolean deleteProgress(int id) {
         
-        String SQL = "DELETE FROM [Progress] WHERE email = " + id;
+        String SQL = "DELETE FROM [Progress] WHERE id = " + id;
 
         Connection con = getDbConnection();
 
