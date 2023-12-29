@@ -134,6 +134,25 @@ public class User {
 
     }
 
+    static public HashMap<String, String> getArgsHashMap(AnchorPane pane) throws NoSuchMethodException,
+            SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        HashMap<String, String> searchArgs = new HashMap<String, String>();
+        searchArgs.put("name", GUIController.searchForNodeText("name", TextField.class, pane));
+        searchArgs.put("email", GUIController.searchForNodeText("email", TextField.class, pane));
+        String difficulty = GUIController.searchForNodeText("gender", MenuButton.class, pane);
+        if (!difficulty.equals("Gender")) {
+            searchArgs.put("gender", difficulty);
+        }
+        searchArgs.put("residence", GUIController.searchForNodeText("residence", TextField.class, pane));
+        DatePicker date = (DatePicker) pane.lookup("#birthDate");
+        if (date.getValue() != null) {
+            searchArgs.put("birthDate", date.getValue().toString());
+        }
+        searchArgs.put("address", GUIController.searchForNodeText("address", TextField.class, pane));
+        searchArgs.put("country", GUIController.searchForNodeText("country", TextField.class, pane));
+        return searchArgs;
+    }
+
     static public void generateTable(TableView<User> table, boolean editable, HashMap<String, String> searchArgs) {
 
         TableColumn<User, String> name = new TableColumn<User, String>("Name");

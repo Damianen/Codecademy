@@ -79,8 +79,9 @@ public abstract class ContentItem {
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         HashMap<String, String> searchArgs = new HashMap<String, String>();
         searchArgs.put("title", GUIController.searchForNodeText("title", TextField.class, pane));
-        searchArgs.put("introText", GUIController.searchForNodeText("introText", TextArea.class, pane));
-        searchArgs.put("subject", GUIController.searchForNodeText("subject", TextField.class, pane));
+        searchArgs.put("trackingNumber", GUIController.searchForNodeText("trackingNumber", TextField.class, pane));
+        searchArgs.put("description", GUIController.searchForNodeText("description", TextArea.class, pane));
+        searchArgs.put("status", GUIController.searchForNodeText("status", TextField.class, pane));
         DatePicker date = (DatePicker) pane.lookup("#publicationDate");
         if (date.getValue() != null) {
             searchArgs.put("publicationDate", date.getValue().toString());
