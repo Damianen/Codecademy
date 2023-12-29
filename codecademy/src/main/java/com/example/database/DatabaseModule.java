@@ -1,6 +1,7 @@
 package com.example.database;
 
 import com.example.course.ContentItem;
+import com.example.course.Module;
 import com.example.course.Webcast;
 import com.example.course.ContentItem.Status;
 import com.example.exeptions.AlreadyExistsException;
@@ -13,17 +14,17 @@ import java.time.LocalDate;
 
 import javax.swing.text.AbstractDocument.Content;
 
-public class DatabaseWebcast extends Database{
+public class DatabaseModule extends Database{
 
-    public static Webcast readWebcast(int id) {
+    public static Module readModule(int id) {
 
-        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Webcast.ID AS WebcastID, Webcast.URL, Webcast.speakerID FROM ContentItem INNER JOIN Webcast ON ContentItem.ID = Webcast.contentItemID WHERE Webcast.ID = " + id;
+        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module emailContactPersion FROM ContentItem INNER JOIN Module ON ContentItem.ID = Module.contentItemID WHERE Module.ID = " + id;
 
         Connection con = getDbConnection();
 
         Statement stmt = null;
         ResultSet rs = null;
-        Webcast data = null;
+        Module data = null;
 
         try {
 
@@ -38,10 +39,11 @@ public class DatabaseWebcast extends Database{
                 Status status = Status.valueOf(rs.getString("status"));
                 String description = rs.getString("description");
                 
-                String url = rs.getString("URL");
-                int speakerID = rs.getInt("speakerID");
+                int version = rs.getInt("version");
+                int orderNumber = rs.getInt("orderNumber");
+                String emailContactPerson = rs.getString("emailContactPerson");
 
-                data = new Webcast(contentItemID, title, publicationDate, status, description, id, url, speakerID);
+                data = new Module(contentItemID, title, publicationDate, status, description, id, version, emailContactPerson, orderNumber);
 
             }
             
@@ -57,15 +59,15 @@ public class DatabaseWebcast extends Database{
         }
     }
 
-    public static Webcast readWebcastWithContentItemID(int contentItemID) {
+    public static Module readModuleWithContentItemID(int contentItemID) {
 
-        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Webcast.ID AS WebcastID, Webcast.URL, Webcast.speakerID FROM ContentItem INNER JOIN Webcast ON ContentItem.ID = Webcast.contentItemID WHERE Webcast.contentItemID = " + contentItemID;
+        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module emailContactPersion FROM ContentItem INNER JOIN Module ON ContentItem.ID = Module.contentItemID WHERE ContentItem.ID = " + contentItemID;
 
         Connection con = getDbConnection();
 
         Statement stmt = null;
         ResultSet rs = null;
-        Webcast data = null;
+        Module data = null;
 
         try {
 
@@ -79,11 +81,12 @@ public class DatabaseWebcast extends Database{
                 Status status = Status.valueOf(rs.getString("status"));
                 String description = rs.getString("description");
                 
-                int id = rs.getInt("WebcastID");
-                String url = rs.getString("URL");
-                int speakerID = rs.getInt("speakerID");
+                int id = rs.getInt("ModuleID");
+                int version = rs.getInt("version");
+                int orderNumber = rs.getInt("orderNumber");
+                String emailContactPerson = rs.getString("emailContactPerson");
 
-                data = new Webcast(contentItemID, title, publicationDate, status, description, id, url, speakerID);
+                data = new Module(contentItemID, title, publicationDate, status, description, id, version, emailContactPerson, orderNumber);
 
             }
             
@@ -99,15 +102,13 @@ public class DatabaseWebcast extends Database{
         }
     }
     
-    public static boolean createWebcast(String title, LocalDate publicationDate, Status status, String description, String url, int speakerID) {
+    public static boolean createModule(String title, LocalDate publicationDate, Status status, String description, String version, int orderNumber, String emailContactPerson, String courseTitle) {
 
         Connection con = getDbConnection();
 
         if(DatabaseContentItem.createContentItem(con, title, publicationDate, status, description) == true){
 
-            String SQL = "INSERT INTO [Webcast] VALUES ('" + url + "', '" + speakerID + "', SCOPE_IDENTITY())";
-
-            
+            String SQL = "INSERT INTO [Module] VALUES ('" + version + "', '" + orderNumber + "', '" + emailContactPerson + "', SCOPE_IDENTITY(), '" + courseTitle + "')";
 
             Statement stmt = null;
 
@@ -131,13 +132,13 @@ public class DatabaseWebcast extends Database{
 
     }
 
-    public static boolean updateWebcast(int id, String title, LocalDate publicationDate, Status status, String description, String url, int speakerId) {
+    public static boolean updateModule(int id, String title, LocalDate publicationDate, Status status, String description, String version, int orderNumber, String emailContactPerson, String courseTitle) {
 
-        Webcast webcast = readWebcast(id);
+        Module module = readModule(id);
 
-        if(DatabaseContentItem.updateContentItem(webcast.getContentItemId(), title, publicationDate, status, description) == true){
+        if(DatabaseContentItem.updateContentItem(module.getContentItemId(), title, publicationDate, status, description) == true){
 
-            String SQL = "UPDATE [Webcast] SET URL = '" + url + "', speakerID = '" + speakerId + "' WHERE ID = " + id;
+            String SQL = "UPDATE [Module] SET version = '" + version + "', orderNumber = '" + orderNumber + "', emailContactPerson = '" + emailContactPerson + "', courseTitle = '" + courseTitle + "' WHERE ID = " + id;
 
             Connection con = getDbConnection();
 
@@ -165,9 +166,9 @@ public class DatabaseWebcast extends Database{
 
     public static boolean deleteWebcast(int id) {
         
-        Webcast webcast = readWebcast(id);
+        Module module = readModule(id);
 
-        boolean deleted = DatabaseContentItem.deleteContentItem(webcast.getContentItemId());
+        boolean deleted = DatabaseContentItem.deleteContentItem(module.getContentItemId());
 
         if(deleted == true){
             return true;

@@ -17,16 +17,11 @@
    <children>
       <TabPane layoutY="-3.0" prefHeight="547.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab onSelectionChanged="#switchTab" text="Overview">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-          </Tab>
           <Tab onSelectionChanged="#switchTab" text="Courses">
             <content>
               <AnchorPane fx:id="course" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="name" alignment="CENTER" layoutX="32.0" layoutY="115.0" promptText="Name" />
+                        <TextField fx:id="title" alignment="CENTER" layoutX="32.0" layoutY="115.0" promptText="Title" />
                         <TextField fx:id="subject" alignment="CENTER" layoutX="32.0" layoutY="159.0" promptText="Subject" />
                         <Button fx:id="searchButton" layoutX="32.0" layoutY="424.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="150.0" text="Search!" />
                         <Text layoutX="38.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What are you looking for?" wrappingWidth="137.537109375">

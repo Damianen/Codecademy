@@ -1,5 +1,9 @@
 package com.example.user;
 
+import java.util.HashMap;
+
+import com.example.database.DatabaseCertificate;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -14,7 +18,7 @@ public class Certificate {
     private int rating;
     private String employeeName;
 
-    public Certificate(int id, int rating, String employeeName){
+    public Certificate(int id, int rating, String employeeName) {
         this.id = id;
         this.rating = rating;
         this.employeeName = employeeName;
@@ -27,18 +31,20 @@ public class Certificate {
     public void setRating(int rating) {
         this.rating = rating;
     }
+
     public int getRating() {
         return rating;
     }
-    
+
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
     }
+
     public String getEmployeeName() {
         return employeeName;
     }
 
-    static public void generateTable(TableView<Certificate> table, boolean editable) {
+    static public void generateTable(TableView<Certificate> table, boolean editable, int enrolmentID) {
         TableColumn<Certificate, Float> employeeName = new TableColumn<Certificate, Float>("employee Name");
         TableColumn<Certificate, String> rating = new TableColumn<Certificate, String>("Rating");     
 
@@ -51,7 +57,7 @@ public class Certificate {
         rating.setCellValueFactory(new PropertyValueFactory<Certificate, String>("rating"));
 
         final ObservableList<Certificate> data = FXCollections.observableArrayList(
-            new Certificate(0, 0, "test")
+            DatabaseCertificate.getEnrollmentCertificate(enrolmentID)
         );
 
         table.setItems(data);

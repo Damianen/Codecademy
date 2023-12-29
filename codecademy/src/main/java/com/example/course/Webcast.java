@@ -2,6 +2,7 @@ package com.example.course;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.HashMap;
 
 import com.example.database.DatabaseSpeaker;
 import com.example.javafx.GUIController;
@@ -31,7 +32,8 @@ public class Webcast extends ContentItem {
     private String url;
     private Speaker speaker;
 
-    public Webcast(int contentItemID, String title, LocalDate publicationDate, Status status, String description, int id, String url, int speakerID){
+    public Webcast(int contentItemID, String title, LocalDate publicationDate, Status status, String description,
+            int id, String url, int speakerID) {
         super(contentItemID, title, publicationDate, status, description);
         this.id = id;
         this.url = url;
@@ -45,7 +47,7 @@ public class Webcast extends ContentItem {
     public int getContentItemId() {
         return super.id;
     }
-    
+
     public Speaker getSpeaker() {
         return speaker;
     }
@@ -57,13 +59,15 @@ public class Webcast extends ContentItem {
     public void setUrl(String url) {
         this.url = url;
     }
+
     public String getUrl() {
         return url;
     }
-    
-    static public void generateTable(TableView<ContentItem> table, boolean editable) {
+
+    static public void generateTable(TableView<ContentItem> table, boolean editable,
+            HashMap<String, String> searchArgs) {
         generateContentTable(table);
-        
+
         TableColumn<ContentItem, String> speaker = new TableColumn<ContentItem, String>("Speaker");
 
         final ObservableList<TableColumn<ContentItem, ?>> columns = FXCollections.observableArrayList();
@@ -72,7 +76,7 @@ public class Webcast extends ContentItem {
 
         Callback<TableColumn.CellDataFeatures<ContentItem, String>, ObservableValue<String>> webcastCallback;
         webcastCallback = cellDataFeatures -> {
-            Webcast m = (Webcast)cellDataFeatures.getValue();
+            Webcast m = (Webcast) cellDataFeatures.getValue();
             String speakerString = m.getSpeaker().getName();
             ObservableValue<String> titleObservableValue = new SimpleStringProperty(speakerString);
             return titleObservableValue;
@@ -83,50 +87,50 @@ public class Webcast extends ContentItem {
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Webcast webcast = (Webcast)table.getSelectionModel().getSelectedItem();
+                Webcast webcast = (Webcast) table.getSelectionModel().getSelectedItem();
                 webcast.generatePopupWindow(event, editable);
             }
         });
 
         final ObservableList<ContentItem> data = FXCollections.observableArrayList(
-            new Webcast(0, "test", LocalDate.now(), Status.ACTIVE, "test", 0, "test", 0)
-        );
+                new Webcast(0, "test", LocalDate.now(), Status.ACTIVE, "test", 0, "test", 0));
 
         table.setItems(data);
     }
 
     @Override
     public void generatePopupWindow(MouseEvent event, boolean editable) {
-        if (event.getClickCount()>1) {
+        if (event.getClickCount() > 1) {
             AnchorPane pane;
-            
+
             try {
                 pane = FXMLLoader.load(getClass().getResource("/com/example/javafx/fxml/webcast.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
             }
-            
-            Scene scene = ((Node)event.getSource()).getScene();
-            GUIController.setupPopupWindow(editable, pane, (AnchorPane)scene.getRoot());
 
-            TextField title = (TextField)pane.lookup("#title");
+            Scene scene = ((Node) event.getSource()).getScene();
+            GUIController.setupPopupWindow(pane, (AnchorPane) scene.getRoot());
+            GUIController.setupUpdateButton(editable, pane, this);
+
+            TextField title = (TextField) pane.lookup("#title");
             title.setEditable(editable);
             title.setText(this.title);
 
-            TextField url = (TextField)pane.lookup("#url");
+            TextField url = (TextField) pane.lookup("#url");
             url.setEditable(editable);
             url.setText(this.url);
 
-            TextField speaker = (TextField)pane.lookup("#speaker");
+            TextField speaker = (TextField) pane.lookup("#speaker");
             speaker.setEditable(editable);
             speaker.setText(this.speaker.getName());
 
-            TextField organization = (TextField)pane.lookup("#organization");
+            TextField organization = (TextField) pane.lookup("#organization");
             organization.setEditable(editable);
             organization.setText(this.speaker.getOranization());
 
-            DatePicker pubDate = (DatePicker)pane.lookup("#publicationDate");
+            DatePicker pubDate = (DatePicker) pane.lookup("#publicationDate");
             pubDate.setEditable(editable);
             if (!editable) {
                 pubDate.setOnAction(new EventHandler<ActionEvent>() {
@@ -138,7 +142,7 @@ public class Webcast extends ContentItem {
             }
             pubDate.setValue(publicationDate);
 
-            TextArea description = (TextArea)pane.lookup("#description");
+            TextArea description = (TextArea) pane.lookup("#description");
             description.setEditable(editable);
             description.setText(this.description);
         }

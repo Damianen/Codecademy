@@ -12,15 +12,15 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx.GUIController">
+<AnchorPane fx:id="createRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx.GUIController">
    <children>
       <TabPane prefHeight="540.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Course">
+          <Tab text="Course" onSelectionChanged="#switchTab">
             <content>
               <AnchorPane fx:id="coursePane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="name" alignment="CENTER" layoutX="266.0" layoutY="123.0" prefHeight="44.0" prefWidth="397.0" promptText="Name">
+                        <TextField fx:id="title" alignment="CENTER" layoutX="266.0" layoutY="123.0" prefHeight="44.0" prefWidth="397.0" promptText="Title">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -51,7 +51,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Users">
+          <Tab text="Users" onSelectionChanged="#switchTab">
             <content>
               <AnchorPane fx:id="userPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -76,7 +76,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Module">
+            <Tab text="Module" onSelectionChanged="#switchTab">
                <content>
                   <AnchorPane fx:id="modulePane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -97,7 +97,7 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab text="Webcast">
+            <Tab text="Webcast" onSelectionChanged="#switchTab">
                <content>
                   <AnchorPane fx:id="webcastPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

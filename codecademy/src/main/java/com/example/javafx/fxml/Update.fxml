@@ -21,7 +21,7 @@
                <content>
                   <AnchorPane fx:id="course" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="name" alignment="CENTER" layoutX="32.0" layoutY="111.0" promptText="Name" />
+                        <TextField fx:id="title" alignment="CENTER" layoutX="32.0" layoutY="111.0" promptText="Title" />
                         <TextField fx:id="subject" alignment="CENTER" layoutX="32.0" layoutY="151.0" promptText="Subject" />
                         <Button fx:id="searchButton" layoutX="32.0" layoutY="412.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="150.0" text="Search!" />
                         <Text layoutX="39.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What are you looking for?" wrappingWidth="137.537109375">
@@ -51,7 +51,7 @@
                <content>
                   <AnchorPane fx:id="user" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="name1" alignment="CENTER" layoutX="33.0" layoutY="116.0" promptText="Name" />
+                        <TextField fx:id="name" alignment="CENTER" layoutX="33.0" layoutY="116.0" promptText="Name" />
                         <Button fx:id="searchButton2" layoutX="32.0" layoutY="424.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="150.0" text="Search!" />
                         <Text layoutX="38.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What are you looking for?" wrappingWidth="137.537109375">
                            <font>
@@ -69,7 +69,7 @@
                               <MenuItem mnemonicParsing="false" text="F" />
                            </items>
                         </SplitMenuButton>
-                        <TableView fx:id="table1" layoutX="241.0" layoutY="50.0" prefHeight="455.0" prefWidth="708.0" />
+                        <TableView fx:id="table" layoutX="241.0" layoutY="50.0" prefHeight="455.0" prefWidth="708.0" />
                         <TextField fx:id="email" alignment="CENTER" layoutX="32.0" layoutY="158.0" promptText="E-mail" />
                         <TextField fx:id="adress" alignment="CENTER" layoutX="33.0" layoutY="247.0" promptText="Adress" />
                         <TextField fx:id="residence" alignment="CENTER" layoutX="33.0" layoutY="293.0" promptText="Residence" />
@@ -96,7 +96,7 @@
                               <Font size="22.0" />
                            </font>
                         </Text>
-                        <TableView fx:id="table2" layoutX="241.0" layoutY="50.0" prefHeight="455.0" prefWidth="708.0" />
+                        <TableView fx:id="table" layoutX="241.0" layoutY="50.0" prefHeight="455.0" prefWidth="708.0" />
                         <TextArea fx:id="Description" layoutX="34.0" layoutY="173.0" prefHeight="173.0" prefWidth="148.0" promptText="Description" />
                         <DatePicker fx:id="publicationDate" layoutX="35.0" layoutY="356.0" prefHeight="25.0" prefWidth="146.0" promptText="Publication Date" />
                         <TextField fx:id="trackingNumber" alignment="CENTER" layoutX="32.0" layoutY="391.0" promptText="Tracking number" />

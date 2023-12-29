@@ -3,8 +3,10 @@ package com.example.user;
 import static com.example.course.Course.DifficultyLevel.BEGINNER;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.example.course.Course;
 import com.example.database.DatabaseCertificate;
@@ -39,12 +41,12 @@ public class Enrollment {
     private ArrayList<Progress> progresses;
     private User user;
 
-    public Enrollment(int id, LocalDate enrollmentDate, String courseTitle){
+    public Enrollment(int id, LocalDate enrollmentDate, String courseTitle) {
         this.id = id;
         this.enrollmentDate = enrollmentDate;
-        
+
         this.course = DatabaseCourse.readCourse(courseTitle);
-        //this.progresses = DatabaseProgress.getEnrollmentProgresses();
+        // this.progresses = DatabaseProgress.getEnrollmentProgresses();
         this.user = new User(courseTitle, courseTitle, enrollmentDate, Gender.M, courseTitle, courseTitle, courseTitle);
         this.certificate = DatabaseCertificate.getEnrollmentCertificate(this.id);
     }
@@ -59,10 +61,12 @@ public class Enrollment {
 
     public void setEnrollmentDate(LocalDate enrollmentDate) {
         this.enrollmentDate = enrollmentDate;
-    } 
+    }
+
     public LocalDate getEnrollmentDate() {
         return enrollmentDate;
     }
+
     public Certificate getCertificate() {
         return certificate;
     }
@@ -95,14 +99,22 @@ public class Enrollment {
         return this.course.getTitle();
     }
 
-    public void addCertificate(){
+    public boolean addCertificate() {
 
+        try {
+            DatabaseCertificate.createCertificate(this);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    static public void generateTable(TableView<Enrollment> table, boolean editable) {
+    static public void generateTable(TableView<Enrollment> table, boolean editable,
+            HashMap<String, String> searchArgs) {
         TableColumn<Enrollment, String> userName = new TableColumn<Enrollment, String>("User Name");
         TableColumn<Enrollment, String> courseTitle = new TableColumn<Enrollment, String>("Course Title");
-        TableColumn<Enrollment, String> EnrolmentDate = new TableColumn<Enrollment, String>("Enrolment Date");     
+        TableColumn<Enrollment, String> EnrolmentDate = new TableColumn<Enrollment, String>("Enrolment Date");
 
         final ObservableList<TableColumn<Enrollment, ?>> columns = FXCollections.observableArrayList();
         columns.add(userName);
@@ -117,55 +129,53 @@ public class Enrollment {
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Enrollment enrollment = (Enrollment)table.getSelectionModel().getSelectedItem();
-                enrollment.generatePopupWindow(event, editable);
+                Enrollment enrollment = (Enrollment) table.getSelectionModel().getSelectedItem();
+                try {
+                    enrollment.generatePopupWindow(event, editable);
+                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+                        | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         final ObservableList<Enrollment> data = FXCollections.observableArrayList(
-            new Enrollment(0, LocalDate.now(), "test")
-        );
+                new Enrollment(0, LocalDate.now(), "TestCourse"));
 
         table.setItems(data);
     }
 
-    public void generatePopupWindow(MouseEvent event, boolean editable) {
-        if (event.getClickCount()>1) {
+    public void generatePopupWindow(MouseEvent event, boolean editable) throws NoSuchMethodException, SecurityException,
+            IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        if (event.getClickCount() > 1) {
             AnchorPane pane;
-            
+
             try {
                 pane = FXMLLoader.load(getClass().getResource("/com/example/javafx/fxml/enrollments.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
             }
-            
-            Scene scene = ((Node)event.getSource()).getScene();
-            GUIController.setupPopupWindow(editable, pane, (AnchorPane)scene.getRoot());
 
-            DatePicker EnrolmentDate = (DatePicker)pane.lookup("#enrollDate");
-            EnrolmentDate.setEditable(editable);
-            if (!editable) {
-                EnrolmentDate.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        EnrolmentDate.setValue(enrollmentDate);
-                    }
-                });
-            }
-            EnrolmentDate.setValue(enrollmentDate);
+            Scene scene = ((Node) event.getSource()).getScene();
+            GUIController.setupPopupWindow(pane, (AnchorPane) scene.getRoot());
+            GUIController.setupUpdateButton(editable, pane, this);
+            GUIController.setUpNode(DatePicker.class, editable, enrollmentDate, pane, "enrollDate");
+            setupTabs(pane, editable);
+        }
+    }
 
-            ObservableList<Tab> tabs = ((TabPane)pane.lookup("#tabPane")).getTabs();
-            for (Tab tab : tabs) {
-                AnchorPane rootTabPane = (AnchorPane)tab.getContent();
-                TableView table = (TableView)rootTabPane.lookup("#table");
-                if (tab.getId().equals("course")) {
-                    Course.generateTable(table, editable);
-                } else if (tab.getId().equals("user")) {
-                    User.generateTable(table, editable);
-                } else {
-                    Certificate.generateTable(table, editable);
-                }
+    public void setupTabs(AnchorPane pane, boolean editable) {
+        ObservableList<Tab> tabs = ((TabPane) pane.lookup("#tabPane")).getTabs();
+        for (Tab tab : tabs) {
+            AnchorPane rootTabPane = (AnchorPane) tab.getContent();
+            TableView table = (TableView) rootTabPane.lookup("#table");
+            if (tab.getId().equals("course")) {
+                Course.generateTable(table, editable, new HashMap<String, String>());
+            } else if (tab.getId().equals("user")) {
+                User.generateTable(table, editable, new HashMap<String, String>());
+            } else {
+                Certificate.generateTable(table, editable, id);
             }
         }
     }

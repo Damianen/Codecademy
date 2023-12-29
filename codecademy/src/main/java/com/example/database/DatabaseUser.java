@@ -55,7 +55,7 @@ public class DatabaseUser extends Database{
     public static boolean createUser(String email, String name, LocalDate dateOfBirth, Gender gender, String address, String residence, String country) throws AlreadyExistsException {
 
         if(readUser(email) != null){
-            throw new AlreadyExistsException("The email \"" + email + "\" already exists");
+            throw new AlreadyExistsException("The email \"" + email + "\" already exists for user");
         }
 
         String SQL = "INSERT INTO [User] VALUES ('" + email + "', '" + name + "', '" + dateOfBirth + "', '" + gender + "', '" + address + "', '" + residence + "', '" + country + "')";
@@ -84,7 +84,7 @@ public class DatabaseUser extends Database{
     public static boolean updateUser(String email, String newEmail, String newName, LocalDate newDateOfBirth, Gender newGender, String newAddress, String newResidence, String newCountry) throws AlreadyExistsException {
 
         if(readUser(newEmail) != null){
-            throw new AlreadyExistsException("The email \"" + email + "\" already exists");
+            throw new AlreadyExistsException("The email \"" + newEmail + "\" already exists for user");
         }
 
         String SQL = "UPDATE [User] SET email = '" + newEmail + "', name = '" + newName + "', dateOfBirth = '" + newDateOfBirth + "', gender = '" + newGender + "', address = '" + newAddress + "', residence = '" + newResidence + "', country = '" + newCountry + "' WHERE email = '" + email + "'";
@@ -138,6 +138,46 @@ public class DatabaseUser extends Database{
     public static final ObservableList<User> getUserListSearch(String nameSearch) {
 
         String SQL = "SELECT * FROM [User] WHERE name LIKE '%" + nameSearch + "%'";
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        final ObservableList<User> data = FXCollections.observableArrayList();
+
+        try{
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                String emailDB = rs.getString("email");
+                String nameDB = rs.getString("name");
+                LocalDate dateOfBirthDB = rs.getDate("dateOfBirth").toLocalDate();
+                Gender genderDB = Gender.valueOf(rs.getString("gender"));
+                String addressDB = rs.getString("address");
+                String residenceDB = rs.getString("residence");
+                String countryDB = rs.getString("country");
+
+                data.add(new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, residenceDB, countryDB));
+            }
+
+            return data;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+    }
+
+    public static final ObservableList<User> getUserList() {
+
+        String SQL = "SELECT * FROM [User]";
 
         Connection con = getDbConnection();
 

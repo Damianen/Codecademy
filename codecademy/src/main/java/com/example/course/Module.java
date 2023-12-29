@@ -1,8 +1,12 @@
 package com.example.course;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
+import java.util.HashMap;
 
+import com.example.database.DatabaseContactPerson;
+import com.example.database.DatabaseSpeaker;
 import com.example.javafx.GUIController;
 import com.example.user.Progress;
 
@@ -27,42 +31,59 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
-public class Module extends ContentItem{
-    private String version;
-    private String contactPersonName;
-    private String contactPersonEmail;
+public class Module extends ContentItem {
 
-    public void setVersion(String version) {
+    private final int id;
+    private double version;
+    private ContactPerson contactPerson;
+    private int orderNumber;
+
+    public Module(int contentItemID, String title, LocalDate publicationDate, Status status, String description, int id,
+            double version, String emailContactPerson, int orderNumber) {
+        super(contentItemID, title, publicationDate, status, description);
+
+        this.id = id;
         this.version = version;
+        this.contactPerson = DatabaseContactPerson.readContactPerson(emailContactPerson);
+        this.orderNumber = orderNumber;
     }
-    public String getVersion() {
+
+    public int getContentItemId() {
+        return super.getId();
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public double getVersion() {
         return version;
     }
 
-    public void setContactPersonName(String contactPersonName) {
-        this.contactPersonName = contactPersonName;
-    }
-    public String getContactPersonName() {
-        return contactPersonName;
-    }
-
-    public void setContactPersonEmail(String contactPersonEmail) {
-        this.contactPersonEmail = contactPersonEmail;
-    }
-    public String getContactPersonEmail() {
-        return contactPersonEmail;
-    }
-    
-    public Module(String title, int id, LocalDate publicationDate, Status status, String description, String version, String contactPersonEmail, String contactPersonName){
-        super(id, title, publicationDate, status ,description);
+    public void setVersion(double version) {
         this.version = version;
-        this.contactPersonEmail = contactPersonName;
-        this.contactPersonName = contactPersonEmail;
     }
 
-    static public void generateTable(TableView<ContentItem> table, boolean editable) {
+    public ContactPerson getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(ContactPerson contactPerson) {
+        this.contactPerson = contactPerson;
+    }
+
+    public int getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    static public void generateTable(TableView<ContentItem> table, boolean editable,
+            HashMap<String, String> searchArgs) {
         generateContentTable(table);
-        
+
         TableColumn<ContentItem, String> version = new TableColumn<ContentItem, String>("Version");
 
         final ObservableList<TableColumn<ContentItem, ?>> columns = FXCollections.observableArrayList();
@@ -71,9 +92,9 @@ public class Module extends ContentItem{
 
         Callback<TableColumn.CellDataFeatures<ContentItem, String>, ObservableValue<String>> moduleCallback;
         moduleCallback = cellDataFeatures -> {
-            Module m = (Module)cellDataFeatures.getValue();
-            String versionString = m.getVersion();
-            ObservableValue<String> titleObservableValue = new SimpleStringProperty(versionString);
+            Module m = (Module) cellDataFeatures.getValue();
+            double versionString = m.getVersion();
+            ObservableValue<String> titleObservableValue = new SimpleStringProperty(Double.toString(versionString));
             return titleObservableValue;
         };
 
@@ -82,50 +103,51 @@ public class Module extends ContentItem{
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Module module = (Module)table.getSelectionModel().getSelectedItem();
-                module.generatePopupWindow(event, editable);
+                Module module = (Module) table.getSelectionModel().getSelectedItem();
+                try {
+                    module.generatePopupWindow(event, editable);
+                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+                        | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         final ObservableList<ContentItem> data = FXCollections.observableArrayList(
-            new Module("test", 0, LocalDate.now(), Status.ACTIVE, "test", "test", "test", "test")
-        );
+                new Module(0, "test", LocalDate.now(), Status.ACTIVE, "test", 0, 0.1, "contactPersonEmail", 1));
 
         table.setItems(data);
     }
 
     @Override
-    public void generatePopupWindow(MouseEvent event, boolean editable) {
-        if (event.getClickCount()>1) {
+    public void generatePopupWindow(MouseEvent event, boolean editable) throws NoSuchMethodException, SecurityException,
+            IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        if (event.getClickCount() > 1) {
             AnchorPane pane;
-            
+
             try {
                 pane = FXMLLoader.load(getClass().getResource("/com/example/javafx/fxml/module.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
             }
-            
-            Scene scene = ((Node)event.getSource()).getScene();
-            GUIController.setupPopupWindow(editable, pane, (AnchorPane)scene.getRoot());
 
-            TextField title = (TextField)pane.lookup("#title");
-            title.setEditable(editable);
-            title.setText(this.title);
+            Scene scene = ((Node) event.getSource()).getScene();
+            GUIController.setupPopupWindow(pane, (AnchorPane) scene.getRoot());
+            GUIController.setupUpdateButton(editable, pane, this);
 
-            TextField version = (TextField)pane.lookup("#version");
-            version.setEditable(editable);
-            version.setText(this.version);
+            GUIController.setUpNode(TextField.class, editable, title, pane, "title");
+            GUIController.setUpNode(TextField.class, editable, version, pane, "version");
 
-            TextField contactPersonName = (TextField)pane.lookup("#contactPersonName");
+            TextField contactPersonName = (TextField) pane.lookup("#contactPersonName");
             contactPersonName.setEditable(editable);
-            contactPersonName.setText(this.contactPersonName);
+            contactPersonName.setText(this.contactPerson.getName());
 
-            TextField contactPersonEmail = (TextField)pane.lookup("#contactPersonEmail");
+            TextField contactPersonEmail = (TextField) pane.lookup("#contactPersonEmail");
             contactPersonEmail.setEditable(editable);
-            contactPersonEmail.setText(this.contactPersonEmail);
+            contactPersonEmail.setText(this.contactPerson.getEmail());
 
-            DatePicker pubDate = (DatePicker)pane.lookup("#publicationDate");
+            DatePicker pubDate = (DatePicker) pane.lookup("#publicationDate");
             pubDate.setEditable(editable);
             if (!editable) {
                 pubDate.setOnAction(new EventHandler<ActionEvent>() {
@@ -137,17 +159,21 @@ public class Module extends ContentItem{
             }
             pubDate.setValue(publicationDate);
 
-            TextArea description = (TextArea)pane.lookup("#description");
+            TextArea description = (TextArea) pane.lookup("#description");
             description.setEditable(editable);
             description.setText(this.description);
 
-            ObservableList<Tab> tabs = ((TabPane)pane.lookup("#tables")).getTabs();
-            for (Tab tab : tabs) {
-                AnchorPane rootTabPane = (AnchorPane)tab.getContent();
-                TableView table = (TableView)rootTabPane.lookup("#table");
-                if (tab.getId().equals("course")) {
-                    Course.generateTable(table, editable);
-                }
+            setupTabs(pane, editable);
+        }
+    }
+
+    public void setupTabs(AnchorPane pane, boolean editable) {
+        ObservableList<Tab> tabs = ((TabPane) pane.lookup("#tables")).getTabs();
+        for (Tab tab : tabs) {
+            AnchorPane rootTabPane = (AnchorPane) tab.getContent();
+            TableView table = (TableView) rootTabPane.lookup("#table");
+            if (tab.getId().equals("course")) {
+                Course.generateTable(table, editable, new HashMap<String, String>());
             }
         }
     }
