@@ -11,6 +11,7 @@ import java.util.HashMap;
 import com.example.course.Course;
 import com.example.database.DatabaseCertificate;
 import com.example.database.DatabaseCourse;
+import com.example.database.DatabaseEnrollment;
 import com.example.course.*;
 import com.example.javafx.GUIController;
 import com.example.user.User.Gender;
@@ -139,10 +140,8 @@ public class Enrollment {
             }
         });
 
-        final ObservableList<Enrollment> data = FXCollections.observableArrayList(
-                new Enrollment(0, LocalDate.now(), "TestCourse"));
-
-        table.setItems(data);
+        table.setItems(DatabaseEnrollment.getEnrollmentsSearch(searchArgs));
+        
     }
 
     public void generatePopupWindow(MouseEvent event, boolean editable) throws NoSuchMethodException, SecurityException,

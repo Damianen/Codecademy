@@ -10,6 +10,7 @@ import com.example.course.Webcast;
 import com.example.course.ContentItem.Status;
 import com.example.database.DatabaseContentItem;
 import com.example.database.DatabaseModule;
+import com.example.database.DatabaseProgress;
 import com.example.database.DatabaseWebcast;
 import com.example.javafx.GUIController;
 
@@ -116,11 +117,5 @@ public class Progress {
                 }
             }
         });
-
-        final ObservableList<Progress> data = FXCollections.observableArrayList(
-                new Progress(0, 0, 0));
-
-        table.setItems(data);
-
     }
 }

@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.HashMap;
 
 import javax.swing.text.AbstractDocument.Content;
 
@@ -101,7 +102,7 @@ public class DatabaseModule extends Database{
             if (con != null) try { con.close(); } catch(Exception e) {}
         }
     }
-    
+
     public static boolean createModule(String title, LocalDate publicationDate, Status status, String description, String version, int orderNumber, String emailContactPerson, String courseTitle) {
 
         Connection con = getDbConnection();

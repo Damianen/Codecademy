@@ -12,8 +12,7 @@ import javafx.collections.ObservableList;
 import java.sql.*;
 
 import java.time.LocalDate;
-
-import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class DatabaseEnrollment extends Database{
@@ -109,7 +108,42 @@ public class DatabaseEnrollment extends Database{
 
     }
 
-    public static ArrayList<Enrollment> getUserEnrollments(String userEmail) {
+    public static ObservableList<Enrollment> getUserEnrollments(String courseTitle) {
+
+        String SQL = "SELECT * FROM [Enrollment] WHERE courseTitle = '"+ courseTitle + "'";
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        final ObservableList<Enrollment> data = FXCollections.observableArrayList();
+
+        try{
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                int idDB = rs.getInt("ID");
+                LocalDate enrollmentDate = rs.getDate("enrollmentDate").toLocalDate();
+
+                data.add(new Enrollment(idDB, enrollmentDate, courseTitle));
+            }
+
+            return data;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+    }
+
+    public static ObservableList<Enrollment> getCourseEnrollments(String userEmail) {
 
         String SQL = "SELECT * FROM [Enrollment] WHERE userEmail = '"+ userEmail + "'";
 
@@ -118,7 +152,43 @@ public class DatabaseEnrollment extends Database{
         Statement stmt = null;
         ResultSet rs = null;
 
-        ArrayList<Enrollment> data = new ArrayList<Enrollment>();
+        final ObservableList<Enrollment> data = FXCollections.observableArrayList();
+
+        try{
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                int idDB = rs.getInt("ID");
+                LocalDate enrollmentDate = rs.getDate("enrollmentDate").toLocalDate();
+                String courseTitle = rs.getString("courseTitle");
+
+                data.add(new Enrollment(idDB, enrollmentDate, courseTitle));
+            }
+
+            return data;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+    }
+
+    public static ObservableList<Enrollment> getEnrollmentsSearch(HashMap<String, String> searchArgs) {
+
+        String SQL = Database.getSQLQuery("[Enrollment]", searchArgs);
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        final ObservableList<Enrollment> data = FXCollections.observableArrayList();
 
         try{
 

@@ -232,16 +232,17 @@ public class GUIController {
             throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException {
         Node node = pane.lookup("#" + id);
-        Method methodSetText = nodeClass.getMethod("setText", value.getClass());
         if (nodeClass == MenuButton.class) {
+            Method methodSetText = nodeClass.getMethod("setText", String.class);
             setMenuButtonActions((MenuButton) node, editable);
-            methodSetText.invoke(nodeClass.cast(node), value.getClass().cast(value.toString().toLowerCase()));
+            methodSetText.invoke(nodeClass.cast(node), value.toString());
         } else if (nodeClass == DatePicker.class) {
             setDatePickerActions((DatePicker) node, editable, (LocalDate) value);
         } else {
+            Method methodSetText = nodeClass.getMethod("setText", String.class);
             Method methodSetEditable = nodeClass.getMethod("setEditable", boolean.class);
             methodSetEditable.invoke(nodeClass.cast(node), editable);
-            methodSetText.invoke(nodeClass.cast(node), value.getClass().cast(value));
+            methodSetText.invoke(nodeClass.cast(node), value.toString());
         }
     }
 

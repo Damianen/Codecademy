@@ -39,7 +39,7 @@ public class User {
     private String residence;
     private String country;
     private Gender gender;
-    private ArrayList<Enrollment> enrollments;
+    private ObservableList<Enrollment> enrollments;
 
     public enum Gender {
         M,
@@ -119,11 +119,7 @@ public class User {
         return gender;
     }
 
-    public void setEnrollments(ArrayList<Enrollment> enrollments) {
-        this.enrollments = enrollments;
-    }
-
-    public ArrayList<Enrollment> getEnrollments() {
+    public ObservableList<Enrollment> getEnrollments() {
         return enrollments;
     }
 
@@ -227,7 +223,9 @@ public class User {
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
             if (tab.getId().equals("enrolment")) {
-                Enrollment.generateTable(table, editable, new HashMap<String, String>());
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("userEmail", email);
+                Enrollment.generateTable(table, editable, map);
             } else {
                 Progress.generateTable(table, editable, new HashMap<String, String>());
             }

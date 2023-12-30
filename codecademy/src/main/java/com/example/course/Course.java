@@ -144,7 +144,7 @@ public class Course {
             GUIController.setUpNode(TextField.class, editable, title, pane, "title");
             GUIController.setUpNode(TextField.class, editable, subject, pane, "subject");
             GUIController.setUpNode(TextArea.class, editable, introText, pane, "introText");
-            GUIController.setUpNode(MenuButton.class, editable, subject, pane, "difficultyLevel");
+            GUIController.setUpNode(MenuButton.class, editable, difficultyLevel, pane, "difficultyLevel");
 
             setupTabs(pane, editable);
         }
@@ -161,7 +161,9 @@ public class Course {
                 }
                 Module.generateTable(table, editable, new HashMap<String, String>());
             } else {
-                Enrollment.generateTable(table, editable, new HashMap<String, String>());
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("courseTitle", title);
+                Enrollment.generateTable(table, editable, map);
             }
         }
     }
