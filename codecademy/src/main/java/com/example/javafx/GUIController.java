@@ -44,7 +44,7 @@ public class GUIController {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private boolean skip = true;
+    private boolean skip = false;
 
     public void switchPage(ActionEvent event) throws IOException {
         try {
@@ -67,24 +67,12 @@ public class GUIController {
                 if (node instanceof MenuButton) {
                     setMenuButtonActions((MenuButton) node, skip);
                 }
-            }
-
-            if (!((Scene) ((Tab) event.getSource()).getContent().getScene()).getRoot().getId().equals("createRoot")) {
-                TableView table = (TableView) pane.lookup("#table");
-                boolean editable = false;
-                if (!((Scene) ((Tab) event.getSource()).getContent().getScene()).getRoot().getId().equals("readRoot")) {
-                    editable = true;
-                }
-
-                if (pane.idProperty() == null) {
-                    Course.generateTable(table, editable, null);
-                    return;
-                }
-
-                switch (pane.getId()) {
+                if (node instanceof TableView) {
+                    switch (pane.getId()) {
                     case "course":
-                        Course.generateTable(table, editable, null);
-                        break;
+                        Course.generateTable((TableView)node, false, null);
+                        return;
+                    }
                 }
             }
         } else {
