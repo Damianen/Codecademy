@@ -20,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -78,6 +79,16 @@ public class Module extends ContentItem {
 
     public void setOrderNumber(int orderNumber) {
         this.orderNumber = orderNumber;
+    }
+
+    static public HashMap<String, String> getArgsHashMap(AnchorPane pane) throws NoSuchMethodException,
+            SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        HashMap<String, String> searchArgs = ContentItem.getArgsHashMap(pane);
+        searchArgs.put("version", GUIController.searchForNodeText("version", TextField.class, pane));
+        TableView table = (TableView)pane.lookup("#table");
+        ContactPerson person = (ContactPerson)table.getSelectionModel().getSelectedItem();
+        searchArgs.put("contactPersonEmail", person.getEmail());
+        return searchArgs;
     }
 
     static public void generateTable(TableView<ContentItem> table, boolean editable,

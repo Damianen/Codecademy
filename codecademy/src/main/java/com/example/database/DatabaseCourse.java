@@ -5,8 +5,6 @@ import com.example.course.Course.DifficultyLevel;
 import com.example.exeptions.AlreadyExistsException;
 import com.example.exeptions.CannotBeEmptyException;
 
-import static com.example.course.Course.DifficultyLevel.*;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

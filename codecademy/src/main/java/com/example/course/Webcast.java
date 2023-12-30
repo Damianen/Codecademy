@@ -1,6 +1,7 @@
 package com.example.course;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.HashMap;
 
@@ -62,6 +63,16 @@ public class Webcast extends ContentItem {
 
     public String getUrl() {
         return url;
+    }
+
+    static public HashMap<String, String> getArgsHashMap(AnchorPane pane) throws NoSuchMethodException,
+            SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        HashMap<String, String> searchArgs = ContentItem.getArgsHashMap(pane);
+        searchArgs.put("url", GUIController.searchForNodeText("url", TextField.class, pane));
+        TableView table = (TableView)pane.lookup("#table");
+        Speaker speaker = (Speaker)table.getSelectionModel().getSelectedItem();
+        searchArgs.put("speakerID", String.valueOf(speaker.getId()));
+        return searchArgs;
     }
 
     static public void generateTable(TableView<ContentItem> table, boolean editable,
@@ -128,7 +139,7 @@ public class Webcast extends ContentItem {
 
             TextField organization = (TextField) pane.lookup("#organization");
             organization.setEditable(editable);
-            organization.setText(this.speaker.getOranization());
+            organization.setText(this.speaker.getOrganization());
 
             DatePicker pubDate = (DatePicker) pane.lookup("#publicationDate");
             pubDate.setEditable(editable);

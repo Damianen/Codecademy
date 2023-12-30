@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import com.example.course.Course;
 import com.example.database.DatabaseEnrollment;
+import com.example.database.DatabaseUser;
 import com.example.javafx.GUIController;
 
 import javafx.collections.FXCollections;
@@ -184,11 +185,13 @@ public class User {
                 }
             }
         });
-
-        final ObservableList<User> data = FXCollections.observableArrayList(
-                new User("test", "test", LocalDate.now(), Gender.M, "test", "test", "test"));
-
-        table.setItems(data);
+                
+        if (searchArgs == null) {
+            table.setItems(DatabaseUser.getUserList());
+        } else {
+            table.setItems(DatabaseUser.readUserSearchAll(searchArgs));
+        }
+        
 
     }
 

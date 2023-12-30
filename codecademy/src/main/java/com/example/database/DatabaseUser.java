@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.HashMap;
 
 public class DatabaseUser extends Database{
 
@@ -178,6 +179,46 @@ public class DatabaseUser extends Database{
     public static final ObservableList<User> getUserList() {
 
         String SQL = "SELECT * FROM [User]";
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        final ObservableList<User> data = FXCollections.observableArrayList();
+
+        try{
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                String emailDB = rs.getString("email");
+                String nameDB = rs.getString("name");
+                LocalDate dateOfBirthDB = rs.getDate("dateOfBirth").toLocalDate();
+                Gender genderDB = Gender.valueOf(rs.getString("gender"));
+                String addressDB = rs.getString("address");
+                String residenceDB = rs.getString("residence");
+                String countryDB = rs.getString("country");
+
+                data.add(new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, residenceDB, countryDB));
+            }
+
+            return data;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+    }
+
+    public static final ObservableList<User> readUserSearchAll(HashMap<String, String> searchArgs) {
+
+        String SQL = Database.getSQLQuery("[User]", searchArgs);
 
         Connection con = getDbConnection();
 

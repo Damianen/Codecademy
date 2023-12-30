@@ -2,10 +2,13 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,9 +19,9 @@
    <children>
       <TabPane prefHeight="540.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Course" onSelectionChanged="#switchTab">
+          <Tab onSelectionChanged="#switchTab" text="Course">
             <content>
-              <AnchorPane fx:id="coursePane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="course" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="title" alignment="CENTER" layoutX="266.0" layoutY="123.0" prefHeight="44.0" prefWidth="397.0" promptText="Title">
                            <font>
@@ -30,7 +33,7 @@
                               <Font size="16.0" />
                            </font>
                         </TextField>
-                        <Button fx:id="new" layoutX="266.0" layoutY="422.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="New" />
+                        <Button fx:id="newButton" layoutX="266.0" layoutY="422.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="New" />
                         <Text layoutX="94.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new course?">
                            <font>
                               <Font size="26.0" />
@@ -47,42 +50,44 @@
                            </font>
                         </MenuButton>
                         <TextArea fx:id="introText" layoutX="266.0" layoutY="238.0" prefHeight="116.0" prefWidth="398.0" promptText="Intro text" />
+                        <Label fx:id="errorMessage" layoutX="276.0" layoutY="490.0" prefHeight="17.0" prefWidth="398.0" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Users" onSelectionChanged="#switchTab">
+          <Tab onSelectionChanged="#switchTab" text="Users">
             <content>
-              <AnchorPane fx:id="userPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="user" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="name" alignment="CENTER" layoutX="238.0" layoutY="119.0" prefHeight="36.0" prefWidth="397.0" promptText="Name" />
-                        <TextField fx:id="email" alignment="CENTER" layoutX="238.0" layoutY="167.0" prefHeight="36.0" prefWidth="397.0" promptText="Email" />
-                        <TextField fx:id="adress" alignment="CENTER" layoutX="238.0" layoutY="273.0" prefHeight="36.0" prefWidth="397.0" promptText="adress" />
-                        <Button fx:id="new" layoutX="238.0" layoutY="440.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="New" />
+                        <TextField fx:id="name" alignment="CENTER" layoutX="69.0" layoutY="112.0" prefHeight="36.0" prefWidth="397.0" promptText="Name" />
+                        <TextField fx:id="email" alignment="CENTER" layoutX="69.0" layoutY="157.0" prefHeight="36.0" prefWidth="397.0" promptText="Email" />
+                        <TextField fx:id="address" alignment="CENTER" layoutX="480.0" layoutY="112.0" prefHeight="36.0" prefWidth="397.0" promptText="adress" />
+                        <Button fx:id="newButton" layoutX="282.0" layoutY="310.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="New" />
                         <Text layoutX="110.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new user?">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="residence" alignment="CENTER" layoutX="238.0" layoutY="323.0" prefHeight="36.0" prefWidth="397.0" promptText="residence" />
-                        <TextField fx:id="country" alignment="CENTER" layoutX="238.0" layoutY="373.0" prefHeight="36.0" prefWidth="397.0" promptText="country" />
-                        <MenuButton fx:id="gender" layoutX="232.0" layoutY="220.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="397.0" text="Gender">
+                        <TextField fx:id="residence" alignment="CENTER" layoutX="480.0" layoutY="157.0" prefHeight="36.0" prefWidth="397.0" promptText="residence" />
+                        <TextField fx:id="country" alignment="CENTER" layoutX="480.0" layoutY="205.0" prefHeight="36.0" prefWidth="397.0" promptText="country" />
+                        <MenuButton fx:id="gender" layoutX="69.0" layoutY="205.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="397.0" text="Gender">
                           <items>
                             <MenuItem mnemonicParsing="false" text="Female" />
                             <MenuItem mnemonicParsing="false" text="Male" />
                           </items>
                         </MenuButton>
+                        <Label fx:id="errorMessage" layoutX="238.0" layoutY="480.0" prefHeight="17.0" prefWidth="398.0" />
+                        <DatePicker fx:id="birthDate" layoutX="278.0" layoutY="256.0" prefHeight="36.0" prefWidth="405.0" promptText="Date Of Birth" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Module" onSelectionChanged="#switchTab">
+            <Tab fx:id="module" onSelectionChanged="#switchTab" text="Module">
                <content>
-                  <AnchorPane fx:id="modulePane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="title" alignment="CENTER" layoutX="60.0" layoutY="119.0" prefHeight="36.0" prefWidth="373.0" promptText="Title" />
-                        <TextField fx:id="status" alignment="CENTER" layoutX="60.0" layoutY="170.0" prefHeight="36.0" prefWidth="374.0" promptText="Status" />
-                        <Button fx:id="new" layoutX="238.0" layoutY="440.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="New" />
+                        <Button fx:id="newButton" layoutX="238.0" layoutY="431.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="New" />
                         <Text layoutX="60.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new module?">
                            <font>
                               <Font size="26.0" />
@@ -90,20 +95,32 @@
                         </Text>
                         <TextArea fx:id="description" layoutX="60.0" layoutY="221.0" prefHeight="201.0" prefWidth="373.0" promptText="Description" />
                         <TextField fx:id="version" alignment="CENTER" layoutX="449.0" layoutY="119.0" prefHeight="36.0" prefWidth="373.0" promptText="Version" />
-                        <TextField fx:id="contactPersonName" alignment="CENTER" layoutX="449.0" layoutY="170.0" prefHeight="36.0" prefWidth="373.0" promptText="Contact Person Name" />
-                        <TextField fx:id="contactPersonEmail" alignment="CENTER" layoutX="449.0" layoutY="221.0" prefHeight="36.0" prefWidth="373.0" promptText="Contact Person Email" />
-                        <DatePicker fx:id="publicationDate" layoutX="449.0" layoutY="274.0" prefHeight="36.0" prefWidth="373.0" promptText="Publication date" />
+                        <DatePicker fx:id="publicationDate" layoutX="449.0" layoutY="170.0" prefHeight="36.0" prefWidth="373.0" promptText="Publication date" />
+                        <TableView fx:id="table" layoutX="449.0" layoutY="242.0" prefHeight="180.0" prefWidth="374.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
+                        <Label layoutX="452.0" layoutY="221.0" text="Select Which contact person you would like to add:" />
+                        <Label fx:id="errorMessage" layoutX="237.0" layoutY="480.0" prefHeight="17.0" prefWidth="398.0" />
+                        <MenuButton fx:id="status" layoutX="60.0" layoutY="170.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="373.0" text="Status">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Concept" />
+                            <MenuItem mnemonicParsing="false" text="Active" />
+                              <MenuItem mnemonicParsing="false" text="Archived" />
+                          </items>
+                        </MenuButton>
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab text="Webcast" onSelectionChanged="#switchTab">
+            <Tab fx:id="webcast" onSelectionChanged="#switchTab" text="Webcast">
                <content>
-                  <AnchorPane fx:id="webcastPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane fx:id="webcast" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="title" alignment="CENTER" layoutX="60.0" layoutY="119.0" prefHeight="36.0" prefWidth="373.0" promptText="Title" />
-                        <TextField fx:id="status" alignment="CENTER" layoutX="60.0" layoutY="170.0" prefHeight="36.0" prefWidth="374.0" promptText="Status" />
-                        <Button fx:id="new" layoutX="238.0" layoutY="440.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="New" />
+                        <Button fx:id="newButton" layoutX="238.0" layoutY="428.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="New" />
                         <Text layoutX="60.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new module?">
                            <font>
                               <Font size="26.0" />
@@ -111,9 +128,56 @@
                         </Text>
                         <TextArea fx:id="description" layoutX="60.0" layoutY="221.0" prefHeight="201.0" prefWidth="373.0" promptText="Description" />
                         <TextField fx:id="url" alignment="CENTER" layoutX="449.0" layoutY="119.0" prefHeight="36.0" prefWidth="373.0" promptText="URL" />
-                        <TextField fx:id="speaker" alignment="CENTER" layoutX="449.0" layoutY="170.0" prefHeight="36.0" prefWidth="373.0" promptText="Spreaker" />
-                        <TextField fx:id="organization" alignment="CENTER" layoutX="449.0" layoutY="221.0" prefHeight="36.0" prefWidth="373.0" promptText="Organization" />
-                        <DatePicker fx:id="publicationDate" layoutX="449.0" layoutY="269.0" prefHeight="36.0" prefWidth="373.0" promptText="Publication date" />
+                        <DatePicker fx:id="publicationDate" layoutX="449.0" layoutY="170.0" prefHeight="36.0" prefWidth="373.0" promptText="Publication date" />
+                        <TableView fx:id="table" layoutX="449.0" layoutY="243.0" prefHeight="179.0" prefWidth="375.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
+                        <Label layoutX="449.0" layoutY="221.0" text="Select which speaker you would like to add:" />
+                        <Label fx:id="errorMessage" layoutX="238.0" layoutY="480.0" prefHeight="17.0" prefWidth="398.0" />
+                        <MenuButton fx:id="status" layoutX="60.0" layoutY="169.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="373.0" text="Status">
+                           <items>
+                              <MenuItem mnemonicParsing="false" text="Concept" />
+                              <MenuItem mnemonicParsing="false" text="Active" />
+                              <MenuItem mnemonicParsing="false" text="Archived" />
+                           </items>
+                        </MenuButton>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="contactPerson" onSelectionChanged="#switchTab" text="Contact Person">
+               <content>
+                  <AnchorPane fx:id="contactPerson" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="name" alignment="CENTER" layoutX="294.0" layoutY="185.0" prefHeight="36.0" prefWidth="373.0" promptText="Name" />
+                        <Button fx:id="newButton" layoutX="282.0" layoutY="300.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="New" />
+                        <Text layoutX="60.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new Contact Person?">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="email" alignment="CENTER" layoutX="293.0" layoutY="238.0" prefHeight="36.0" prefWidth="373.0" promptText="Email" />
+                        <Label fx:id="errorMessage" layoutX="280.0" layoutY="362.0" prefHeight="17.0" prefWidth="398.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="speaker" onSelectionChanged="#switchTab" text="Speaker">
+               <content>
+                  <AnchorPane fx:id="speaker" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="name" alignment="CENTER" layoutX="294.0" layoutY="205.0" prefHeight="36.0" prefWidth="373.0" promptText="Name" />
+                        <TextField fx:id="organization" alignment="CENTER" layoutX="293.0" layoutY="256.0" prefHeight="36.0" prefWidth="374.0" promptText="Organization" />
+                        <Button fx:id="newButton" layoutX="282.0" layoutY="319.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="New" />
+                        <Text layoutX="103.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new Speaker?">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Text>
+                        <Label fx:id="errorMessage" layoutX="282.0" layoutY="376.0" prefHeight="17.0" prefWidth="398.0" />
                      </children>
                   </AnchorPane>
                </content>
@@ -121,7 +185,7 @@
         </tabs>
       </TabPane>
       <Button fx:id="homeButton" layoutX="899.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchPage" text="home" />
-      <Text layoutX="353.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create" textAlignment="CENTER" wrappingWidth="161.13671875">
+      <Text layoutX="397.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create" textAlignment="CENTER" wrappingWidth="161.13671875">
          <font>
             <Font size="18.0" />
          </font>

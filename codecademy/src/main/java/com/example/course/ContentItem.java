@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -79,9 +80,8 @@ public abstract class ContentItem {
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         HashMap<String, String> searchArgs = new HashMap<String, String>();
         searchArgs.put("title", GUIController.searchForNodeText("title", TextField.class, pane));
-        searchArgs.put("trackingNumber", GUIController.searchForNodeText("trackingNumber", TextField.class, pane));
         searchArgs.put("description", GUIController.searchForNodeText("description", TextArea.class, pane));
-        searchArgs.put("status", GUIController.searchForNodeText("status", TextField.class, pane));
+        searchArgs.put("status", GUIController.searchForNodeText("status",MenuButton.class, pane));
         DatePicker date = (DatePicker) pane.lookup("#publicationDate");
         if (date.getValue() != null) {
             searchArgs.put("publicationDate", date.getValue().toString());
@@ -121,11 +121,6 @@ public abstract class ContentItem {
                 }
             }
         });
-
-        final ObservableList<ContentItem> data = FXCollections.observableArrayList(
-                new Module(0, "test", LocalDate.now(), Status.ACTIVE, "test", 0, 0.1, "contactPersonEmail", 1));
-
-        table.setItems(data);
     }
 
     abstract public void generatePopupWindow(MouseEvent event, boolean editable) throws NoSuchMethodException,
