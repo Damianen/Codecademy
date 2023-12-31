@@ -60,7 +60,7 @@ public class DatabaseEnrollment extends Database{
 
         LocalDate enrollmentDate = LocalDate.now();
 
-        String SQL = "INSERT INTO [Enrollment] (enrollmentDate, userEmail, courseTitle, certificateID) VALUES ('" + enrollmentDate + "', '" + userEmail + "', '" + courseTitle + "', " + null + ")";
+        String SQL = "INSERT INTO [Enrollment] (enrollmentDate, userEmail, courseTitle) VALUES ('" + enrollmentDate + "', '" + userEmail + "', '" + courseTitle + "')";
 
         Connection con = getDbConnection();
 

@@ -2,7 +2,6 @@ package com.example.database;
 
 import com.example.course.ContentItem;
 import com.example.course.Module;
-import com.example.course.Webcast;
 import com.example.course.ContentItem.Status;
 import com.example.exeptions.AlreadyExistsException;
 
@@ -19,7 +18,7 @@ public class DatabaseModule extends Database{
 
     public static Module readModule(int id) {
 
-        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module emailContactPersion FROM ContentItem INNER JOIN Module ON ContentItem.ID = Module.contentItemID WHERE Module.ID = " + id;
+        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module.emailContactPerson FROM ContentItem INNER JOIN [Module] ON ContentItem.ID = Module.contentItemID WHERE Module.ID = " + id;
 
         Connection con = getDbConnection();
 
@@ -40,7 +39,7 @@ public class DatabaseModule extends Database{
                 Status status = Status.valueOf(rs.getString("status"));
                 String description = rs.getString("description");
                 
-                int version = rs.getInt("version");
+                double version = rs.getDouble("version");
                 int orderNumber = rs.getInt("orderNumber");
                 String emailContactPerson = rs.getString("emailContactPerson");
 
@@ -83,7 +82,7 @@ public class DatabaseModule extends Database{
                 String description = rs.getString("description");
                 
                 int id = rs.getInt("ModuleID");
-                int version = rs.getInt("version");
+                double version = rs.getDouble("version");
                 int orderNumber = rs.getInt("orderNumber");
                 String emailContactPerson = rs.getString("emailContactPerson");
 
@@ -103,7 +102,7 @@ public class DatabaseModule extends Database{
         }
     }
 
-    public static boolean createModule(String title, LocalDate publicationDate, Status status, String description, String version, int orderNumber, String emailContactPerson, String courseTitle) {
+    public static boolean createModule(String title, LocalDate publicationDate, Status status, String description, double version, int orderNumber, String emailContactPerson, String courseTitle) {
 
         Connection con = getDbConnection();
 
@@ -133,7 +132,7 @@ public class DatabaseModule extends Database{
 
     }
 
-    public static boolean updateModule(int id, String title, LocalDate publicationDate, Status status, String description, String version, int orderNumber, String emailContactPerson, String courseTitle) {
+    public static boolean updateModule(int id, String title, LocalDate publicationDate, Status status, String description, double version, int orderNumber, String emailContactPerson, String courseTitle) {
 
         Module module = readModule(id);
 
@@ -165,7 +164,7 @@ public class DatabaseModule extends Database{
 
     }
 
-    public static boolean deleteWebcast(int id) {
+    public static boolean deleteModule(int id) {
         
         Module module = readModule(id);
 

@@ -153,7 +153,7 @@ public class DatabaseCertificate extends Database{
 
     public static Certificate getEnrollmentCertificate(int enrollmentID) {
 
-        String SQL = "SELECT * FROM [Certificate] WHERE enrollmentID = '" + enrollmentID + "'";
+        String SQL = "SELECT * FROM [Certificate] WHERE enrollmentID = " + enrollmentID;
 
         Connection con = getDbConnection();
 

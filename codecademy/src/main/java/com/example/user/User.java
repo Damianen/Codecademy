@@ -124,11 +124,11 @@ public class User {
     }
 
     public void addEnrollment() {
-
+        
     }
 
     public void generateUserCertificates() {
-
+        
     }
 
     static public HashMap<String, String> getArgsHashMap(AnchorPane pane) throws NoSuchMethodException,
