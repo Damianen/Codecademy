@@ -48,7 +48,7 @@ public class Enrollment {
 
         this.course = DatabaseCourse.readCourse(courseTitle);
         // this.progresses = DatabaseProgress.getEnrollmentProgresses();
-        this.user = new User(courseTitle, courseTitle, enrollmentDate, Gender.M, courseTitle, courseTitle, courseTitle);
+        
         this.certificate = DatabaseCertificate.getEnrollmentCertificate(this.id);
     }
 

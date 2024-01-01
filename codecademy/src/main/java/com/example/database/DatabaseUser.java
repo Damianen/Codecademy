@@ -35,10 +35,11 @@ public class DatabaseUser extends Database{
                 LocalDate dateOfBirthDB = rs.getDate("dateOfBirth").toLocalDate();
                 Gender genderDB = Gender.valueOf(rs.getString("gender"));
                 String addressDB = rs.getString("address");
+                String postalCodeDB = rs.getString("postalCode");
                 String residenceDB = rs.getString("residence");
                 String countryDB = rs.getString("country");
 
-                data = new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, residenceDB, countryDB);
+                data = new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, postalCodeDB, residenceDB, countryDB);
             }
             
             return data;
@@ -53,13 +54,13 @@ public class DatabaseUser extends Database{
         }
     }
     
-    public static boolean createUser(String email, String name, LocalDate dateOfBirth, Gender gender, String address, String residence, String country) throws AlreadyExistsException {
+    public static boolean createUser(String email, String name, LocalDate dateOfBirth, Gender gender, String address, String postalCode, String residence, String country) throws AlreadyExistsException {
 
         if(readUser(email) != null){
             throw new AlreadyExistsException("The email \"" + email + "\" already exists for user");
         }
 
-        String SQL = "INSERT INTO [User] VALUES ('" + email + "', '" + name + "', '" + dateOfBirth + "', '" + gender + "', '" + address + "', '" + residence + "', '" + country + "')";
+        String SQL = "INSERT INTO [User] VALUES ('" + email + "', '" + name + "', '" + dateOfBirth + "', '" + gender + "', '" + address + "', '" + postalCode + "', '" + residence + "', '" + country + "')";
 
         Connection con = getDbConnection();
 
@@ -82,13 +83,13 @@ public class DatabaseUser extends Database{
 
     }
 
-    public static boolean updateUser(String email, String newEmail, String newName, LocalDate newDateOfBirth, Gender newGender, String newAddress, String newResidence, String newCountry) throws AlreadyExistsException {
+    public static boolean updateUser(String email, String newEmail, String newName, LocalDate newDateOfBirth, Gender newGender, String newAddress, String postalCode, String newResidence, String newCountry) throws AlreadyExistsException {
 
         if(readUser(newEmail) != null){
             throw new AlreadyExistsException("The email \"" + newEmail + "\" already exists for user");
         }
 
-        String SQL = "UPDATE [User] SET email = '" + newEmail + "', name = '" + newName + "', dateOfBirth = '" + newDateOfBirth + "', gender = '" + newGender + "', address = '" + newAddress + "', residence = '" + newResidence + "', country = '" + newCountry + "' WHERE email = '" + email + "'";
+        String SQL = "UPDATE [User] SET email = '" + newEmail + "', name = '" + newName + "', dateOfBirth = '" + newDateOfBirth + "', gender = '" + newGender + "', address = '" + newAddress + "', postalCode = '" + postalCode + "', residence = '" + newResidence + "', country = '" + newCountry + "' WHERE email = '" + email + "'";
 
         Connection con = getDbConnection();
 
@@ -158,10 +159,11 @@ public class DatabaseUser extends Database{
                 LocalDate dateOfBirthDB = rs.getDate("dateOfBirth").toLocalDate();
                 Gender genderDB = Gender.valueOf(rs.getString("gender"));
                 String addressDB = rs.getString("address");
+                String postalCodeDB = rs.getString("postalCode");
                 String residenceDB = rs.getString("residence");
                 String countryDB = rs.getString("country");
 
-                data.add(new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, residenceDB, countryDB));
+                data.add(new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, postalCodeDB, residenceDB, countryDB));
             }
 
             return data;
@@ -198,10 +200,11 @@ public class DatabaseUser extends Database{
                 LocalDate dateOfBirthDB = rs.getDate("dateOfBirth").toLocalDate();
                 Gender genderDB = Gender.valueOf(rs.getString("gender"));
                 String addressDB = rs.getString("address");
+                String postalCodeDB = rs.getString("postalCode");
                 String residenceDB = rs.getString("residence");
                 String countryDB = rs.getString("country");
 
-                data.add(new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, residenceDB, countryDB));
+                data.add(new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, postalCodeDB, residenceDB, countryDB));
             }
 
             return data;
@@ -238,10 +241,11 @@ public class DatabaseUser extends Database{
                 LocalDate dateOfBirthDB = rs.getDate("dateOfBirth").toLocalDate();
                 Gender genderDB = Gender.valueOf(rs.getString("gender"));
                 String addressDB = rs.getString("address");
+                String postalCodeDB = rs.getString("postalCode");
                 String residenceDB = rs.getString("residence");
                 String countryDB = rs.getString("country");
 
-                data.add(new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, residenceDB, countryDB));
+                data.add(new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, postalCodeDB, residenceDB, countryDB));
             }
 
             return data;
