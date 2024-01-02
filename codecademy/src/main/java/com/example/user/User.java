@@ -18,6 +18,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
@@ -123,8 +124,8 @@ public class User {
         return enrollments;
     }
 
-    public void addEnrollment() {
-        
+    public void addEnrollment(TableView table) {
+        Course.generateTable(table, false, null);
     }
 
     public void generateUserCertificates() {
@@ -226,6 +227,13 @@ public class User {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("userEmail", email);
                 Enrollment.generateTable(table, editable, map);
+                Button btn = (Button)rootTabPane.lookup("#add");
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        
+                    } 
+                });
             } else {
                 Progress.generateTable(table, editable, new HashMap<String, String>());
             }

@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.HashMap;
 
+import com.example.database.DatabaseModule;
+import com.example.database.DatabaseWebcast;
 import com.example.javafx.GUIController;
 
 import javafx.collections.FXCollections;
@@ -121,6 +123,11 @@ public abstract class ContentItem {
                 }
             }
         });
+
+        final ObservableList<ContentItem> data = DatabaseModule.readModuleList();
+        data.addAll(DatabaseWebcast.readWebcastList());
+
+        table.setItems(data);
     }
 
     abstract public void generatePopupWindow(MouseEvent event, boolean editable) throws NoSuchMethodException,

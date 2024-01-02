@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 
 import com.example.database.DatabaseContactPerson;
+import com.example.database.DatabaseModule;
 import com.example.database.DatabaseSpeaker;
 import com.example.javafx.GUIController;
 import com.example.user.Progress;
@@ -124,10 +125,8 @@ public class Module extends ContentItem {
             }
         });
 
-        final ObservableList<ContentItem> data = FXCollections.observableArrayList(
-                new Module(0, "test", LocalDate.now(), Status.ACTIVE, "test", 0, 0.1, "contactPersonEmail", 1));
 
-        table.setItems(data);
+        //table.setItems(DatabaseModule.readCourseTitleModule(searchArgs.get("courseTitle")));
     }
 
     @Override
@@ -184,7 +183,8 @@ public class Module extends ContentItem {
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
             if (tab.getId().equals("course")) {
-                Course.generateTable(table, editable, new HashMap<String, String>());
+                HashMap<String, String> map = new HashMap<String, String>();
+                Course.generateTable(table, editable, );
             }
         }
     }

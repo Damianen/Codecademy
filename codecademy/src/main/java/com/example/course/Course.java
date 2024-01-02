@@ -159,7 +159,9 @@ public class Course {
                 if (!editable) {
                     table.setPrefHeight(320);
                 }
-                Module.generateTable(table, editable, new HashMap<String, String>());
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("courseTitle", title);
+                Module.generateTable(table, editable, map);
             } else {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("courseTitle", title);

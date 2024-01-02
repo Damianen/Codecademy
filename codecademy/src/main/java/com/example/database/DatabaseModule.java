@@ -59,6 +59,49 @@ public class DatabaseModule extends Database{
         }
     }
 
+    public static ObservableList<ContentItem> readModuleList() {
+
+        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module.emailContactPerson FROM ContentItem INNER JOIN [Module] ON ContentItem.ID = Module.contentItemID";
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        ObservableList<ContentItem> data = FXCollections.observableArrayList();
+
+        try {
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                
+                int contentItemID = rs.getInt("ContentItemID");
+                String title = rs.getString("title");
+                LocalDate publicationDate = rs.getDate("publicationDate").toLocalDate();
+                Status status = Status.valueOf(rs.getString("status"));
+                String description = rs.getString("description");
+                int id = rs.getInt("ModuleID");
+                double version = rs.getDouble("version");
+                int orderNumber = rs.getInt("orderNumber");
+                String emailContactPerson = rs.getString("emailContactPerson");
+
+                data.add(new Module(contentItemID, title, publicationDate, status, description, id, version, emailContactPerson, orderNumber));
+
+            }
+            
+            return data;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+    }
+
     public static Module readModuleWithContentItemID(int contentItemID) {
 
         String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module emailContactPersion FROM ContentItem INNER JOIN Module ON ContentItem.ID = Module.contentItemID WHERE ContentItem.ID = " + contentItemID;

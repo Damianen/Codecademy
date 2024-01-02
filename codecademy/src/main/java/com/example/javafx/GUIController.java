@@ -267,8 +267,8 @@ public class GUIController {
                     HashMap<String, String> moduleMap = Module.getArgsHashMap(tabRoot);
                     DatabaseModule.createModule(moduleMap.get("title"), ((DatePicker)tabRoot.lookup("#publicationDate")).getValue(), 
                         Status.valueOf(moduleMap.get("status").toUpperCase()), moduleMap.get("description"), 
-                        moduleMap.get("version"), new Random().nextInt(10000000) + 1, 
-                        ((ContactPerson)((TableView)tabRoot.lookup("#table")).getSelectionModel().getSelectedItem()).getEmail(), null);
+                        Double.valueOf(moduleMap.get("version")), new Random().nextInt(10000000) + 1, 
+                        ((ContactPerson)((TableView)tabRoot.lookup("#table")).getSelectionModel().getSelectedItem()).getEmail(), "test");
                     break;
                 case "webcast":
                     HashMap<String, String> webMap = Webcast.getArgsHashMap(tabRoot);
