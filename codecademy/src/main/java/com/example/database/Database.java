@@ -9,7 +9,7 @@ public class Database {
     public static Connection getDbConnection() {
         // Dit zijn de instellingen voor de verbinding. Vervang de databaseName indien
         // deze voor jou anders is.
-        String connectionUrl = "jdbc:sqlserver://192.168.178.174:1433;databaseName=Codecademy;integratedSecurity=false;encrypt=true;trustServerCertificate=true;";
+        String connectionUrl = "jdbc:sqlserver://Localhost;databaseName=Codecademy;integratedSecurity=false;encrypt=true;trustServerCertificate=true;";
 
         String username = "group1";
 
