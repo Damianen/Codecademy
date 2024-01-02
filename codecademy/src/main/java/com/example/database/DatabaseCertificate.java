@@ -111,46 +111,6 @@ public class DatabaseCertificate extends Database{
 
     }
 
-    public static final ObservableList<User> getUserCertificates(String userEmail) {
-
-        String SQL = "SELECT * FROM [Certificate] WHERE name LIKE '%" + userEmail + "%'";
-
-        Connection con = getDbConnection();
-
-        Statement stmt = null;
-        ResultSet rs = null;
-
-        final ObservableList<User> data = FXCollections.observableArrayList();
-
-        try{
-
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(SQL);
-
-            while (rs.next()) {
-                String emailDB = rs.getString("email");
-                String nameDB = rs.getString("name");
-                LocalDate dateOfBirthDB = rs.getDate("dateOfBirth").toLocalDate();
-                Gender genderDB = Gender.valueOf(rs.getString("gender"));
-                String addressDB = rs.getString("address");
-                String residenceDB = rs.getString("residence");
-                String countryDB = rs.getString("country");
-
-                data.add(new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, residenceDB, countryDB));
-            }
-
-            return data;
-
-        }catch(Exception e){
-            e.printStackTrace();
-            return data;
-        }finally {
-            if (rs != null) try { rs.close(); } catch(Exception e) {}
-            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
-            if (con != null) try { con.close(); } catch(Exception e) {}
-        }
-    }
-
     public static Certificate getEnrollmentCertificate(int enrollmentID) {
 
         String SQL = "SELECT * FROM [Certificate] WHERE enrollmentID = " + enrollmentID;

@@ -37,6 +37,7 @@ public class User {
     private String name;
     private LocalDate dateOfBirth;
     private String address;
+    private String postalCode;
     private String residence;
     private String country;
     private Gender gender;
@@ -47,21 +48,18 @@ public class User {
         F
     }
 
-    public User(String email, String name, LocalDate dateOfBirth, Gender gender, String address, String residence,
+    public User(String email, String name, LocalDate dateOfBirth, Gender gender, String address, String postalCode, String residence,
             String country) {
         this.email = email;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.address = address;
+        this.postalCode = postalCode;
         this.residence = residence;
         this.country = country;
 
         this.enrollments = DatabaseEnrollment.getUserEnrollments(email);
-    }
-
-    public String getGenderString() {
-        return gender.toString();
     }
 
     public void setEmail(String email) {
@@ -94,6 +92,14 @@ public class User {
 
     public String getAdress() {
         return address;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public void setResidence(String residence) {
