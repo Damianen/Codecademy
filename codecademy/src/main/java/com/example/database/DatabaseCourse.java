@@ -379,4 +379,37 @@ public class DatabaseCourse extends Database {
                 }
         }
     }
+
+    public static boolean createRecommendCourse(String originalCourse, String recommendedCourse){
+
+        String SQL = "INSERT INTO RecommendedCourse VALUES ('" + originalCourse + "', '" + recommendedCourse + "')";
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+
+        try {
+
+            stmt = con.createStatement();
+            stmt.executeUpdate(SQL);
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (stmt != null)
+                try {
+                    stmt.close();
+                } catch (Exception e) {
+                }
+            if (con != null)
+                try {
+                    con.close();
+                } catch (Exception e) {
+                }
+        }
+
+    }
 }

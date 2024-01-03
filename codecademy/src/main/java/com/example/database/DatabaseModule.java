@@ -226,7 +226,7 @@ public class DatabaseModule extends Database{
 
     public static ObservableList<Module> getCourseModules(String courseTitle) {
 
-        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module.emailContactPerson FROM ContentItem INNER JOIN [Module] ON ContentItem.ID = Module.contentItemID WHERE courseTitle = '" + courseTitle + "'";
+        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module.emailContactPerson FROM ContentItem INNER JOIN [Module] ON ContentItem.ID = Module.contentItemID WHERE courseTitle = '" + courseTitle + "' ORDER BY orderNumber ASC";
 
         Connection con = getDbConnection();
 
