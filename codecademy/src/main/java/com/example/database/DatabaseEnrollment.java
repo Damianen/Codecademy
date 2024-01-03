@@ -143,9 +143,9 @@ public class DatabaseEnrollment extends Database{
         }
     }
 
-    public static ObservableList<Enrollment> getCourseEnrollments(String userEmail) {
+    public static ObservableList<Enrollment> getCourseEnrollments(String courseTitle) {
 
-        String SQL = "SELECT * FROM [Enrollment] WHERE userEmail = '"+ userEmail + "'";
+        String SQL = "SELECT * FROM [Enrollment] WHERE courseTitle = '"+ courseTitle + "'";
 
         Connection con = getDbConnection();
 
@@ -162,9 +162,9 @@ public class DatabaseEnrollment extends Database{
             while (rs.next()) {
                 int idDB = rs.getInt("ID");
                 LocalDate enrollmentDate = rs.getDate("enrollmentDate").toLocalDate();
-                String courseTitle = rs.getString("courseTitle");
+                String courseTitleDB = rs.getString("courseTitle");
 
-                data.add(new Enrollment(idDB, enrollmentDate, courseTitle));
+                data.add(new Enrollment(idDB, enrollmentDate, courseTitleDB));
             }
 
             return data;
@@ -223,13 +223,24 @@ public class DatabaseEnrollment extends Database{
 
         Statement stmt = null;
         ResultSet rs = null;
+        Enrollment data = null;
 
         try {
 
             stmt = con.createStatement();
             rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                
+                int idDB = rs.getInt("ID");
+                LocalDate enrollmentDate = rs.getDate("enrollmentDate").toLocalDate();
+                String courseTitleDB = rs.getString("courseTitle");
+
+                data = new Enrollment(idDB, enrollmentDate, courseTitleDB);
+                
+            }
             
-            if(rs == null){
+            if(data == null){
                 return false;
             }else{
                 return true;

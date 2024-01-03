@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.example.database.DatabaseCourse;
+import com.example.database.DatabaseModule;
 import com.example.javafx.GUIController;
 import com.example.user.Enrollment;
 
@@ -41,14 +42,14 @@ public class Course {
     private String subject;
     private String introText;
     private DifficultyLevel difficultyLevel;
-    private ArrayList<Module> modules;
+    private ObservableList<Module> modules;
 
     public Course(String title, String subject, String introText, DifficultyLevel difficulty) {
         this.title = title;
         this.subject = subject;
         this.introText = introText;
         this.difficultyLevel = difficulty;
-        this.modules = new ArrayList<Module>();
+        this.modules = DatabaseModule.getCourseModules(title);
     }
 
     public String getTitle() {
@@ -65,6 +66,14 @@ public class Course {
 
     public String getIntroText() {
         return introText;
+    }
+
+    public ObservableList<Module> getModules() {
+        return modules;
+    }
+
+    public void setModules(ObservableList<Module> modules) {
+        this.modules = modules;
     }
 
     public void addModule(Module module) {

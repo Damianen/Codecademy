@@ -40,7 +40,6 @@ public class Enrollment {
     private Certificate certificate;
     private Course course;
     private ArrayList<Progress> progresses;
-    private User user;
 
     public Enrollment(int id, LocalDate enrollmentDate, String courseTitle) {
         this.id = id;
@@ -80,20 +79,8 @@ public class Enrollment {
         return course;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
     public String getEnrolmentDateString() {
         return enrollmentDate.toString();
-    }
-
-    public String getUserName() {
-        return this.user.getName();
     }
 
     public String getCourseTitle() {

@@ -153,6 +153,10 @@ public class DatabaseModule extends Database{
 
             String SQL = "INSERT INTO [Module] VALUES ('" + version + "', '" + orderNumber + "', '" + emailContactPerson + "', SCOPE_IDENTITY(), '" + courseTitle + "')";
 
+            if(orderNumber == 0){
+                SQL = "INSERT INTO [Module] VALUES ('" + version + "', " + null + ", '" + emailContactPerson + "', SCOPE_IDENTITY(), '" + courseTitle + "')";
+            }
+
             Statement stmt = null;
 
             try {
@@ -217,6 +221,49 @@ public class DatabaseModule extends Database{
             return true;
         }else{
             return false;
+        }
+    }
+
+    public static ObservableList<Module> getCourseModules(String courseTitle) {
+
+        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module.emailContactPerson FROM ContentItem INNER JOIN [Module] ON ContentItem.ID = Module.contentItemID WHERE courseTitle = '" + courseTitle + "'";
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        ObservableList<Module> data = FXCollections.observableArrayList();
+
+        try {
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                
+                int contentItemID = rs.getInt("ContentItemID");
+                String title = rs.getString("title");
+                LocalDate publicationDate = rs.getDate("publicationDate").toLocalDate();
+                Status status = Status.valueOf(rs.getString("status"));
+                String description = rs.getString("description");
+                int id = rs.getInt("ModuleID");
+                double version = rs.getDouble("version");
+                int orderNumber = rs.getInt("orderNumber");
+                String emailContactPerson = rs.getString("emailContactPerson");
+
+                data.add(new Module(contentItemID, title, publicationDate, status, description, id, version, emailContactPerson, orderNumber));
+
+            }
+            
+            return data;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
         }
     }
 

@@ -330,4 +330,53 @@ public class DatabaseCourse extends Database {
                 }
         }
     }
+
+    public static final ObservableList<Course> getNotEnrolledCourseForUser(String userEmail) {
+
+        String SQL = "SELECT * FROM Course WHERE title NOT IN (SELECT courseTitle FROM Enrollment WHERE userEmail = '" + userEmail + "')";
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        final ObservableList<Course> data = FXCollections.observableArrayList();
+
+        try {
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                String titleDB = rs.getString("title");
+                String subjectDB = rs.getString("subject");
+                String introTextDB = rs.getString("introText");
+                DifficultyLevel difficultyLevelDB = DifficultyLevel.valueOf(rs.getString("difficultyLevel"));
+
+                data.add(new Course(titleDB, subjectDB, introTextDB, difficultyLevelDB));
+            }
+
+            return data;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return data;
+        } finally {
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                }
+            if (stmt != null)
+                try {
+                    stmt.close();
+                } catch (Exception e) {
+                }
+            if (con != null)
+                try {
+                    con.close();
+                } catch (Exception e) {
+                }
+        }
+    }
 }
