@@ -51,7 +51,7 @@
                   <AnchorPane fx:id="enrolments1" minHeight="0.0" minWidth="0.0" prefHeight="389.0" prefWidth="419.0">
                      <children>
                         <TableView fx:id="table" prefHeight="354.0" prefWidth="419.0" />
-                        <Button layoutY="362.0" mnemonicParsing="false" text="Add webcast" />
+                        <Button layoutY="362.0" mnemonicParsing="false" text="View Webcast" />
                      </children>
                   </AnchorPane>
                </content>

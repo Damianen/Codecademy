@@ -99,7 +99,7 @@ public class Course {
 
     static public void generateTable(TableView<Course> table, boolean editable, HashMap<String, String> searchArgs) {
 
-        TableColumn<Course, String> title = new TableColumn<Course, String>("title");
+        TableColumn<Course, String> title = new TableColumn<Course, String>("Title");
         TableColumn<Course, String> subject = new TableColumn<Course, String>("Subject");
         TableColumn<Course, String> difficultyLevel = new TableColumn<Course, String>("Difficulty level");
 

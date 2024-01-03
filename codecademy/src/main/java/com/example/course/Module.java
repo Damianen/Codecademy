@@ -184,7 +184,7 @@ public class Module extends ContentItem {
             TableView table = (TableView) rootTabPane.lookup("#table");
             if (tab.getId().equals("course")) {
                 HashMap<String, String> map = new HashMap<String, String>();
-                Course.generateTable(table, editable, );
+                Course.generateTable(table, editable, map);
             }
         }
     }

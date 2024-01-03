@@ -206,8 +206,7 @@ public class GUIController {
         ((Button) toolbar.getItems().get(0)).setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                AnchorPane root = (AnchorPane) popupPane.getScene().getRoot();
-                root.getChildren().removeAll(popupPane, rect);
+                rootPane.getChildren().removeAll(popupPane, rect);
             }
         });
     }
@@ -260,7 +259,7 @@ public class GUIController {
                 case "user":
                     HashMap<String, String> userMap = User.getArgsHashMap(tabRoot);
                     DatabaseUser.createUser(userMap.get("email"), userMap.get("name"), ((DatePicker)tabRoot.lookup("#birthDate")).getValue(),
-                        Gender.valueOf(String.valueOf(userMap.get("gender").charAt(0))), userMap.get("address"), 
+                        Gender.valueOf(String.valueOf(userMap.get("gender").charAt(0))), userMap.get("address"), userMap.get("zipCode"), 
                         userMap.get("residence"), userMap.get("country"));
                     break;
                 case "module":

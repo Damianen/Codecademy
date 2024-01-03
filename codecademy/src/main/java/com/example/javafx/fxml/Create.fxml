@@ -77,7 +77,8 @@
                           </items>
                         </MenuButton>
                         <Label fx:id="errorMessage" layoutX="238.0" layoutY="480.0" prefHeight="17.0" prefWidth="398.0" />
-                        <DatePicker fx:id="birthDate" layoutX="278.0" layoutY="256.0" prefHeight="36.0" prefWidth="405.0" promptText="Date Of Birth" />
+                        <DatePicker fx:id="birthDate" layoutX="481.0" layoutY="256.0" prefHeight="36.0" prefWidth="405.0" promptText="Date Of Birth" />
+                        <TextField fx:id="zipCode" alignment="CENTER" layoutX="69.0" layoutY="256.0" prefHeight="36.0" prefWidth="397.0" promptText="Zip Code" />
                      </children>
                   </AnchorPane>
             </content>
