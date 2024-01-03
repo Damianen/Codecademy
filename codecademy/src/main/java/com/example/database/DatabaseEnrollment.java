@@ -1,6 +1,9 @@
 package com.example.database;
 
 import com.example.user.Enrollment;
+import com.example.course.ContentItem;
+import com.example.course.Course;
+import com.example.course.Module;
 import com.example.exeptions.AlreadyExistsException;
 import com.example.user.Certificate;
 import com.example.user.User;
@@ -13,6 +16,7 @@ import java.sql.*;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Random;
 
 
 public class DatabaseEnrollment extends Database{
@@ -60,6 +64,8 @@ public class DatabaseEnrollment extends Database{
 
         LocalDate enrollmentDate = LocalDate.now();
 
+        Course course = DatabaseCourse.readCourse(courseTitle);
+
         String SQL = "INSERT INTO [Enrollment] (enrollmentDate, userEmail, courseTitle) VALUES ('" + enrollmentDate + "', '" + userEmail + "', '" + courseTitle + "')";
 
         Connection con = getDbConnection();
@@ -70,6 +76,14 @@ public class DatabaseEnrollment extends Database{
 
             stmt = con.createStatement();
             stmt.executeUpdate(SQL);
+
+            for (ContentItem contentItem : course.getModules()) {
+
+                Random rand = new Random();
+                int randomNumber = rand.nextInt(101);
+
+                DatabaseProgress.createProgress(randomNumber, userEmail, contentItem.getContentItemId());
+            }
 
             return true;
 

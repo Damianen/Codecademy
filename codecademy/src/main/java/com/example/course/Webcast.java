@@ -45,10 +45,6 @@ public class Webcast extends ContentItem {
         return id;
     }
 
-    public int getContentItemId() {
-        return super.id;
-    }
-
     public Speaker getSpeaker() {
         return speaker;
     }

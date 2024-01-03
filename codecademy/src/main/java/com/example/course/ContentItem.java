@@ -22,7 +22,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public abstract class ContentItem {
-    protected final int id;
+    protected final int contentItemId;
     protected String title;
     protected LocalDate publicationDate;
     protected String description;
@@ -35,15 +35,15 @@ public abstract class ContentItem {
     }
 
     public ContentItem(int id, String title, LocalDate publicationDate, Status status, String description) {
-        this.id = id;
+        this.contentItemId = id;
         this.title = title;
         this.publicationDate = publicationDate;
         this.status = status;
         this.description = description;
     }
 
-    public int getId() {
-        return id;
+    public int getContentItemId() {
+        return this.contentItemId;
     }
 
     public void setTitle(String title) {

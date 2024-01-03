@@ -42,16 +42,13 @@ public class Module extends ContentItem {
 
     public Module(int contentItemID, String title, LocalDate publicationDate, Status status, String description, int id,
             double version, String emailContactPerson, int orderNumber) {
+
         super(contentItemID, title, publicationDate, status, description);
 
         this.id = id;
         this.version = version;
         this.contactPerson = DatabaseContactPerson.readContactPerson(emailContactPerson);
         this.orderNumber = orderNumber;
-    }
-
-    public int getContentItemId() {
-        return super.getId();
     }
 
     public int getId() {

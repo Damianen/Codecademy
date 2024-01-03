@@ -49,7 +49,7 @@ public class DatabaseProgress extends Database{
         }
     }
     
-    public static boolean createProgress(int progressPercentage, int userEmail, int contentItemID) {
+    public static boolean createProgress(int progressPercentage, String userEmail, int contentItemID) {
 
         String SQL = "INSERT INTO [Progress] VALUES ('" + progressPercentage + "', '" + userEmail + "', '" + contentItemID + "')";
 

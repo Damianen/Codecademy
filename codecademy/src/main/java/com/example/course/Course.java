@@ -77,6 +77,7 @@ public class Course {
     }
 
     public void addModule(Module module) {
+        DatabaseModule.updateModule(module.getId(), module.getTitle(), module.getPublicationDate(), module.getStatus(), module.getDescription(), module.getVersion(), module.getOrderNumber(), module.getContactPerson().getEmail(), this.title);
         modules.add(module);
     }
 
