@@ -81,8 +81,13 @@ public class Course {
         this.modules = modules;
     }
 
-    public void addModule(Module module) {
-        DatabaseModule.updateModule(module.getId(), module.getTitle(), module.getPublicationDate(), module.getStatus(), module.getDescription(), module.getVersion(), module.getOrderNumber(), module.getContactPerson().getEmail(), this.title);
+    public boolean addModule(Module module) {
+
+        int orderNumber = DatabaseModule.getCourseModules(this.title).size() + 1;
+        
+        if(DatabaseModule.updateModule(module.getId(), module.getTitle(), module.getPublicationDate(), module.getStatus(), module.getDescription(), module.getVersion(), orderNumber, module.getContactPerson().getEmail(), this.title) == false){
+            return false;
+        }
 
         ObservableList<User> enrolledUsers = DatabaseUser.getEnrolledUsersForCourse(this);
 
@@ -99,10 +104,15 @@ public class Course {
         }
         
         modules.add(module);
+
+        return true;
     }
 
-    public void removeModule(Module module) {
-        DatabaseModule.updateModule(module.getId(), module.getTitle(), module.getPublicationDate(), module.getStatus(), module.getDescription(), module.getVersion(), 0, module.getContactPerson().getEmail(), null);
+    public boolean removeModule(Module module) {
+
+        if(DatabaseModule.updateOrderNumbersRemoveFromCourse(module.getId(), module.getOrderNumber(), this.title) == false){
+            return false;
+        }
 
         ObservableList<User> enrolledUsers = DatabaseUser.getEnrolledUsersForCourse(this);
 
@@ -113,6 +123,8 @@ public class Course {
         }
         
         modules.remove(module);
+
+        return true;
     }
 
     public Course generateRecomendedCourse() {

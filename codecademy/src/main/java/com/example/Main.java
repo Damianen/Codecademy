@@ -27,16 +27,6 @@ import javafx.scene.control.ContentDisplay;
 public class Main {
     public static void main(String[] args) {
         GUI gui = new GUI();
-        //gui.startGui(args);
-
-        try {
-            
-            Course course = DatabaseCourse.readCourse("ruben");
-            
-            System.out.println(DatabaseOverview.getAveragePogressPercentagePerCourseModule(course));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        gui.startGui(args);
     }
 }
