@@ -104,7 +104,7 @@ public class DatabaseModule extends Database{
 
     public static Module readModuleWithContentItemID(int contentItemID) {
 
-        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module emailContactPersion FROM ContentItem INNER JOIN Module ON ContentItem.ID = Module.contentItemID WHERE ContentItem.ID = " + contentItemID;
+        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module.emailContactPerson FROM ContentItem INNER JOIN Module ON ContentItem.ID = Module.contentItemID WHERE ContentItem.ID = " + contentItemID;
 
         Connection con = getDbConnection();
 
@@ -153,8 +153,12 @@ public class DatabaseModule extends Database{
 
             String SQL = "INSERT INTO [Module] VALUES ('" + version + "', '" + orderNumber + "', '" + emailContactPerson + "', SCOPE_IDENTITY(), '" + courseTitle + "')";
 
-            if(orderNumber == 0){
+            if(orderNumber == 0 && courseTitle != null){
                 SQL = "INSERT INTO [Module] VALUES ('" + version + "', " + null + ", '" + emailContactPerson + "', SCOPE_IDENTITY(), '" + courseTitle + "')";
+            }else if(orderNumber != 0 && courseTitle == null){
+                SQL = "INSERT INTO [Module] VALUES ('" + version + "', '" + orderNumber + "', '" + emailContactPerson + "', SCOPE_IDENTITY(), " + null + ")";
+            }else if(orderNumber == 0 && courseTitle == null){
+                SQL = "INSERT INTO [Module] VALUES ('" + version + "', " + null + ", '" + emailContactPerson + "', SCOPE_IDENTITY(), " + null + ")";
             }
 
             Statement stmt = null;
@@ -186,6 +190,14 @@ public class DatabaseModule extends Database{
         if(DatabaseContentItem.updateContentItem(module.getContentItemId(), title, publicationDate, status, description) == true){
 
             String SQL = "UPDATE [Module] SET version = '" + version + "', orderNumber = '" + orderNumber + "', emailContactPerson = '" + emailContactPerson + "', courseTitle = '" + courseTitle + "' WHERE ID = " + id;
+
+            if(orderNumber == 0 && courseTitle != null){
+                SQL = "UPDATE [Module] SET version = '" + version + "', orderNumber = " + null + ", emailContactPerson = '" + emailContactPerson + "', courseTitle = '" + courseTitle + "' WHERE ID = " + id;
+            }else if(orderNumber != 0 && courseTitle == null){
+                SQL = "UPDATE [Module] SET version = '" + version + "', orderNumber = '" + orderNumber + "', emailContactPerson = '" + emailContactPerson + "', courseTitle = " + null + " WHERE ID = " + id;
+            }else if(orderNumber == 0 && courseTitle == null){
+                SQL = "UPDATE [Module] SET version = '" + version + "', orderNumber = " + null + ", emailContactPerson = '" + emailContactPerson + "', courseTitle = " + null + " WHERE ID = " + id;
+            }
 
             Connection con = getDbConnection();
 

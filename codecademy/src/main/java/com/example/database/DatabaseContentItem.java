@@ -89,9 +89,9 @@ public class DatabaseContentItem extends Database{
 
     }
 
-    public static String getContentItemType() {
+    public static String getContentItemType(int contentItemID) {
         
-        String SQL = "SELECT CASE WHEN EXISTS (SELECT 1 FROM Webcast WHERE contentItemID = your_content_item_id) THEN 'Webcast' WHEN EXISTS (SELECT 1 FROM Module WHERE contentItemID = your_content_item_id) THEN 'Module' ELSE 'Unknown' END AS ContentType";
+        String SQL = "SELECT CASE WHEN EXISTS (SELECT 1 FROM Webcast WHERE contentItemID = " + contentItemID + ") THEN 'Webcast' WHEN EXISTS (SELECT 1 FROM Module WHERE contentItemID = " + contentItemID + ") THEN 'Module' ELSE 'Unknown' END AS ContentType";
 
         Connection con = getDbConnection();
 

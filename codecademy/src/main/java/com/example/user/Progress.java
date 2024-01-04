@@ -45,7 +45,7 @@ public class Progress {
         this.id = id;
         this.progressPercentage = progressPercentage;
 
-        switch (DatabaseContentItem.getContentItemType()) {
+        switch (DatabaseContentItem.getContentItemType(contentItemID)) {
             case "Webcast":
                 this.contentItem = DatabaseWebcast.readWebcastWithContentItemID(contentItemID);
                 break;

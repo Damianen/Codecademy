@@ -11,6 +11,7 @@ import com.example.course.Module;
 import com.example.course.ContentItem.Status;
 import com.example.database.DatabaseCertificate;
 import com.example.database.DatabaseContactPerson;
+import com.example.database.DatabaseContentItem;
 import com.example.database.DatabaseCourse;
 import com.example.database.DatabaseEnrollment;
 import com.example.database.DatabaseModule;
@@ -26,6 +27,16 @@ import javafx.scene.control.ContentDisplay;
 public class Main {
     public static void main(String[] args) {
         GUI gui = new GUI();
-        gui.startGui(args);
+        //gui.startGui(args);
+
+        try {
+            
+            Course course = DatabaseCourse.readCourse("ruben");
+            
+            System.out.println(DatabaseOverview.getAveragePogressPercentagePerCourseModule(course));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

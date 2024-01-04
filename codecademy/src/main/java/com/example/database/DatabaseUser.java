@@ -3,6 +3,7 @@ package com.example.database;
 import com.example.user.Enrollment;
 import com.example.user.User;
 import com.example.user.User.Gender;
+import com.example.course.Course;
 import com.example.exeptions.AlreadyExistsException;
 
 import javafx.collections.FXCollections;
@@ -222,6 +223,47 @@ public class DatabaseUser extends Database{
     public static final ObservableList<User> readUserSearchAll(HashMap<String, String> searchArgs) {
 
         String SQL = Database.getSQLQuery("[User]", searchArgs);
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        final ObservableList<User> data = FXCollections.observableArrayList();
+
+        try{
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                String emailDB = rs.getString("email");
+                String nameDB = rs.getString("name");
+                LocalDate dateOfBirthDB = rs.getDate("dateOfBirth").toLocalDate();
+                Gender genderDB = Gender.valueOf(rs.getString("gender"));
+                String addressDB = rs.getString("address");
+                String postalCodeDB = rs.getString("postalCode");
+                String residenceDB = rs.getString("residence");
+                String countryDB = rs.getString("country");
+
+                data.add(new User(emailDB, nameDB, dateOfBirthDB, genderDB, addressDB, postalCodeDB, residenceDB, countryDB));
+            }
+
+            return data;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+    }
+    
+    public static final ObservableList<User> getEnrolledUsersForCourse(Course course) {
+
+        String SQL = "SELECT * FROM [User] WHERE email IN (SELECT userEmail FROM Enrollment WHERE courseTitle = '" + course.getTitle() + "')";
 
         Connection con = getDbConnection();
 

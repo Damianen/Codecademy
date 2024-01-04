@@ -5,11 +5,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import com.example.database.DatabaseCourse;
 import com.example.database.DatabaseModule;
+import com.example.database.DatabaseProgress;
+import com.example.database.DatabaseUser;
 import com.example.javafx.GUIController;
 import com.example.user.Enrollment;
+import com.example.user.Progress;
+import com.example.user.User;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -78,7 +83,36 @@ public class Course {
 
     public void addModule(Module module) {
         DatabaseModule.updateModule(module.getId(), module.getTitle(), module.getPublicationDate(), module.getStatus(), module.getDescription(), module.getVersion(), module.getOrderNumber(), module.getContactPerson().getEmail(), this.title);
+
+        ObservableList<User> enrolledUsers = DatabaseUser.getEnrolledUsersForCourse(this);
+
+        for (User user : enrolledUsers) {
+
+            Random rand = new Random();
+            int randomNumber = rand.nextInt(101);
+
+            try {
+                DatabaseProgress.createProgress(randomNumber, user.getEmail(), module.getContentItemId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
         modules.add(module);
+    }
+
+    public void removeModule(Module module) {
+        DatabaseModule.updateModule(module.getId(), module.getTitle(), module.getPublicationDate(), module.getStatus(), module.getDescription(), module.getVersion(), 0, module.getContactPerson().getEmail(), null);
+
+        ObservableList<User> enrolledUsers = DatabaseUser.getEnrolledUsersForCourse(this);
+
+        for (User user : enrolledUsers) {
+
+            Progress progress = DatabaseProgress.getProgressWithUserAndContentItem(user.getEmail(), module.getContentItemId());
+            DatabaseProgress.deleteProgress(progress.getId());
+        }
+        
+        modules.remove(module);
     }
 
     public Course generateRecomendedCourse() {
