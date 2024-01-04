@@ -145,20 +145,16 @@ public class DatabaseModule extends Database{
         }
     }
 
-    public static boolean createModule(String title, LocalDate publicationDate, Status status, String description, double version, int orderNumber, String emailContactPerson, String courseTitle) {
+    public static boolean createModule(String title, LocalDate publicationDate, Status status, String description, double version, int orderNumber, String emailContactPerson) {
 
         Connection con = getDbConnection();
 
         if(DatabaseContentItem.createContentItem(con, title, publicationDate, status, description) == true){
 
-            String SQL = "INSERT INTO [Module] VALUES ('" + version + "', '" + orderNumber + "', '" + emailContactPerson + "', SCOPE_IDENTITY(), '" + courseTitle + "')";
+            String SQL = "INSERT INTO [Module] VALUES ('" + version + "', '" + orderNumber + "', '" + emailContactPerson + "', SCOPE_IDENTITY(), null)";
 
-            if(orderNumber == 0 && courseTitle != null){
-                SQL = "INSERT INTO [Module] VALUES ('" + version + "', " + null + ", '" + emailContactPerson + "', SCOPE_IDENTITY(), '" + courseTitle + "')";
-            }else if(orderNumber != 0 && courseTitle == null){
-                SQL = "INSERT INTO [Module] VALUES ('" + version + "', '" + orderNumber + "', '" + emailContactPerson + "', SCOPE_IDENTITY(), " + null + ")";
-            }else if(orderNumber == 0 && courseTitle == null){
-                SQL = "INSERT INTO [Module] VALUES ('" + version + "', " + null + ", '" + emailContactPerson + "', SCOPE_IDENTITY(), " + null + ")";
+            if(orderNumber == 0){
+                SQL = "INSERT INTO [Module] VALUES ('" + version + "', " + null + ", '" + emailContactPerson + "', SCOPE_IDENTITY(), null)";
             }
 
             Statement stmt = null;
@@ -236,7 +232,7 @@ public class DatabaseModule extends Database{
         }
     }
 
-    public static ObservableList<Module> getCourseModules(String courseTitle) {
+    public static ObservableList<ContentItem> getCourseModules(String courseTitle) {
 
         String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module.emailContactPerson FROM ContentItem INNER JOIN [Module] ON ContentItem.ID = Module.contentItemID WHERE courseTitle = '" + courseTitle + "' ORDER BY orderNumber ASC";
 
@@ -244,7 +240,7 @@ public class DatabaseModule extends Database{
 
         Statement stmt = null;
         ResultSet rs = null;
-        ObservableList<Module> data = FXCollections.observableArrayList();
+        ObservableList<ContentItem> data = FXCollections.observableArrayList();
 
         try {
 

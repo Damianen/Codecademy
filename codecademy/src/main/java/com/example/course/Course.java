@@ -47,7 +47,7 @@ public class Course {
     private String subject;
     private String introText;
     private DifficultyLevel difficultyLevel;
-    private ObservableList<Module> modules;
+    private ObservableList<ContentItem> modules;
 
     public Course(String title, String subject, String introText, DifficultyLevel difficulty) {
         this.title = title;
@@ -73,11 +73,11 @@ public class Course {
         return introText;
     }
 
-    public ObservableList<Module> getModules() {
+    public ObservableList<ContentItem> getModules() {
         return modules;
     }
 
-    public void setModules(ObservableList<Module> modules) {
+    public void setModules(ObservableList<ContentItem> modules) {
         this.modules = modules;
     }
 
