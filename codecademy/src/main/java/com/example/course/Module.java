@@ -123,7 +123,7 @@ public class Module extends ContentItem {
         });
 
 
-        //table.setItems(DatabaseModule.readCourseTitleModule(searchArgs.get("courseTitle")));
+        table.setItems(DatabaseModule.getCourseModules(searchArgs.get("courseTitle")));
     }
 
     @Override
