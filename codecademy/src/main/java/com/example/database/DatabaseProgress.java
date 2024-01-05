@@ -177,4 +177,42 @@ public class DatabaseProgress extends Database{
             if (con != null) try { con.close(); } catch(Exception e) {}
         }
     }
+
+    public static final ObservableList<Progress> getProgressListWithUserEmail(String userEmail) {
+
+        String SQL = "SELECT * FROM Progress WHERE userEmail = '" + userEmail + "'";
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        ObservableList<Progress> data = FXCollections.observableArrayList();
+
+        try{
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+
+                int ID = rs.getInt("ID");
+                int progressPercentage = rs.getInt("progressPercentage");
+                int contentItemID = rs.getInt("contentItemID");
+
+    
+                data.add(new Progress(ID, progressPercentage, contentItemID));
+            }
+
+            return data;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+    }
 }

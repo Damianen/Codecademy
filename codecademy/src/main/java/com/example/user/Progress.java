@@ -117,5 +117,7 @@ public class Progress {
                 }
             }
         });
+
+        table.setItems(DatabaseProgress.getProgressListWithUserEmail(searchArgs.get("userEmail")));
     }
 }

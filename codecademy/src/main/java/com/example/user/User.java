@@ -260,11 +260,11 @@ public class User {
         for (Tab tab : tabs) {
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
-            if (tab.getId().equals("enrolment")) {
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("userEmail", email);
-                Enrollment.generateTable(table, editable, map);
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("userEmail", email);               
+            if (tab.getId().equals("enrolment")) {  
                 Button btn = (Button)rootTabPane.lookup("#add");
+                Enrollment.generateTable(table, editable, map);
                 EventHandler<ActionEvent> btnActionEventHandler = new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -273,7 +273,7 @@ public class User {
                 };
                 btn.setOnAction(btnActionEventHandler);
             } else {
-                Progress.generateTable(table, editable, new HashMap<String, String>());
+                Progress.generateTable(table, editable, map);
             }
         }
     }
