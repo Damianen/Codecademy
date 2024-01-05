@@ -27,12 +27,6 @@ import javafx.scene.control.ContentDisplay;
 public class Main {
     public static void main(String[] args) {
         GUI gui = new GUI();
-        //gui.startGui(args);
-
-        Course coures = DatabaseCourse.readCourse("ruben");
-
-        Module module = DatabaseModule.readModule(2);
-
-        coures.removeModule(module);
+        gui.startGui(args);
     }
 }

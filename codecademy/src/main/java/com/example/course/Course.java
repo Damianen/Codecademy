@@ -239,6 +239,8 @@ public class Course {
     }
 
     public void setAddModule(TableView table, Button btn, boolean editable) {
+        GUIController.clearTable(table);
+        btn.setText("Add selected module");
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("courseTitleNew", title);
         Module.generateTable(table, editable, map);
@@ -252,6 +254,11 @@ public class Course {
                         setAddModule(table, btn, editable);
                     }
                 });
+                GUIController.clearTable(table);
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("courseTitle", title);
+                Module.generateTable(table, editable, map);
+                btn.setText("Add module");
             }
         });
     }

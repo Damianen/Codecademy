@@ -447,7 +447,7 @@ public class DatabaseModule extends Database{
 
     public static ObservableList<ContentItem> getModuleWithNoCourseList() {
 
-        String SQL = "SELECT * FROM Module WHERE courseTitle IS NULL";
+        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module.emailContactPerson FROM ContentItem INNER JOIN [Module] ON ContentItem.ID = Module.contentItemID WHERE courseTitle IS NULL";
 
         Connection con = getDbConnection();
 

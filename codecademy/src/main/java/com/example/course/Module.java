@@ -125,7 +125,7 @@ public class Module extends ContentItem {
         if (searchArgs.containsKey("courseTitle")) {
             table.setItems(DatabaseModule.getCourseModules(searchArgs.get("courseTitle")));
         } else if (searchArgs.containsKey("courseTitleNew")) {
-            //table.setItems(DatabaseModule.);
+            table.setItems(DatabaseModule.getModuleWithNoCourseList());
         }
         
     }
