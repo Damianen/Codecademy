@@ -100,17 +100,14 @@ public class Enrollment {
 
     static public void generateTable(TableView<Enrollment> table, boolean editable,
             HashMap<String, String> searchArgs) {
-        TableColumn<Enrollment, String> userName = new TableColumn<Enrollment, String>("User Name");
         TableColumn<Enrollment, String> courseTitle = new TableColumn<Enrollment, String>("Course Title");
         TableColumn<Enrollment, String> EnrolmentDate = new TableColumn<Enrollment, String>("Enrolment Date");
 
         final ObservableList<TableColumn<Enrollment, ?>> columns = FXCollections.observableArrayList();
-        columns.add(userName);
         columns.add(EnrolmentDate);
         columns.add(courseTitle);
         table.getColumns().addAll(columns);
 
-        userName.setCellValueFactory(new PropertyValueFactory<Enrollment, String>("userName"));
         courseTitle.setCellValueFactory(new PropertyValueFactory<Enrollment, String>("courseTitle"));
         EnrolmentDate.setCellValueFactory(new PropertyValueFactory<Enrollment, String>("enrolmentDateString"));
 

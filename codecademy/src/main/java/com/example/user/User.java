@@ -9,6 +9,7 @@ import java.util.HashMap;
 import com.example.course.Course;
 import com.example.database.DatabaseEnrollment;
 import com.example.database.DatabaseUser;
+import com.example.exeptions.AlreadyExistsException;
 import com.example.javafx.GUIController;
 
 import javafx.collections.FXCollections;
@@ -130,8 +131,32 @@ public class User {
         return enrollments;
     }
 
-    public void addEnrollment(TableView table) {
-        Course.generateTable(table, false, null);
+    public void addEnrollment(TableView table, Button btn, boolean editable) {
+        GUIController.clearTable(table);
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("userEmail", email);
+        Course.generateTable(table, false, map);
+        btn.setText("Enroll in selected course");
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Course course = (Course)table.getSelectionModel().getSelectedItem();
+                try {
+                    DatabaseEnrollment.createEnrollment(email, course.getTitle());
+                } catch (AlreadyExistsException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                GUIController.clearTable(table);
+                Enrollment.generateTable(table, editable, map);
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        addEnrollment(table, btn, editable);
+                    }
+                });
+            }
+        });
     }
 
     public void generateUserCertificates() {
@@ -227,6 +252,7 @@ public class User {
 
     public void setupTabs(AnchorPane pane, boolean editable) {
         ObservableList<Tab> tabs = ((TabPane) pane.lookup("#tables")).getTabs();
+        
         for (Tab tab : tabs) {
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
@@ -235,12 +261,13 @@ public class User {
                 map.put("userEmail", email);
                 Enrollment.generateTable(table, editable, map);
                 Button btn = (Button)rootTabPane.lookup("#add");
-                btn.setOnAction(new EventHandler<ActionEvent>() {
+                EventHandler<ActionEvent> btnActionEventHandler = new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        
+                        addEnrollment(table, btn, editable);
                     } 
-                });
+                };
+                btn.setOnAction(btnActionEventHandler);
             } else {
                 Progress.generateTable(table, editable, new HashMap<String, String>());
             }

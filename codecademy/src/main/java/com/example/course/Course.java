@@ -175,7 +175,10 @@ public class Course {
 
         if (searchArgs == null) {
             table.setItems(DatabaseCourse.getCourseList());
-        } else {
+        } else if (searchArgs.containsKey("userEmail")) {
+            table.setItems(DatabaseCourse.getNotEnrolledCourseForUser(searchArgs.get("userEmail")));
+        } 
+        else {
             table.setItems(DatabaseCourse.readCourseSearchAll(searchArgs));
         }
 
