@@ -192,6 +192,12 @@ public class DatabaseModule extends Database{
                 }
             }
         }
+
+        int orderNumberMax = getCourseModules(courseTitle).size();
+
+        if(orderNumber > orderNumberMax){
+            throw new IllegalArgumentException("Order number may not exceed the number of modules in this course (" + orderNumberMax + ")");
+        }
         
         if(DatabaseContentItem.updateContentItem(module.getContentItemId(), title, publicationDate, status, description) == true){
 
@@ -434,6 +440,49 @@ public class DatabaseModule extends Database{
             e.printStackTrace();
             return false;
         }finally {
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+    }
+
+    public static ObservableList<ContentItem> getModuleWithNoCourseList() {
+
+        String SQL = "SELECT * FROM Module WHERE courseTitle IS NULL";
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        ObservableList<ContentItem> data = FXCollections.observableArrayList();
+
+        try {
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                
+                int contentItemID = rs.getInt("ContentItemID");
+                String title = rs.getString("title");
+                LocalDate publicationDate = rs.getDate("publicationDate").toLocalDate();
+                Status status = Status.valueOf(rs.getString("status"));
+                String description = rs.getString("description");
+                int id = rs.getInt("ModuleID");
+                double version = rs.getDouble("version");
+                int orderNumber = rs.getInt("orderNumber");
+                String emailContactPerson = rs.getString("emailContactPerson");
+
+                data.add(new Module(contentItemID, title, publicationDate, status, description, id, version, emailContactPerson, orderNumber));
+
+            }
+            
+            return data;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
             if (stmt != null) try { stmt.close(); } catch(Exception e) {}
             if (con != null) try { con.close(); } catch(Exception e) {}
         }

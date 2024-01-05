@@ -40,6 +40,10 @@ public class Overview {
     public void generateAverageCourseModulesProgress(){
 
     }
+
+    public void generateCourseModulesProgressForUser(){
+
+    }
     
     public void generateTopWebcasts(){
 
