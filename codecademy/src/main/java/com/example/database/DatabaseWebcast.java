@@ -218,4 +218,46 @@ public class DatabaseWebcast extends Database{
         }
     }
 
+    public static Webcast getNotSeenWebcastListForUser(String userEmail) {
+
+        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Webcast.ID AS WebcastID, Webcast.URL, Webcast.speakerID FROM ContentItem INNER JOIN Webcast ON ContentItem.ID = Webcast.contentItemID WHERE contentItemID NOT IN (SELECT ID FROM Progress WHERE userEmail = '" + userEmail + "')";
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        Webcast data = null;
+
+        try {
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                
+                int contentItemID = rs.getInt("ContentItemID");
+                String title = rs.getString("title");
+                LocalDate publicationDate = rs.getDate("publicationDate").toLocalDate();
+                Status status = Status.valueOf(rs.getString("status"));
+                String description = rs.getString("description");
+                
+                int id = rs.getInt("WebcastID");
+                String url = rs.getString("URL");
+                int speakerID = rs.getInt("speakerID");
+
+                data = new Webcast(contentItemID, title, publicationDate, status, description, id, url, speakerID);
+
+            }
+            
+            return data;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+    }
 }
