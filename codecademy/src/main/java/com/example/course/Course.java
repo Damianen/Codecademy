@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import javax.swing.Action;
+
 import com.example.database.DatabaseCourse;
 import com.example.database.DatabaseModule;
 import com.example.database.DatabaseProgress;
@@ -221,11 +223,36 @@ public class Course {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("courseTitle", title);
                 Module.generateTable(table, editable, map);
+                Button btn = (Button)rootTabPane.lookup("#add");
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setAddModule(table, btn, editable);
+                    }
+                });
             } else {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("courseTitle", title);
                 Enrollment.generateTable(table, editable, map);
             }
         }
+    }
+
+    public void setAddModule(TableView table, Button btn, boolean editable) {
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("courseTitleNew", title);
+        Module.generateTable(table, editable, map);
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                addModule((Module)table.getSelectionModel().getSelectedItem());
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setAddModule(table, btn, editable);
+                    }
+                });
+            }
+        });
     }
 }

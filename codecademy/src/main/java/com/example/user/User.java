@@ -127,6 +127,10 @@ public class User {
         return gender;
     }
 
+    public String getGenderString() {
+        return gender.toString();
+    }
+
     public ObservableList<Enrollment> getEnrollments() {
         return enrollments;
     }

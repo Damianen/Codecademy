@@ -55,6 +55,39 @@ public class DatabaseEnrollment extends Database{
             if (con != null) try { con.close(); } catch(Exception e) {}
         }
     }
+
+    public static String getEnrollmentUser(int id) {
+
+        String SQL = "SELECT * FROM [Enrollment] WHERE ID = '" + id + "'";
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        String data = null;
+
+        try {
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                String userEmail = rs.getString("userEmail");
+
+                data = userEmail;
+            }
+            
+            return data;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+    }
     
     public static boolean createEnrollment(String userEmail, String courseTitle) throws AlreadyExistsException {
 

@@ -122,8 +122,12 @@ public class Module extends ContentItem {
             }
         });
 
-
-        table.setItems(DatabaseModule.getCourseModules(searchArgs.get("courseTitle")));
+        if (searchArgs.containsKey("courseTitle")) {
+            table.setItems(DatabaseModule.getCourseModules(searchArgs.get("courseTitle")));
+        } else if (searchArgs.containsKey("courseTitleNew")) {
+            //table.setItems(DatabaseModule.);
+        }
+        
     }
 
     @Override
