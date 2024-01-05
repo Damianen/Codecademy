@@ -87,7 +87,7 @@ public class Course {
 
         int orderNumber = DatabaseModule.getCourseModules(this.title).size() + 1;
         
-        if(DatabaseModule.updateModule(module.getId(), module.getTitle(), module.getPublicationDate(), module.getStatus(), module.getDescription(), module.getVersion(), orderNumber, module.getContactPerson().getEmail(), this.title) == false){
+        if(DatabaseModule.addModuleToCourse(module.getId(), orderNumber, this.title) == false){
             return false;
         }
 

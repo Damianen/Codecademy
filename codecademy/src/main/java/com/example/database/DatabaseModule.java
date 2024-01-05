@@ -487,4 +487,29 @@ public class DatabaseModule extends Database{
             if (con != null) try { con.close(); } catch(Exception e) {}
         }
     }
+
+    public static boolean addModuleToCourse(int id, int orderNumber, String courseTitle) {
+
+        String SQL = "UPDATE [Module] SET orderNumber = '" + orderNumber + " courseTitle = '" + courseTitle + "' WHERE ID = " + id;
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+
+        try {
+
+            stmt = con.createStatement();
+            stmt.executeUpdate(SQL);
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }finally {
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+
+    }
 }
