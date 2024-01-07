@@ -17,7 +17,7 @@
    <children>
       <TabPane prefHeight="547.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
-            <Tab text="Courses">
+            <Tab onSelectionChanged="#switchTab" text="Courses">
                <content>
                   <AnchorPane fx:id="course" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -81,7 +81,7 @@
             </Tab>
             <Tab onSelectionChanged="#switchTab" text="Content items">
                <content>
-                  <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane fx:id="contentItem" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="title" alignment="CENTER" layoutX="33.0" layoutY="109.0" promptText="Title" />
                         <TextField fx:id="status" alignment="CENTER" layoutX="32.0" layoutY="142.0" promptText="Status" />

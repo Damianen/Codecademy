@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 
 import com.example.database.DatabaseContactPerson;
+import com.example.database.DatabaseModule;
 import com.example.database.DatabaseSpeaker;
 import com.example.javafx.GUIController;
 import com.example.user.Progress;
@@ -20,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -40,16 +42,13 @@ public class Module extends ContentItem {
 
     public Module(int contentItemID, String title, LocalDate publicationDate, Status status, String description, int id,
             double version, String emailContactPerson, int orderNumber) {
+
         super(contentItemID, title, publicationDate, status, description);
 
         this.id = id;
         this.version = version;
         this.contactPerson = DatabaseContactPerson.readContactPerson(emailContactPerson);
         this.orderNumber = orderNumber;
-    }
-
-    public int getContentItemId() {
-        return super.getId();
     }
 
     public int getId() {
@@ -78,6 +77,16 @@ public class Module extends ContentItem {
 
     public void setOrderNumber(int orderNumber) {
         this.orderNumber = orderNumber;
+    }
+
+    static public HashMap<String, String> getArgsHashMap(AnchorPane pane) throws NoSuchMethodException,
+            SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        HashMap<String, String> searchArgs = ContentItem.getArgsHashMap(pane);
+        searchArgs.put("version", GUIController.searchForNodeText("version", TextField.class, pane));
+        TableView table = (TableView)pane.lookup("#table");
+        ContactPerson person = (ContactPerson)table.getSelectionModel().getSelectedItem();
+        searchArgs.put("contactPersonEmail", person.getEmail());
+        return searchArgs;
     }
 
     static public void generateTable(TableView<ContentItem> table, boolean editable,
@@ -113,10 +122,12 @@ public class Module extends ContentItem {
             }
         });
 
-        final ObservableList<ContentItem> data = FXCollections.observableArrayList(
-                new Module(0, "test", LocalDate.now(), Status.ACTIVE, "test", 0, 0.1, "contactPersonEmail", 1));
-
-        table.setItems(data);
+        if (searchArgs.containsKey("courseTitle")) {
+            table.setItems(DatabaseModule.getCourseModules(searchArgs.get("courseTitle")));
+        } else if (searchArgs.containsKey("courseTitleNew")) {
+            table.setItems(DatabaseModule.getModuleWithNoCourseList());
+        }
+        
     }
 
     @Override
@@ -173,7 +184,9 @@ public class Module extends ContentItem {
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
             if (tab.getId().equals("course")) {
-                Course.generateTable(table, editable, new HashMap<String, String>());
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("title", DatabaseModule.readModuleCourseTitle(contentItemId));
+                Course.generateTable(table, editable, map);
             }
         }
     }

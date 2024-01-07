@@ -7,14 +7,28 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Random;
 
+import javax.swing.text.DateFormatter;
+
+import com.example.course.ContactPerson;
 import com.example.course.ContentItem;
 import com.example.course.Course;
+import com.example.course.Module;
+import com.example.course.Speaker;
+import com.example.course.Webcast;
+import com.example.course.ContentItem.Status;
 import com.example.course.Course.DifficultyLevel;
+import com.example.database.DatabaseContactPerson;
 import com.example.database.DatabaseCourse;
+import com.example.database.DatabaseModule;
+import com.example.database.DatabaseSpeaker;
+import com.example.database.DatabaseUser;
+import com.example.database.DatabaseWebcast;
 import com.example.exeptions.AlreadyExistsException;
 import com.example.exeptions.CannotBeEmptyException;
 import com.example.user.User;
+import com.example.user.User.Gender;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -44,7 +58,7 @@ public class GUIController {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private boolean skip = true;
+    private boolean skip = false;
 
     public void switchPage(ActionEvent event) throws IOException {
         try {
@@ -65,26 +79,27 @@ public class GUIController {
             AnchorPane pane = (AnchorPane) ((Tab) event.getSource()).getContent();
             for (Node node : pane.getChildren()) {
                 if (node instanceof MenuButton) {
-                    setMenuButtonActions((MenuButton) node, skip);
+                    setMenuButtonActions((MenuButton) node, true);
                 }
-            }
-
-            if (!((Scene) ((Tab) event.getSource()).getContent().getScene()).getRoot().getId().equals("createRoot")) {
-                TableView table = (TableView) pane.lookup("#table");
-                boolean editable = false;
-                if (!((Scene) ((Tab) event.getSource()).getContent().getScene()).getRoot().getId().equals("readRoot")) {
-                    editable = true;
-                }
-
-                if (pane.idProperty() == null) {
-                    Course.generateTable(table, editable, null);
-                    return;
-                }
-
-                switch (pane.getId()) {
+                if (node instanceof TableView) {
+                    clearTable((TableView)node);
+                    switch (pane.getId()) {
                     case "course":
-                        Course.generateTable(table, editable, null);
+                        Course.generateTable((TableView)node, false, null);
                         break;
+                    case "user":
+                        User.generateTable((TableView)node, false, null);
+                        break;
+                    case "contentItem":
+                        ContentItem.generateContentItemTable((TableView)node, false, null);
+                        break;
+                    case "module":
+                        ContactPerson.generateTable((TableView)node, false, null);
+                        break;
+                    case "webcast":
+                        Speaker.generateTable((TableView)node, false, null);
+                        break;
+                    }
                 }
             }
         } else {
@@ -105,19 +120,23 @@ public class GUIController {
                 return "/com/example/javafx/fxml/Read.fxml";
             case ("homeButton"):
                 return "/com/example/javafx/fxml/Start.fxml";
-            case ("new"):
+            case ("newButton"):
                 return "/com/example/javafx/fxml/Start.fxml";
         }
 
         return "";
     }
 
+    public static void clearTable(TableView table) {
+        table.getItems().clear();
+        table.getColumns().clear();
+    }
+
     public void search(ActionEvent event) throws IOException, NoSuchMethodException,
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         AnchorPane tabRootNode = (AnchorPane) ((Node) event.getSource()).getParent();
         TableView table = (TableView) tabRootNode.lookup("#table");
-        table.getItems().clear();
-        table.getColumns().clear();
+        clearTable(table);
 
         boolean editable = false;
         if (tabRootNode.getScene().getRoot().getId().equals("updateRoot")) {
@@ -129,10 +148,10 @@ public class GUIController {
                 Course.generateTable(table, editable, Course.getArgsHashMap(tabRootNode));
                 break;
             case "contentItem":
-                ContentItem.generateContentItemTable(table, editable, new HashMap<String, String>());
+                ContentItem.generateContentItemTable(table, editable, ContentItem.getArgsHashMap(tabRootNode));
                 break;
             case "user":
-                User.generateTable(table, editable, new HashMap<String, String>());
+                User.generateTable(table, editable, User.getArgsHashMap(tabRootNode));
                 break;
         }
     }
@@ -187,8 +206,7 @@ public class GUIController {
         ((Button) toolbar.getItems().get(0)).setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                AnchorPane root = (AnchorPane) popupPane.getScene().getRoot();
-                root.getChildren().removeAll(popupPane, rect);
+                rootPane.getChildren().removeAll(popupPane, rect);
             }
         });
     }
@@ -213,16 +231,17 @@ public class GUIController {
             throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException {
         Node node = pane.lookup("#" + id);
-        Method methodSetText = nodeClass.getMethod("setText", value.getClass());
         if (nodeClass == MenuButton.class) {
+            Method methodSetText = nodeClass.getMethod("setText", String.class);
             setMenuButtonActions((MenuButton) node, editable);
-            methodSetText.invoke(nodeClass.cast(node), value.getClass().cast(value.toString().toLowerCase()));
+            methodSetText.invoke(nodeClass.cast(node), value.toString());
         } else if (nodeClass == DatePicker.class) {
             setDatePickerActions((DatePicker) node, editable, (LocalDate) value);
         } else {
+            Method methodSetText = nodeClass.getMethod("setText", String.class);
             Method methodSetEditable = nodeClass.getMethod("setEditable", boolean.class);
             methodSetEditable.invoke(nodeClass.cast(node), editable);
-            methodSetText.invoke(nodeClass.cast(node), value.getClass().cast(value));
+            methodSetText.invoke(nodeClass.cast(node), value.toString());
         }
     }
 
@@ -232,16 +251,37 @@ public class GUIController {
 
         try {
             switch (tabRoot.getId()) {
-                case "coursePane":
+                case "course":
                     HashMap<String, String> map = Course.getArgsHashMap(tabRoot);
                     DatabaseCourse.createCourse(map.get("title"), map.get("subject"), map.get("introText"),
                             DifficultyLevel.valueOf(((String) map.get("difficultyLevel")).toUpperCase()));
                     break;
-                case "userPane":
+                case "user":
+                    HashMap<String, String> userMap = User.getArgsHashMap(tabRoot);
+                    DatabaseUser.createUser(userMap.get("email"), userMap.get("name"), ((DatePicker)tabRoot.lookup("#birthDate")).getValue(),
+                        Gender.valueOf(String.valueOf(userMap.get("gender").charAt(0))), userMap.get("address"), userMap.get("zipCode"), 
+                        userMap.get("residence"), userMap.get("country"));
                     break;
-                case "modulePane":
+                case "module":
+                    HashMap<String, String> moduleMap = Module.getArgsHashMap(tabRoot);
+                    DatabaseModule.createModule(moduleMap.get("title"), ((DatePicker)tabRoot.lookup("#publicationDate")).getValue(), 
+                        Status.valueOf(moduleMap.get("status").toUpperCase()), moduleMap.get("description"), 
+                        Double.valueOf(moduleMap.get("version")), new Random().nextInt(10000000) + 1, 
+                        ((ContactPerson)((TableView)tabRoot.lookup("#table")).getSelectionModel().getSelectedItem()).getEmail());
                     break;
-                case "webcastPane":
+                case "webcast":
+                    HashMap<String, String> webMap = Webcast.getArgsHashMap(tabRoot);
+                    DatabaseWebcast.createWebcast(webMap.get("title"), ((DatePicker)tabRoot.lookup("#publicationDate")).getValue(), 
+                        Status.valueOf(webMap.get("status").toUpperCase()), webMap.get("description"), 
+                        webMap.get("url"), ((Speaker)((TableView)tabRoot.lookup("#table")).getSelectionModel().getSelectedItem()).getId());
+                    break;
+                case "contactPerson":
+                    HashMap<String, String> contactMap = ContactPerson.getArgsHashMap(tabRoot);
+                    DatabaseContactPerson.createContactPerson(contactMap.get("email"), contactMap.get("name"));
+                    break;
+                case "speaker":
+                    HashMap<String, String> speakerMap = Speaker.getArgsHashMap(tabRoot);
+                    DatabaseSpeaker.createSpeaker(speakerMap.get("name"), speakerMap.get("organization"));
                     break;
             }
             switchPage(event);

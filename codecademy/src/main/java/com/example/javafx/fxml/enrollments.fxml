@@ -53,7 +53,7 @@
             </Tab>
          </tabs>
       </TabPane>
-      <Text layoutX="265.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enrollments">
+      <Text layoutX="265.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enrollment">
          <font>
             <Font size="23.0" />
          </font>

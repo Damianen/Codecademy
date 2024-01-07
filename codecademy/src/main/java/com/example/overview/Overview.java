@@ -37,7 +37,11 @@ public class Overview {
         
     }
 
-    public void generateAverageCourseProgress(){
+    public void generateAverageCourseModulesProgress(){
+
+    }
+
+    public void generateCourseModulesProgressForUser(){
 
     }
     

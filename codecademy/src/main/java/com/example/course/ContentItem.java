@@ -4,12 +4,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.HashMap;
 
+import com.example.database.DatabaseModule;
+import com.example.database.DatabaseWebcast;
 import com.example.javafx.GUIController;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -19,7 +22,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public abstract class ContentItem {
-    protected final int id;
+    protected final int contentItemId;
     protected String title;
     protected LocalDate publicationDate;
     protected String description;
@@ -32,15 +35,15 @@ public abstract class ContentItem {
     }
 
     public ContentItem(int id, String title, LocalDate publicationDate, Status status, String description) {
-        this.id = id;
+        this.contentItemId = id;
         this.title = title;
         this.publicationDate = publicationDate;
         this.status = status;
         this.description = description;
     }
 
-    public int getId() {
-        return id;
+    public int getContentItemId() {
+        return this.contentItemId;
     }
 
     public void setTitle(String title) {
@@ -79,8 +82,8 @@ public abstract class ContentItem {
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         HashMap<String, String> searchArgs = new HashMap<String, String>();
         searchArgs.put("title", GUIController.searchForNodeText("title", TextField.class, pane));
-        searchArgs.put("introText", GUIController.searchForNodeText("introText", TextArea.class, pane));
-        searchArgs.put("subject", GUIController.searchForNodeText("subject", TextField.class, pane));
+        searchArgs.put("description", GUIController.searchForNodeText("description", TextArea.class, pane));
+        searchArgs.put("status", GUIController.searchForNodeText("status",MenuButton.class, pane));
         DatePicker date = (DatePicker) pane.lookup("#publicationDate");
         if (date.getValue() != null) {
             searchArgs.put("publicationDate", date.getValue().toString());
@@ -121,8 +124,8 @@ public abstract class ContentItem {
             }
         });
 
-        final ObservableList<ContentItem> data = FXCollections.observableArrayList(
-                new Module(0, "test", LocalDate.now(), Status.ACTIVE, "test", 0, 0.1, "contactPersonEmail", 1));
+        final ObservableList<ContentItem> data = DatabaseModule.readModuleList();
+        data.addAll(DatabaseWebcast.readWebcastList());
 
         table.setItems(data);
     }

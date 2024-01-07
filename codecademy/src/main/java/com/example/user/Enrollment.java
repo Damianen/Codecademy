@@ -11,6 +11,7 @@ import java.util.HashMap;
 import com.example.course.Course;
 import com.example.database.DatabaseCertificate;
 import com.example.database.DatabaseCourse;
+import com.example.database.DatabaseEnrollment;
 import com.example.course.*;
 import com.example.javafx.GUIController;
 import com.example.user.User.Gender;
@@ -39,7 +40,6 @@ public class Enrollment {
     private Certificate certificate;
     private Course course;
     private ArrayList<Progress> progresses;
-    private User user;
 
     public Enrollment(int id, LocalDate enrollmentDate, String courseTitle) {
         this.id = id;
@@ -47,7 +47,7 @@ public class Enrollment {
 
         this.course = DatabaseCourse.readCourse(courseTitle);
         // this.progresses = DatabaseProgress.getEnrollmentProgresses();
-        this.user = new User(courseTitle, courseTitle, enrollmentDate, Gender.M, courseTitle, courseTitle, courseTitle);
+        
         this.certificate = DatabaseCertificate.getEnrollmentCertificate(this.id);
     }
 
@@ -79,24 +79,16 @@ public class Enrollment {
         return course;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
     public String getEnrolmentDateString() {
         return enrollmentDate.toString();
     }
 
-    public String getUserName() {
-        return this.user.getName();
-    }
-
     public String getCourseTitle() {
         return this.course.getTitle();
+    }
+
+    public String getUserEmail() {
+        return DatabaseEnrollment.getEnrollmentUser(id);
     }
 
     public boolean addCertificate() {
@@ -112,17 +104,17 @@ public class Enrollment {
 
     static public void generateTable(TableView<Enrollment> table, boolean editable,
             HashMap<String, String> searchArgs) {
-        TableColumn<Enrollment, String> userName = new TableColumn<Enrollment, String>("User Name");
+        TableColumn<Enrollment, String> userEmail = new TableColumn<Enrollment, String>("User E-mail");
         TableColumn<Enrollment, String> courseTitle = new TableColumn<Enrollment, String>("Course Title");
         TableColumn<Enrollment, String> EnrolmentDate = new TableColumn<Enrollment, String>("Enrolment Date");
 
         final ObservableList<TableColumn<Enrollment, ?>> columns = FXCollections.observableArrayList();
-        columns.add(userName);
+        columns.add(userEmail);
         columns.add(EnrolmentDate);
         columns.add(courseTitle);
         table.getColumns().addAll(columns);
 
-        userName.setCellValueFactory(new PropertyValueFactory<Enrollment, String>("userName"));
+        userEmail.setCellValueFactory(new PropertyValueFactory<Enrollment, String>("userEmail"));
         courseTitle.setCellValueFactory(new PropertyValueFactory<Enrollment, String>("courseTitle"));
         EnrolmentDate.setCellValueFactory(new PropertyValueFactory<Enrollment, String>("enrolmentDateString"));
 
@@ -139,10 +131,8 @@ public class Enrollment {
             }
         });
 
-        final ObservableList<Enrollment> data = FXCollections.observableArrayList(
-                new Enrollment(0, LocalDate.now(), "TestCourse"));
-
-        table.setItems(data);
+        table.setItems(DatabaseEnrollment.getEnrollmentsSearch(searchArgs));
+        
     }
 
     public void generatePopupWindow(MouseEvent event, boolean editable) throws NoSuchMethodException, SecurityException,

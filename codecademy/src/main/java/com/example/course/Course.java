@@ -5,10 +5,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
+
+import javax.swing.Action;
 
 import com.example.database.DatabaseCourse;
+import com.example.database.DatabaseModule;
+import com.example.database.DatabaseProgress;
+import com.example.database.DatabaseUser;
 import com.example.javafx.GUIController;
 import com.example.user.Enrollment;
+import com.example.user.Progress;
+import com.example.user.User;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,14 +49,14 @@ public class Course {
     private String subject;
     private String introText;
     private DifficultyLevel difficultyLevel;
-    private ArrayList<Module> modules;
+    private ObservableList<ContentItem> modules;
 
     public Course(String title, String subject, String introText, DifficultyLevel difficulty) {
         this.title = title;
         this.subject = subject;
         this.introText = introText;
         this.difficultyLevel = difficulty;
-        this.modules = new ArrayList<Module>();
+        this.modules = DatabaseModule.getCourseModules(title);
     }
 
     public String getTitle() {
@@ -67,8 +75,58 @@ public class Course {
         return introText;
     }
 
-    public void addModule(Module module) {
+    public ObservableList<ContentItem> getModules() {
+        return modules;
+    }
+
+    public void setModules(ObservableList<ContentItem> modules) {
+        this.modules = modules;
+    }
+
+    public boolean addModule(Module module) {
+
+        int orderNumber = DatabaseModule.getCourseModules(this.title).size() + 1;
+        
+        if(DatabaseModule.addModuleToCourse(module.getId(), orderNumber, this.title) == false){
+            return false;
+        }
+
+        ObservableList<User> enrolledUsers = DatabaseUser.getEnrolledUsersForCourse(this);
+
+        for (User user : enrolledUsers) {
+
+            Random rand = new Random();
+            int randomNumber = rand.nextInt(101);
+
+            try {
+                DatabaseProgress.createProgress(randomNumber, user.getEmail(), module.getContentItemId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
         modules.add(module);
+
+        return true;
+    }
+
+    public boolean removeModule(Module module) {
+
+        if(DatabaseModule.updateOrderNumbersRemoveFromCourse(module.getId(), module.getOrderNumber(), this.title) == false){
+            return false;
+        }
+
+        ObservableList<User> enrolledUsers = DatabaseUser.getEnrolledUsersForCourse(this);
+
+        for (User user : enrolledUsers) {
+
+            Progress progress = DatabaseProgress.getProgressWithUserAndContentItem(user.getEmail(), module.getContentItemId());
+            DatabaseProgress.deleteProgress(progress.getId());
+        }
+        
+        modules.remove(module);
+
+        return true;
     }
 
     public Course generateRecomendedCourse() {
@@ -90,7 +148,7 @@ public class Course {
 
     static public void generateTable(TableView<Course> table, boolean editable, HashMap<String, String> searchArgs) {
 
-        TableColumn<Course, String> title = new TableColumn<Course, String>("title");
+        TableColumn<Course, String> title = new TableColumn<Course, String>("Title");
         TableColumn<Course, String> subject = new TableColumn<Course, String>("Subject");
         TableColumn<Course, String> difficultyLevel = new TableColumn<Course, String>("Difficulty level");
 
@@ -119,7 +177,10 @@ public class Course {
 
         if (searchArgs == null) {
             table.setItems(DatabaseCourse.getCourseList());
-        } else {
+        } else if (searchArgs.containsKey("userEmail")) {
+            table.setItems(DatabaseCourse.getNotEnrolledCourseForUser(searchArgs.get("userEmail")));
+        } 
+        else {
             table.setItems(DatabaseCourse.readCourseSearchAll(searchArgs));
         }
 
@@ -144,7 +205,7 @@ public class Course {
             GUIController.setUpNode(TextField.class, editable, title, pane, "title");
             GUIController.setUpNode(TextField.class, editable, subject, pane, "subject");
             GUIController.setUpNode(TextArea.class, editable, introText, pane, "introText");
-            GUIController.setUpNode(MenuButton.class, editable, subject, pane, "difficultyLevel");
+            GUIController.setUpNode(MenuButton.class, editable, difficultyLevel, pane, "difficultyLevel");
 
             setupTabs(pane, editable);
         }
@@ -159,10 +220,46 @@ public class Course {
                 if (!editable) {
                     table.setPrefHeight(320);
                 }
-                Module.generateTable(table, editable, new HashMap<String, String>());
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("courseTitle", title);
+                Module.generateTable(table, editable, map);
+                Button btn = (Button)rootTabPane.lookup("#add");
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setAddModule(table, btn, editable);
+                    }
+                });
             } else {
-                Enrollment.generateTable(table, editable, new HashMap<String, String>());
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("courseTitle", title);
+                Enrollment.generateTable(table, editable, map);
             }
         }
+    }
+
+    public void setAddModule(TableView table, Button btn, boolean editable) {
+        GUIController.clearTable(table);
+        btn.setText("Add selected module");
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("courseTitleNew", title);
+        Module.generateTable(table, editable, map);
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                addModule((Module)table.getSelectionModel().getSelectedItem());
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setAddModule(table, btn, editable);
+                    }
+                });
+                GUIController.clearTable(table);
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("courseTitle", title);
+                Module.generateTable(table, editable, map);
+                btn.setText("Add module");
+            }
+        });
     }
 }

@@ -6,6 +6,7 @@ import com.example.user.User.Gender;
 import com.example.ValidateFunctions;
 import com.example.course.ContactPerson;
 import com.example.exeptions.AlreadyExistsException;
+import com.example.course.ContactPerson;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +16,53 @@ import java.time.LocalDate;
 
 public class DatabaseContactPerson extends Database{
 
+    public static final ObservableList<ContactPerson> getContactPersonListSearch() {
+
+        String SQL = "SELECT * FROM contactPerson";
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        final ObservableList<ContactPerson> data = FXCollections.observableArrayList();
+
+        try {
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+
+                data.add(new ContactPerson(name, email));
+            }
+
+            return data;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return data;
+        } finally {
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                }
+            if (stmt != null)
+                try {
+                    stmt.close();
+                } catch (Exception e) {
+                }
+            if (con != null)
+                try {
+                    con.close();
+                } catch (Exception e) {
+                }
+        }
+    }
+    
     public static ContactPerson readContactPerson(String email) {
 
         String SQL = "SELECT * FROM [ContactPerson] WHERE email = '" + email + "'";
