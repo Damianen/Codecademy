@@ -4,6 +4,7 @@ import com.example.user.Enrollment;
 import com.example.user.Progress;
 import com.example.user.User;
 import com.example.user.User.Gender;
+import com.example.ValidateFunctions;
 import com.example.exeptions.AlreadyExistsException;
 
 import javafx.collections.FXCollections;
@@ -51,12 +52,15 @@ public class DatabaseProgress extends Database{
     
     public static boolean createProgress(int progressPercentage, int userEmail, int contentItemID) {
 
+        if(ValidateFunctions.isValidPercentage(progressPercentage) == false){
+           throw new IllegalArgumentException("The percentage \"" + progressPercentage + "\" is invalid");
+        }
+
         String SQL = "INSERT INTO [Progress] VALUES ('" + progressPercentage + "', '" + userEmail + "', '" + contentItemID + "')";
 
         Connection con = getDbConnection();
 
         Statement stmt = null;
-
         try {
 
             stmt = con.createStatement();
@@ -75,6 +79,10 @@ public class DatabaseProgress extends Database{
     }
 
     public static boolean updateProgress(int id, int progressPercentage) {
+
+        if(ValidateFunctions.isValidPercentage(progressPercentage) == false){
+           throw new IllegalArgumentException("The percentage \"" + progressPercentage + "\" is invalid");
+        }
 
         String SQL = "UPDATE [Progress] SET progressPercentage = '" + progressPercentage + "' WHERE id = '" + id + "'";
 

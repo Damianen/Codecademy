@@ -1,5 +1,6 @@
 package com.example.database;
 
+import com.example.ValidateFunctions;
 import com.example.course.ContentItem;
 import com.example.course.Module;
 import com.example.course.Webcast;
@@ -104,6 +105,10 @@ public class DatabaseModule extends Database{
     
     public static boolean createModule(String title, LocalDate publicationDate, Status status, String description, String version, int orderNumber, String emailContactPerson, String courseTitle) {
 
+        if (ValidateFunctions.validateDate(publicationDate.getDayOfMonth(), publicationDate.getMonth(), publicationDate.getYear())) {
+                throw new IllegalArgumentException("The Date \"" + publicationDate + "\" is invalid");
+        }
+
         Connection con = getDbConnection();
 
         if(DatabaseContentItem.createContentItem(con, title, publicationDate, status, description) == true){
@@ -133,6 +138,10 @@ public class DatabaseModule extends Database{
     }
 
     public static boolean updateModule(int id, String title, LocalDate publicationDate, Status status, String description, String version, int orderNumber, String emailContactPerson, String courseTitle) {
+
+        if (ValidateFunctions.validateDate(publicationDate.getDayOfMonth(), publicationDate.getMonth(), publicationDate.getYear())) {
+                throw new IllegalArgumentException("The Date \"" + publicationDate + "\" is invalid");
+        }
 
         Module module = readModule(id);
 

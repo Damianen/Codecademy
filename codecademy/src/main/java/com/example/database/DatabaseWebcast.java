@@ -1,5 +1,6 @@
 package com.example.database;
 
+import com.example.ValidateFunctions;
 import com.example.course.ContentItem;
 import com.example.course.Webcast;
 import com.example.course.ContentItem.Status;
@@ -101,6 +102,16 @@ public class DatabaseWebcast extends Database{
     
     public static boolean createWebcast(String title, LocalDate publicationDate, Status status, String description, String url, int speakerID) {
 
+        
+
+        if (ValidateFunctions.validateDate(publicationDate.getDayOfMonth(), publicationDate.getMonth(), publicationDate.getYear()) == false) {
+            throw new IllegalArgumentException("The Date \"" + publicationDate + "\" is invalid");
+        }
+
+        if(ValidateFunctions.validateFormatURL(url) != true){
+            throw new IllegalArgumentException("The URL \"" + url + "\" is invalid");
+        }
+
         Connection con = getDbConnection();
 
         if(DatabaseContentItem.createContentItem(con, title, publicationDate, status, description) == true){
@@ -133,6 +144,16 @@ public class DatabaseWebcast extends Database{
 
     public static boolean updateWebcast(int id, String title, LocalDate publicationDate, Status status, String description, String url, int speakerId) {
 
+       
+
+        if (ValidateFunctions.validateDate(publicationDate.getDayOfMonth(), publicationDate.getMonth(), publicationDate.getYear()) == false) {
+            throw new IllegalArgumentException("The Date \"" + publicationDate + "\" is invalid");
+        }
+
+        if(ValidateFunctions.validateFormatURL(url) != true){
+            throw new IllegalArgumentException("The URL \"" + url + "\" is invalid");
+        }
+        
         Webcast webcast = readWebcast(id);
 
         if(DatabaseContentItem.updateContentItem(webcast.getContentItemId(), title, publicationDate, status, description) == true){

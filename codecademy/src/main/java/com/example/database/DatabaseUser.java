@@ -3,6 +3,7 @@ package com.example.database;
 import com.example.user.Enrollment;
 import com.example.user.User;
 import com.example.user.User.Gender;
+import com.example.ValidateFunctions;
 import com.example.exeptions.AlreadyExistsException;
 
 import javafx.collections.FXCollections;
@@ -52,11 +53,22 @@ public class DatabaseUser extends Database{
         }
     }
     
-    public static boolean createUser(String email, String name, LocalDate dateOfBirth, Gender gender, String address, String residence, String country) throws AlreadyExistsException {
+    public static boolean createUser(String email, String name, LocalDate dateOfBirth, Gender gender, String address, String residence, String country) throws AlreadyExistsException, IllegalArgumentException {
+
+        boolean isEmailValid = ValidateFunctions.validateMailAddress(email);
+        
+        if(isEmailValid == false){
+           throw new IllegalArgumentException("The email \"" + email + "\" is invalid");
+        }
 
         if(readUser(email) != null){
             throw new AlreadyExistsException("The email \"" + email + "\" already exists for user");
         }
+
+        if(ValidateFunctions.validateDate(dateOfBirth.getDayOfMonth(), dateOfBirth.getMonth(), dateOfBirth.getYear()) == false){
+            throw new IllegalArgumentException("The Date \"" + dateOfBirth + "\" is invalid");
+        } 
+
 
         String SQL = "INSERT INTO [User] VALUES ('" + email + "', '" + name + "', '" + dateOfBirth + "', '" + gender + "', '" + address + "', '" + residence + "', '" + country + "')";
 
@@ -83,9 +95,20 @@ public class DatabaseUser extends Database{
 
     public static boolean updateUser(String email, String newEmail, String newName, LocalDate newDateOfBirth, Gender newGender, String newAddress, String newResidence, String newCountry) throws AlreadyExistsException {
 
+        if(ValidateFunctions.validateMailAddress(newEmail) == false){
+            throw new IllegalArgumentException("The email \"" + newEmail + "\" is invalid");
+        }
+
+        if(ValidateFunctions.validateDate(newDateOfBirth.getDayOfMonth(), newDateOfBirth.getMonth(), newDateOfBirth.getYear()) == false){
+            throw new IllegalArgumentException("The Date \"" + newDateOfBirth + "\" is invalid");
+        } 
+        
         if(readUser(newEmail) != null){
             throw new AlreadyExistsException("The email \"" + newEmail + "\" already exists for user");
         }
+
+        
+        
 
         String SQL = "UPDATE [User] SET email = '" + newEmail + "', name = '" + newName + "', dateOfBirth = '" + newDateOfBirth + "', gender = '" + newGender + "', address = '" + newAddress + "', residence = '" + newResidence + "', country = '" + newCountry + "' WHERE email = '" + email + "'";
 

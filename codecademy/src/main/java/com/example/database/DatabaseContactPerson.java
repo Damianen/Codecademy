@@ -3,6 +3,7 @@ package com.example.database;
 import com.example.user.Enrollment;
 import com.example.user.User;
 import com.example.user.User.Gender;
+import com.example.ValidateFunctions;
 import com.example.course.ContactPerson;
 import com.example.exeptions.AlreadyExistsException;
 
@@ -50,9 +51,14 @@ public class DatabaseContactPerson extends Database{
     
     public static boolean createContactPerson(String email, String name) throws AlreadyExistsException {
 
+        if(ValidateFunctions.validateMailAddress(email) == false){
+           throw new IllegalArgumentException("The email \"" + email + "\" is invalid");
+        }
+
         if(readContactPerson(email) != null){
             throw new AlreadyExistsException("The email \"" + email + "\" already exists for contact person");
         }
+               
 
         String SQL = "INSERT INTO [ContactPerson] VALUES ('" + email + "', '" + name + "')";
 
@@ -81,6 +87,10 @@ public class DatabaseContactPerson extends Database{
 
         if(readContactPerson(newEmail) != null){
             throw new AlreadyExistsException("The email \"" + newEmail + "\" already exists for contact person");
+        }
+         
+        if(ValidateFunctions.validateMailAddress(email) == false){
+           throw new IllegalArgumentException("The email \"" + email + "\" is invalid");
         }
 
         String SQL = "UPDATE [ContactPerson] SET email = '" + newEmail + "', name = '" + newName + "' WHERE email = '" + email + "'";
