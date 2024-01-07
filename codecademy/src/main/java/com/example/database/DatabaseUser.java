@@ -72,6 +72,12 @@ public class DatabaseUser extends Database{
             throw new IllegalArgumentException("The Date \"" + dateOfBirth + "\" is invalid");
         } 
 
+        try {
+            postalCode = ValidateFunctions.formatPostalCode(postalCode);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+
 
         String SQL = "INSERT INTO [User] VALUES ('" + email + "', '" + name + "', '" + dateOfBirth + "', '" + gender + "', '" + address + "', '" + postalCode + "', '" + residence + "', '" + country + "')";
 
@@ -108,6 +114,12 @@ public class DatabaseUser extends Database{
         
         if(readUser(newEmail) != null){
             throw new AlreadyExistsException("The email \"" + newEmail + "\" already exists for user");
+        }
+
+        try {
+            postalCode = ValidateFunctions.formatPostalCode(postalCode);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
         }
 
         String SQL = "UPDATE [User] SET email = '" + newEmail + "', name = '" + newName + "', dateOfBirth = '" + newDateOfBirth + "', gender = '" + newGender + "', address = '" + newAddress + "', postalCode = '" + postalCode + "', residence = '" + newResidence + "', country = '" + newCountry + "' WHERE email = '" + email + "'";

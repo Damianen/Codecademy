@@ -150,8 +150,10 @@ public class DatabaseWebcast extends Database{
             throw new IllegalArgumentException("The Date \"" + publicationDate + "\" is invalid");
         }
 
-        if(ValidateFunctions.validateFormatURL(url) != true){
-            throw new IllegalArgumentException("The URL \"" + url + "\" is invalid");
+        try {
+            ValidateFunctions.validateFormatURL(url);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
         }
 
         Connection con = getDbConnection();
@@ -192,8 +194,10 @@ public class DatabaseWebcast extends Database{
             throw new IllegalArgumentException("The Date \"" + publicationDate + "\" is invalid");
         }
 
-        if(ValidateFunctions.validateFormatURL(url) != true){
-            throw new IllegalArgumentException("The URL \"" + url + "\" is invalid");
+        try {
+            ValidateFunctions.validateFormatURL(url);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
         }
         
         Webcast webcast = readWebcast(id);
