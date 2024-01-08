@@ -124,8 +124,16 @@ public abstract class ContentItem {
             }
         });
 
-        final ObservableList<ContentItem> data = DatabaseModule.readModuleList();
-        data.addAll(DatabaseWebcast.readWebcastList());
+        final ObservableList<ContentItem> data = FXCollections.observableArrayList();
+
+        for (Module module : DatabaseModule.readModuleList()) {
+            data.add(module);
+        }
+
+        for (Webcast webcast : DatabaseWebcast.readWebcastList()) {
+            data.add(webcast);
+        }
+        
 
         table.setItems(data);
     }

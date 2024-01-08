@@ -45,11 +45,11 @@ public class Overview {
 
     }
     
-    public void generateTopWebcasts(){
+    public void generateTop3Webcasts(){
 
     }
 
-    public void generateTopCourse(){
+    public void generateTop3Course(){
 
     }
 

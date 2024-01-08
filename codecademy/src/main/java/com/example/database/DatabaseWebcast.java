@@ -58,7 +58,7 @@ public class DatabaseWebcast extends Database{
         }
     }
 
-    public static ObservableList<ContentItem> readWebcastList() {
+    public static ObservableList<Webcast> readWebcastList() {
 
         String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Webcast.ID AS WebcastID, Webcast.URL, Webcast.speakerID FROM ContentItem INNER JOIN Webcast ON ContentItem.ID = Webcast.contentItemID";
 
@@ -66,7 +66,7 @@ public class DatabaseWebcast extends Database{
 
         Statement stmt = null;
         ResultSet rs = null;
-        ObservableList<ContentItem> data = FXCollections.observableArrayList();
+        ObservableList<Webcast> data = FXCollections.observableArrayList();
 
         try {
 

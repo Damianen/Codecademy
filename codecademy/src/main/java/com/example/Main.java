@@ -20,6 +20,8 @@ import com.example.database.DatabaseProgress;
 import com.example.database.DatabaseUser;
 import com.example.database.DatabaseWebcast;
 import com.example.javafx.GUI;
+import com.example.user.Enrollment;
+import com.example.user.User;
 import com.example.user.User.Gender;
 
 import javafx.scene.control.ContentDisplay;

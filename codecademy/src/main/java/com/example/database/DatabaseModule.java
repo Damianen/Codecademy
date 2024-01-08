@@ -93,7 +93,7 @@ public class DatabaseModule extends Database{
         }
     }
 
-    public static ObservableList<ContentItem> readModuleList() {
+    public static ObservableList<Module> readModuleList() {
 
         String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module.emailContactPerson FROM ContentItem INNER JOIN [Module] ON ContentItem.ID = Module.contentItemID";
 
@@ -101,7 +101,7 @@ public class DatabaseModule extends Database{
 
         Statement stmt = null;
         ResultSet rs = null;
-        ObservableList<ContentItem> data = FXCollections.observableArrayList();
+        ObservableList<Module> data = FXCollections.observableArrayList();
 
         try {
 
@@ -225,20 +225,20 @@ public class DatabaseModule extends Database{
 
         Module module = readModule(id);
 
-        //orderNummer mag niet hoger zijn dan het aantal modues in de cursus
+        int orderNumberMax = getCourseModules(courseTitle).size();
+
+        if(orderNumber > orderNumberMax){
+            throw new IllegalArgumentException("Order number may not exceed the number of modules in this course (" + orderNumberMax + ")");
+        }
         
+        //moet gecontrolleerd worden dat het nieuwe orderNumber niet 0 is
+
         if(module.getOrderNumber() != 0 && orderNumber != 0){
             if(checkIfCourseTitleOrderNumberExists(courseTitle, orderNumber)){
                 if(updateOrderNumbersInCourse(id, module.getOrderNumber(), orderNumber, courseTitle) == false){
                     return false;
                 }
             }
-        }
-
-        int orderNumberMax = getCourseModules(courseTitle).size();
-
-        if(orderNumber > orderNumberMax){
-            throw new IllegalArgumentException("Order number may not exceed the number of modules in this course (" + orderNumberMax + ")");
         }
         
         if(DatabaseContentItem.updateContentItem(module.getContentItemId(), title, publicationDate, status, description) == true){
@@ -532,7 +532,7 @@ public class DatabaseModule extends Database{
 
     public static boolean addModuleToCourse(int id, int orderNumber, String courseTitle) {
 
-        String SQL = "UPDATE [Module] SET orderNumber = '" + orderNumber + " courseTitle = '" + courseTitle + "' WHERE ID = " + id;
+        String SQL = "UPDATE [Module] SET orderNumber = " + orderNumber + ", courseTitle = '" + courseTitle + "' WHERE ID = " + id;
 
         Connection con = getDbConnection();
 
