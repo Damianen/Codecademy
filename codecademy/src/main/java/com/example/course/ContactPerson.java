@@ -60,8 +60,12 @@ public class ContactPerson {
         name.setCellValueFactory(new PropertyValueFactory<ContactPerson, String>("name"));
         email.setCellValueFactory(new PropertyValueFactory<ContactPerson, String>("email"));
 
-        
-
-        table.setItems(DatabaseContactPerson.getContactPersonListSearch());
+        if (ContactEmail == null) {
+            table.setItems(DatabaseContactPerson.getContactPersonListSearch());
+        } else {
+            ObservableList<ContactPerson> list = FXCollections.observableArrayList();
+            list.add(DatabaseContactPerson.readContactPerson(ContactEmail));
+            table.setItems(list);
+        }
     }
 }

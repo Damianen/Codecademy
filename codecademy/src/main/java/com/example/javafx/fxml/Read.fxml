@@ -70,11 +70,12 @@
                            </items>
                         </SplitMenuButton>
                         <TableView fx:id="table" layoutX="241.0" layoutY="50.0" prefHeight="455.0" prefWidth="708.0" />
-                        <TextField fx:id="email" alignment="CENTER" layoutX="32.0" layoutY="158.0" promptText="E-mail" />
-                        <TextField fx:id="address" alignment="CENTER" layoutX="33.0" layoutY="247.0" promptText="Address" />
-                        <TextField fx:id="residence" alignment="CENTER" layoutX="33.0" layoutY="293.0" promptText="Residence" />
-                        <TextField fx:id="country" alignment="CENTER" layoutX="33.0" layoutY="340.0" promptText="country" />
-                        <DatePicker fx:id="birthDate" layoutX="33.0" layoutY="200.0" prefHeight="25.0" prefWidth="149.0" promptText="Birth Date" />
+                        <TextField fx:id="email" alignment="CENTER" layoutX="32.0" layoutY="155.0" promptText="E-mail" />
+                        <TextField fx:id="address" alignment="CENTER" layoutX="33.0" layoutY="233.0" promptText="Address" />
+                        <TextField fx:id="residence" alignment="CENTER" layoutX="33.0" layoutY="308.0" promptText="Residence" />
+                        <TextField fx:id="country" alignment="CENTER" layoutX="33.0" layoutY="345.0" promptText="country" />
+                        <DatePicker fx:id="birthDate" layoutX="33.0" layoutY="193.0" prefHeight="25.0" prefWidth="149.0" promptText="Birth Date" />
+                        <TextField fx:id="zipCode" alignment="CENTER" layoutX="33.0" layoutY="272.0" promptText=" Zip Code" />
                      </children></AnchorPane>
                </content>
             </Tab>

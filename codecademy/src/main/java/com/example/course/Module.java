@@ -149,30 +149,8 @@ public class Module extends ContentItem {
 
             GUIController.setUpNode(TextField.class, editable, title, pane, "title");
             GUIController.setUpNode(TextField.class, editable, version, pane, "version");
-
-            TextField contactPersonName = (TextField) pane.lookup("#contactPersonName");
-            contactPersonName.setEditable(editable);
-            contactPersonName.setText(this.contactPerson.getName());
-
-            TextField contactPersonEmail = (TextField) pane.lookup("#contactPersonEmail");
-            contactPersonEmail.setEditable(editable);
-            contactPersonEmail.setText(this.contactPerson.getEmail());
-
-            DatePicker pubDate = (DatePicker) pane.lookup("#publicationDate");
-            pubDate.setEditable(editable);
-            if (!editable) {
-                pubDate.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        pubDate.setValue(publicationDate);
-                    }
-                });
-            }
-            pubDate.setValue(publicationDate);
-
-            TextArea description = (TextArea) pane.lookup("#description");
-            description.setEditable(editable);
-            description.setText(this.description);
+            GUIController.setUpNode(TextArea.class, editable, description, pane, "description");
+            GUIController.setUpNode(DatePicker.class, editable, publicationDate, pane, "publicationDate");
 
             setupTabs(pane, editable);
         }
@@ -187,6 +165,8 @@ public class Module extends ContentItem {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("title", DatabaseModule.readModuleCourseTitle(contentItemId));
                 Course.generateTable(table, editable, map);
+            } else {
+                ContactPerson.generateTable(table, editable, contactPerson.getEmail());
             }
         }
     }

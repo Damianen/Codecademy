@@ -149,7 +149,6 @@ public class Enrollment {
 
             Scene scene = ((Node) event.getSource()).getScene();
             GUIController.setupPopupWindow(pane, (AnchorPane) scene.getRoot());
-            GUIController.setupUpdateButton(editable, pane, this);
             GUIController.setUpNode(DatePicker.class, editable, enrollmentDate, pane, "enrollDate");
             setupTabs(pane, editable);
         }

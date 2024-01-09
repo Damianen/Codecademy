@@ -26,12 +26,20 @@
       <Label layoutX="14.0" layoutY="53.0" text="Title" />
       <TextField fx:id="version" layoutX="14.0" layoutY="128.0" prefHeight="25.0" prefWidth="124.0" />
       <Label layoutX="14.0" layoutY="111.0" text="Version" />
-      <Label layoutX="14.0" layoutY="167.0" text="Contact person name" />
       <TabPane fx:id="tables" layoutX="309.0" layoutY="47.0" prefHeight="348.0" prefWidth="284.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
             <Tab fx:id="course" text="Course">
                <content>
                   <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="319.0" prefWidth="311.0">
+                     <children>
+                        <TableView fx:id="table" layoutX="2.0" prefHeight="278.0" prefWidth="284.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="contactPerson" text="Contact Person">
+               <content>
+                  <AnchorPane fx:id="module1" minHeight="0.0" minWidth="0.0" prefHeight="319.0" prefWidth="311.0">
                      <children>
                         <TableView fx:id="table" layoutX="2.0" prefHeight="278.0" prefWidth="284.0" />
                      </children>
@@ -46,9 +54,6 @@
          </font>
       </Text>
       <Button fx:id="updateButton" layoutX="75.0" layoutY="292.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Update" />
-      <TextField fx:id="contactPersonName" layoutX="13.0" layoutY="187.0" prefHeight="25.0" prefWidth="124.0" />
-      <Label layoutX="14.0" layoutY="221.0" text="Contact person Email" />
-      <TextField fx:id="contactPersonEmail" layoutX="13.0" layoutY="239.0" prefHeight="25.0" prefWidth="124.0" />
       <DatePicker fx:id="publicationDate" layoutX="162.0" layoutY="70.0" prefHeight="25.0" prefWidth="124.0" />
       <Label layoutX="161.0" layoutY="53.0" text="Publication Date" />
       <Label layoutX="160.0" layoutY="111.0" text="Description" />

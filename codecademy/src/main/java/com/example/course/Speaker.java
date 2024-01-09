@@ -69,8 +69,6 @@ public class Speaker {
         name.setCellValueFactory(new PropertyValueFactory<Speaker, String>("name"));
         organization.setCellValueFactory(new PropertyValueFactory<Speaker, String>("organization"));
 
-        
-
         table.setItems(DatabaseSpeaker.getSpeakerListSearch());
     }
 }

@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.HashMap;
 
+import com.example.database.DatabaseModule;
 import com.example.database.DatabaseSpeaker;
 import com.example.javafx.GUIController;
 
@@ -95,7 +96,12 @@ public class Webcast extends ContentItem {
             @Override
             public void handle(MouseEvent event) {
                 Webcast webcast = (Webcast) table.getSelectionModel().getSelectedItem();
-                webcast.generatePopupWindow(event, editable);
+                try {
+                    webcast.generatePopupWindow(event, editable);
+                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+                        | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -106,7 +112,7 @@ public class Webcast extends ContentItem {
     }
 
     @Override
-    public void generatePopupWindow(MouseEvent event, boolean editable) {
+    public void generatePopupWindow(MouseEvent event, boolean editable) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         if (event.getClickCount() > 1) {
             AnchorPane pane;
 
@@ -121,37 +127,21 @@ public class Webcast extends ContentItem {
             GUIController.setupPopupWindow(pane, (AnchorPane) scene.getRoot());
             GUIController.setupUpdateButton(editable, pane, this);
 
-            TextField title = (TextField) pane.lookup("#title");
-            title.setEditable(editable);
-            title.setText(this.title);
+            GUIController.setUpNode(TextField.class, editable, title, pane, "title");
+            GUIController.setUpNode(TextField.class, editable, url, pane, "url");
+            GUIController.setUpNode(DatePicker.class, editable, publicationDate, pane, "publicationDate");
+            GUIController.setUpNode(TextArea.class, editable, description, pane, "description");
 
-            TextField url = (TextField) pane.lookup("#url");
-            url.setEditable(editable);
-            url.setText(this.url);
+            setupTabs(pane, editable);
+        }
+    }
 
-            TextField speaker = (TextField) pane.lookup("#speaker");
-            speaker.setEditable(editable);
-            speaker.setText(this.speaker.getName());
-
-            TextField organization = (TextField) pane.lookup("#organization");
-            organization.setEditable(editable);
-            organization.setText(this.speaker.getOrganization());
-
-            DatePicker pubDate = (DatePicker) pane.lookup("#publicationDate");
-            pubDate.setEditable(editable);
-            if (!editable) {
-                pubDate.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        pubDate.setValue(publicationDate);
-                    }
-                });
-            }
-            pubDate.setValue(publicationDate);
-
-            TextArea description = (TextArea) pane.lookup("#description");
-            description.setEditable(editable);
-            description.setText(this.description);
+    public void setupTabs(AnchorPane pane, boolean editable) {
+        ObservableList<Tab> tabs = ((TabPane) pane.lookup("#tables")).getTabs();
+        for (Tab tab : tabs) {
+            AnchorPane rootTabPane = (AnchorPane) tab.getContent();
+            TableView table = (TableView) rootTabPane.lookup("#table");
+            Speaker.generateTable(table, editable, speaker.getOrganization());
         }
     }
 }

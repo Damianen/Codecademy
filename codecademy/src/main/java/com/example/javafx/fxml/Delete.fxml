@@ -17,7 +17,7 @@
    <children>
       <TabPane prefHeight="547.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
-            <Tab text="Courses">
+            <Tab onSelectionChanged="#switchTab" text="Courses">
                <content>
                   <AnchorPane fx:id="course" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -47,12 +47,12 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab text="User">
+            <Tab onSelectionChanged="#switchTab" text="User">
                <content>
                   <AnchorPane fx:id="user" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="name" alignment="CENTER" layoutX="33.0" layoutY="116.0" promptText="Name" />
-                        <Button fx:id="searchButton" layoutX="32.0" layoutY="424.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="150.0" text="Search!" />
+                        <Button fx:id="searchButton" layoutX="32.0" layoutY="430.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="150.0" text="Search!" />
                         <Text layoutX="38.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What are you looking for?" wrappingWidth="137.537109375">
                            <font>
                               <Font size="22.0" />
@@ -63,7 +63,7 @@
                               <Font size="22.0" />
                            </font>
                         </Text>
-                        <SplitMenuButton fx:id="gender" layoutX="33.0" layoutY="384.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Gender">
+                        <SplitMenuButton fx:id="gender" layoutX="33.0" layoutY="391.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Gender">
                            <items>
                               <MenuItem mnemonicParsing="false" text="M" />
                               <MenuItem mnemonicParsing="false" text="F" />
@@ -71,16 +71,17 @@
                         </SplitMenuButton>
                         <TableView fx:id="table" layoutX="241.0" layoutY="50.0" prefHeight="455.0" prefWidth="708.0" />
                         <TextField fx:id="email" alignment="CENTER" layoutX="32.0" layoutY="158.0" promptText="E-mail" />
-                        <TextField fx:id="adress" alignment="CENTER" layoutX="33.0" layoutY="247.0" promptText="Adress" />
-                        <TextField fx:id="residence" alignment="CENTER" layoutX="33.0" layoutY="293.0" promptText="Residence" />
-                        <TextField fx:id="country" alignment="CENTER" layoutX="33.0" layoutY="340.0" promptText="country" />
-                        <DatePicker fx:id="birthDate" layoutX="33.0" layoutY="200.0" prefHeight="25.0" prefWidth="149.0" promptText="Birth Date" />
+                        <TextField fx:id="adress" alignment="CENTER" layoutX="33.0" layoutY="238.0" promptText="Adress" />
+                        <TextField fx:id="residence" alignment="CENTER" layoutX="33.0" layoutY="314.0" promptText="Residence" />
+                        <TextField fx:id="country" alignment="CENTER" layoutX="33.0" layoutY="349.0" promptText="country" />
+                        <DatePicker fx:id="birthDate" layoutX="33.0" layoutY="198.0" prefHeight="25.0" prefWidth="149.0" promptText="Birth Date" />
                         <Button fx:id="deleteButton" layoutX="658.0" layoutY="21.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="150.0" text="Delete" />
+                        <TextField fx:id="zipCode" alignment="CENTER" layoutX="32.0" layoutY="278.0" promptText="Zip Code" />
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab text="Content Item">
+            <Tab onSelectionChanged="#switchTab" text="Content Item">
                <content>
                   <AnchorPane fx:id="contentItem" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

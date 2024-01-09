@@ -20,6 +20,7 @@ import com.example.course.Webcast;
 import com.example.course.ContentItem.Status;
 import com.example.course.Course.DifficultyLevel;
 import com.example.database.DatabaseContactPerson;
+import com.example.database.DatabaseContentItem;
 import com.example.database.DatabaseCourse;
 import com.example.database.DatabaseModule;
 import com.example.database.DatabaseSpeaker;
@@ -296,14 +297,17 @@ public class GUIController {
     public void delete(ActionEvent event) throws IOException {
         AnchorPane tabRoot = (AnchorPane) ((Node) event.getSource()).getParent();
         TableView table = (TableView) tabRoot.lookup("#table");
+        Object obj = table.getSelectionModel().getSelectedItem();
 
         switch (tabRoot.getId()) {
-            case "coursePane":
-
+            case "course":
+                DatabaseCourse.deleteCourse(((Course)obj).getTitle());
                 break;
-            case "userPane":
+            case "user":
+                DatabaseUser.deleteUser(((User)obj).getEmail());
                 break;
             case "contentItem":
+                DatabaseContentItem.deleteContentItem(((ContentItem)obj).getContentItemId());
                 break;
         }
     }
@@ -316,15 +320,22 @@ public class GUIController {
         try {
             switch (pane.getId()) {
                 case "coursePopup":
-                    HashMap<String, String> map = Course.getArgsHashMap(pane);
+                    HashMap<String, String> courseMap = Course.getArgsHashMap(pane);
                     Course c = (Course) obj;
-                    DatabaseCourse.updateCourse(c.getTitle(), map.get("title"), map.get("subject"),
-                            map.get("introText"),
-                            DifficultyLevel.valueOf(((String) map.get("difficultyLevel")).toUpperCase()));
+                    DatabaseCourse.updateCourse(c.getTitle(), courseMap.get("title"), courseMap.get("subject"),
+                            courseMap.get("introText"),
+                            DifficultyLevel.valueOf(((String) courseMap.get("difficultyLevel")).toUpperCase()));
                     break;
                 case "userPopup":
+                    HashMap<String, String> userMap = User.getArgsHashMap(pane);
+                    User u = (User) obj;
+                    DatabaseUser.updateUser(u.getEmail(), userMap.get("email"), userMap.get("name"), ((DatePicker)tabRoot.lookup("#birthDate")).getValue(),
+                        Gender.valueOf(String.valueOf(userMap.get("gender").charAt(0))), userMap.get("address"), userMap.get("zipCode"), 
+                        userMap.get("residence"), userMap.get("country"));
                     break;
                 case "modulePopup":
+                    HashMap<String, String> moduleMap = Module.getArgsHashMap(pane);
+                    Module m = (Module) obj;
                     break;
                 case "webcastPopup":
                     break;

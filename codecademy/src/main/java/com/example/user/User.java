@@ -247,6 +247,7 @@ public class User {
             GUIController.setUpNode(TextField.class, editable, email, pane, "email");
             GUIController.setUpNode(TextField.class, editable, address, pane, "address");
             GUIController.setUpNode(TextField.class, editable, residence, pane, "residence");
+            GUIController.setUpNode(TextField.class, editable, postalCode, pane, "zipCode");
             GUIController.setUpNode(TextField.class, editable, country, pane, "country");
             GUIController.setUpNode(MenuButton.class, editable, gender, pane, "gender");
             GUIController.setUpNode(DatePicker.class, editable, dateOfBirth, pane, "dateOfBirth");
