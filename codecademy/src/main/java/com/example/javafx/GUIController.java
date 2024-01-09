@@ -329,15 +329,26 @@ public class GUIController {
                 case "userPopup":
                     HashMap<String, String> userMap = User.getArgsHashMap(pane);
                     User u = (User) obj;
-                    DatabaseUser.updateUser(u.getEmail(), userMap.get("email"), userMap.get("name"), ((DatePicker)tabRoot.lookup("#birthDate")).getValue(),
+                    DatabaseUser.updateUser(u.getEmail(), userMap.get("email"), userMap.get("name"), ((DatePicker)pane.lookup("#birthDate")).getValue(),
                         Gender.valueOf(String.valueOf(userMap.get("gender").charAt(0))), userMap.get("address"), userMap.get("zipCode"), 
                         userMap.get("residence"), userMap.get("country"));
                     break;
                 case "modulePopup":
                     HashMap<String, String> moduleMap = Module.getArgsHashMap(pane);
                     Module m = (Module) obj;
+                    DatabaseModule.updateModule(m.getId(), moduleMap.get("title"), 
+                        ((DatePicker)pane.lookup("#publicationDate")).getValue(), 
+                        Status.valueOf(moduleMap.get("status").toUpperCase()), moduleMap.get("description"), 
+                        Double.valueOf(moduleMap.get("version")), m.getOrderNumber(), 
+                        m.getContactPerson().getEmail(), DatabaseModule.readModuleCourseTitle(m.getContentItemId()));
                     break;
                 case "webcastPopup":
+                    HashMap<String, String> webMap = Webcast.getArgsHashMap(pane);
+                    Webcast w = (Webcast) obj;
+                    DatabaseWebcast.updateWebcast(w.getId(), webMap.get("title"), 
+                        ((DatePicker)pane.lookup("#publicationDate")).getValue(), 
+                        Status.valueOf(webMap.get("status").toUpperCase()), webMap.get("description"), 
+                        webMap.get("url"), w.getSpeaker().getId());
                     break;
             }
         } catch (AlreadyExistsException e) {

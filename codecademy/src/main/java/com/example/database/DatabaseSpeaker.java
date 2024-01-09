@@ -97,6 +97,40 @@ public class DatabaseSpeaker extends Database{
             if (con != null) try { con.close(); } catch(Exception e) {}
         }
     }
+
+    public static ObservableList<Speaker> readForNewSpeaker(int id) {
+
+        String SQL = "SELECT * FROM [Speaker] WHERE NOT ID = " + id;
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        ObservableList<Speaker> data = FXCollections.observableArrayList();
+
+        try {
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String organization = rs.getString("organization");
+
+                data.add(new Speaker(id, name, organization));
+            }
+            
+            return data;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+    }
     
     public static boolean createSpeaker(String speaker, String organization) {
 

@@ -96,6 +96,40 @@ public class DatabaseContactPerson extends Database{
             if (con != null) try { con.close(); } catch(Exception e) {}
         }
     }
+
+    public static ObservableList<ContactPerson> readForNewContactPerson(String email) {
+
+        String SQL = "SELECT * FROM [ContactPerson] WHERE NOT email = '" + email + "'";
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        ObservableList<ContactPerson> data = FXCollections.observableArrayList();
+
+        try {
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                String emailDB = rs.getString("email");
+                String nameDB = rs.getString("name");
+
+                data.add(new ContactPerson(emailDB, nameDB));
+            }
+            
+            return data;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+    }
     
     public static boolean createContactPerson(String email, String name) throws AlreadyExistsException {
 

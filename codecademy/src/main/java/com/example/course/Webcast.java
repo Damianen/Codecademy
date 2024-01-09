@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import com.example.database.DatabaseModule;
 import com.example.database.DatabaseSpeaker;
+import com.example.database.DatabaseWebcast;
 import com.example.javafx.GUIController;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -18,6 +19,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -67,8 +69,10 @@ public class Webcast extends ContentItem {
         HashMap<String, String> searchArgs = ContentItem.getArgsHashMap(pane);
         searchArgs.put("url", GUIController.searchForNodeText("url", TextField.class, pane));
         TableView table = (TableView)pane.lookup("#table");
-        Speaker speaker = (Speaker)table.getSelectionModel().getSelectedItem();
-        searchArgs.put("speakerID", String.valueOf(speaker.getId()));
+        if (table.getSelectionModel().isEmpty()) {
+            Speaker speaker = (Speaker)table.getSelectionModel().getSelectedItem();
+            searchArgs.put("speakerID", String.valueOf(speaker.getId()));
+        }
         return searchArgs;
     }
 
@@ -141,7 +145,34 @@ public class Webcast extends ContentItem {
         for (Tab tab : tabs) {
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
-            Speaker.generateTable(table, editable, speaker.getOrganization());
+            Button btn = (Button) rootTabPane.lookup("#change");
+            btn.setVisible(editable);
+            Speaker.generateTable(table, false, speaker.getId());
+            changeSpeaker(btn, editable, table);
         }
+    }
+
+    private void changeSpeaker(Button btn, boolean editable, TableView table) {
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                btn.setText("change to selected Speaker");
+                GUIController.clearTable(table);
+                Speaker.generateTable(table, editable, speaker.getId());
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        btn.setText("change Speaker");
+                        DatabaseWebcast.updateWebcast(id, title, publicationDate, 
+                        status, description, url, 
+                        ((Speaker)table.getSelectionModel().getSelectedItem()).getId());
+                        speaker = (Speaker)table.getSelectionModel().getSelectedItem();
+                        GUIController.clearTable(table);
+                        Speaker.generateTable(table, false, speaker.getId());
+                        changeSpeaker(btn, editable, table);
+                    }
+                });
+            }
+        });
     }
 }
