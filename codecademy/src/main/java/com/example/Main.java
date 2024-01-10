@@ -29,8 +29,6 @@ import javafx.scene.control.ContentDisplay;
 public class Main {
     public static void main(String[] args) {
         GUI gui = new GUI();
-        gui.startGui(args);
-
-        
+        gui.startGui(args);        
     }
 }

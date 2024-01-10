@@ -263,7 +263,7 @@ public class GUIController {
                 case "user":
                     HashMap<String, String> userMap = User.getArgsHashMap(tabRoot);
                     DatabaseUser.createUser(userMap.get("email"), userMap.get("name"), ((DatePicker)tabRoot.lookup("#birthDate")).getValue(),
-                        Gender.valueOf(String.valueOf(userMap.get("gender").charAt(0))), userMap.get("address"), userMap.get("zipCode"), 
+                        Gender.valueOf(String.valueOf(userMap.get("gender").charAt(0))), userMap.get("address"), userMap.get("postalCode"), 
                         userMap.get("residence"), userMap.get("country"));
                     break;
                 case "module":
@@ -290,9 +290,16 @@ public class GUIController {
             }
             switchPage(event);
         } catch (AlreadyExistsException e) {
-            ((Label) tabRoot.lookup("#errorMessage")).setText(e.getMessage());
+            ((Label)tabRoot.lookup("#errorMessage")).setText(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("No enum constant")) {
+                String[] arr = e.getMessage().split("\\.");
+                ((Label)tabRoot.lookup("#errorMessage")).setText("Please select a " + arr[arr.length - 2]);
+            } else {
+                ((Label)tabRoot.lookup("#errorMessage")).setText(e.getMessage());
+            }
         } catch (CannotBeEmptyException e) {
-            ((Label) tabRoot.lookup("#errorMessage")).setText(e.getMessage());
+            ((Label)tabRoot.lookup("#errorMessage")).setText(e.getMessage());
         }
 
     }
@@ -333,7 +340,7 @@ public class GUIController {
                     HashMap<String, String> userMap = User.getArgsHashMap(pane);
                     User u = (User) obj;
                     DatabaseUser.updateUser(u.getEmail(), userMap.get("email"), userMap.get("name"), ((DatePicker)pane.lookup("#birthDate")).getValue(),
-                        Gender.valueOf(String.valueOf(userMap.get("gender").charAt(0))), userMap.get("address"), userMap.get("zipCode"), 
+                        Gender.valueOf(String.valueOf(userMap.get("gender").charAt(0))), userMap.get("address"), userMap.get("postalCode"), 
                         userMap.get("residence"), userMap.get("country"));
                     break;
                 case "modulePopup":
@@ -355,7 +362,9 @@ public class GUIController {
                     break;
             }
         } catch (AlreadyExistsException e) {
-            // ((Label)tabRoot.lookup("#errorMessage")).setText(e.getMessage());
+            ((Label)pane.lookup("#errorMessage")).setText(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            ((Label)pane.lookup("#errorMessage")).setText(e.getMessage());
         }
     }
 }

@@ -38,14 +38,14 @@
       <Label layoutX="15.0" layoutY="199.0" text="Description" />
       <TextArea fx:id="description" layoutX="14.0" layoutY="216.0" prefHeight="63.0" prefWidth="232.0" />
       <DatePicker fx:id="publicationDate" layoutX="14.0" layoutY="165.0" prefHeight="31.0" prefWidth="232.0" />
-      <TabPane fx:id="tables" layoutX="265.0" layoutY="49.0" prefHeight="311.0" prefWidth="329.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tables" layoutX="265.0" layoutY="49.0" prefHeight="282.0" prefWidth="329.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
             <Tab fx:id="speaker" text="Speaker">
                <content>
-                  <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="319.0" prefWidth="311.0">
+                  <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="253.0" prefWidth="329.0">
                      <children>
-                        <TableView fx:id="table" layoutX="2.0" prefHeight="233.0" prefWidth="329.0" />
-                        <Button fx:id="change" layoutX="51.0" layoutY="249.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="232.0" text="Change Speaker" />
+                        <TableView fx:id="table" layoutX="2.0" prefHeight="202.0" prefWidth="329.0" />
+                        <Button fx:id="change" layoutX="51.0" layoutY="213.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="232.0" text="Change Speaker" />
                      </children>
                   </AnchorPane>
                </content>
@@ -59,5 +59,6 @@
             <MenuItem mnemonicParsing="false" text="Archived" />
          </items>
       </MenuButton>
+      <Label fx:id="errorMessage" layoutX="265.0" layoutY="337.0" prefHeight="17.0" prefWidth="329.0" />
    </children>
 </AnchorPane>
