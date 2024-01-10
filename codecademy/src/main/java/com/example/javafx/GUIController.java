@@ -45,6 +45,7 @@ import javafx.scene.control.Labeled;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
@@ -84,28 +85,32 @@ public class GUIController {
                     setMenuButtonActions((MenuButton) node, true);
                 }
                 if (node instanceof TableView) {
-                    clearTable((TableView)node);
-                    switch (pane.getId()) {
-                    case "course":
-                        Course.generateTable((TableView)node, update, null);
-                        break;
-                    case "user":
-                        User.generateTable((TableView)node, update, null);
-                        break;
-                    case "contentItem":
-                        ContentItem.generateContentItemTable((TableView)node, update, null);
-                        break;
-                    case "module":
-                        ContactPerson.generateTable((TableView)node, update, null);
-                        break;
-                    case "webcast":
-                        Speaker.generateTable((TableView)node, update, null);
-                        break;
-                    }
+                    refreshTable((TableView)node, pane);
                 }
             }
         } else {
             skip = false;
+        }
+    }
+
+    static private void refreshTable(TableView table, AnchorPane pane) {
+        clearTable(table);
+        switch (pane.getId()) {
+            case "course":
+                Course.generateTable(table, update, null);
+                break;
+            case "user":
+                User.generateTable(table, update, null);
+                break;
+            case "contentItem":
+                ContentItem.generateContentItemTable(table, update, null);
+                break;
+            case "module":
+                ContactPerson.generateTable(table, update, null);
+                break;
+            case "webcast":
+                Speaker.generateTable(table, update, null);
+                break;
         }
     }
 
@@ -170,6 +175,7 @@ public class GUIController {
     public static void closePopupWindow(AnchorPane popupPane, Rectangle rect) {
         AnchorPane root = (AnchorPane) popupPane.getScene().getRoot();
         root.getChildren().removeAll(popupPane, rect);
+        
     }
 
     public static void setMenuButtonActions(MenuButton menuButton, boolean editable) {
@@ -288,7 +294,30 @@ public class GUIController {
                     DatabaseSpeaker.createSpeaker(speakerMap.get("name"), speakerMap.get("organization"));
                     break;
             }
-            switchPage(event);
+            
+            ((Label)tabRoot.lookup("#errorMessage")).setText("Create was successful");
+
+            for (Node node : tabRoot.getChildren()) {
+                if (node instanceof TextField) {
+                    ((TextField)node).setText("");
+                } else if (node instanceof TextArea) {
+                    ((TextArea)node).setText("");
+                } else if (node instanceof DatePicker) {
+                    ((DatePicker)node).setValue(null);
+                } else if (node instanceof MenuButton) {
+                    switch (tabRoot.getId()) {
+                        case "user":
+                            ((MenuButton)node).setText("gender");
+                            break;
+                        case "course":
+                            ((MenuButton)node).setText("Difficulty level");
+                            break;
+                        default:
+                            ((MenuButton)node).setText("Status");
+                            break;      
+                    }
+                }
+            }
         } catch (AlreadyExistsException e) {
             ((Label)tabRoot.lookup("#errorMessage")).setText(e.getMessage());
         } catch (IllegalArgumentException e) {
@@ -301,7 +330,6 @@ public class GUIController {
         } catch (CannotBeEmptyException e) {
             ((Label)tabRoot.lookup("#errorMessage")).setText(e.getMessage());
         }
-
     }
 
     public void delete(ActionEvent event) throws IOException {
@@ -320,6 +348,8 @@ public class GUIController {
                 DatabaseContentItem.deleteContentItem(((ContentItem)obj).getContentItemId());
                 break;
         }
+
+        refreshTable(table, tabRoot);
     }
 
     static public void update(ActionEvent event, Object obj)
@@ -361,6 +391,19 @@ public class GUIController {
                         webMap.get("url"), w.getSpeaker().getId());
                     break;
             }
+
+            ((Label)pane.lookup("#errorMessage")).setText("Update was successful");
+
+            AnchorPane rootPane = (AnchorPane)pane.getScene().getRoot();
+            
+            for (Node node : rootPane.getChildren()) {
+                if (node instanceof TabPane) {
+                    Tab tab = ((TabPane)node).getSelectionModel().getSelectedItem();
+                    AnchorPane tabPane = (AnchorPane)tab.getContent();
+                    refreshTable((TableView)tabPane.lookup("#table"), tabPane);
+                }
+            }
+
         } catch (AlreadyExistsException e) {
             ((Label)pane.lookup("#errorMessage")).setText(e.getMessage());
         } catch (IllegalArgumentException e) {

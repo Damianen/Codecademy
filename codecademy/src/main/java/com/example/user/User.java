@@ -21,6 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -135,7 +136,7 @@ public class User {
         return enrollments;
     }
 
-    public void addEnrollment(TableView table, Button btn, boolean editable) {
+    public void addEnrollment(TableView table, Button btn, boolean editable, AnchorPane pane) {
         GUIController.clearTable(table);
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("userEmail", email);
@@ -153,10 +154,11 @@ public class User {
                 }
                 GUIController.clearTable(table);
                 Enrollment.generateTable(table, editable, map);
+                ((Label)pane.lookup("#errorMessage")).setText("Enrolment was successful");
                 btn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        addEnrollment(table, btn, editable);
+                        addEnrollment(table, btn, editable, pane);
                     }
                 });
             }
@@ -269,7 +271,7 @@ public class User {
                 EventHandler<ActionEvent> btnActionEventHandler = new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        addEnrollment(table, btn, editable);
+                        addEnrollment(table, btn, editable, pane);
                     } 
                 };
                 btn.setOnAction(btnActionEventHandler);

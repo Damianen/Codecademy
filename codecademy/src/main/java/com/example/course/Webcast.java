@@ -21,6 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -150,11 +151,11 @@ public class Webcast extends ContentItem {
             Button btn = (Button) rootTabPane.lookup("#change");
             btn.setVisible(editable);
             Speaker.generateTable(table, false, speaker.getId());
-            changeSpeaker(btn, editable, table);
+            changeSpeaker(btn, editable, table, pane);
         }
     }
 
-    private void changeSpeaker(Button btn, boolean editable, TableView table) {
+    private void changeSpeaker(Button btn, boolean editable, TableView table, AnchorPane pane) {
         btn.setOnAction(new EventHandler<ActionEvent>() {   
             @Override
             public void handle(ActionEvent event) {
@@ -173,7 +174,8 @@ public class Webcast extends ContentItem {
                         speaker = (Speaker)table.getSelectionModel().getSelectedItem();
                         GUIController.clearTable(table);
                         Speaker.generateTable(table, false, speaker.getId());
-                        changeSpeaker(btn, editable, table);
+                        changeSpeaker(btn, editable, table, pane);
+                        ((Label)pane.lookup("#errorMessage")).setText("Change was successful");
                     }
                 });
             }
