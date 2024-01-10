@@ -43,19 +43,19 @@ public class ValidateFunctions {
         
 
         if ((month == Month.JANUARY || month == Month.MARCH || month == Month.MAY || month == Month.JULY ||month == Month.AUGUST || month == Month.OCTOBER || month == Month.DECEMBER) && day >= 1 && day <= 31) {
-            return true;
+            return false;
         } 
         else if ((month == Month.APRIL || month == Month.JUNE || month == Month.SEPTEMBER || month == Month.NOVEMBER) && day >= 1 && day <= 30) {
-            return true;
+            return false;
         } 
         else if (month == Month.FEBRUARY && day >= 1 && day <= 29 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))) {
-            return true;
+            return false;
         } 
         else if (month == Month.FEBRUARY && day >= 1 && day <= 28 && (year % 4 != 0 || (year % 100 == 0 && year % 400 != 0))) {
-            return true;
+            return false;
         } 
         else {
-            return false;
+            return true;
         }
     }
 

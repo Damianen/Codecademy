@@ -68,7 +68,7 @@ public class DatabaseUser extends Database{
             throw new AlreadyExistsException("The email \"" + email + "\" already exists for user");
         }
 
-        if(ValidateFunctions.validateDate(dateOfBirth.getDayOfMonth(), dateOfBirth.getMonth(), dateOfBirth.getYear()) == false){
+        if(ValidateFunctions.validateDate(dateOfBirth.getDayOfMonth(), dateOfBirth.getMonth(), dateOfBirth.getYear())){
             throw new IllegalArgumentException("The Date \"" + dateOfBirth + "\" is invalid");
         } 
 
@@ -108,7 +108,7 @@ public class DatabaseUser extends Database{
             throw new IllegalArgumentException("The email \"" + newEmail + "\" is invalid");
         }
 
-        if(ValidateFunctions.validateDate(newDateOfBirth.getDayOfMonth(), newDateOfBirth.getMonth(), newDateOfBirth.getYear()) == false){
+        if(ValidateFunctions.validateDate(newDateOfBirth.getDayOfMonth(), newDateOfBirth.getMonth(), newDateOfBirth.getYear())){
             throw new IllegalArgumentException("The Date \"" + newDateOfBirth + "\" is invalid");
         } 
         

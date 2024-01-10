@@ -21,6 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -69,8 +70,8 @@ public class Webcast extends ContentItem {
         HashMap<String, String> searchArgs = ContentItem.getArgsHashMap(pane);
         searchArgs.put("url", GUIController.searchForNodeText("url", TextField.class, pane));
         TableView table = (TableView)pane.lookup("#table");
-        if (table.getSelectionModel().isEmpty()) {
-            Speaker speaker = (Speaker)table.getSelectionModel().getSelectedItem();
+        Speaker speaker = (Speaker)table.getSelectionModel().getSelectedItem();
+        if (speaker != null) {
             searchArgs.put("speakerID", String.valueOf(speaker.getId()));
         }
         return searchArgs;
@@ -135,6 +136,7 @@ public class Webcast extends ContentItem {
             GUIController.setUpNode(TextField.class, editable, url, pane, "url");
             GUIController.setUpNode(DatePicker.class, editable, publicationDate, pane, "publicationDate");
             GUIController.setUpNode(TextArea.class, editable, description, pane, "description");
+            GUIController.setUpNode(MenuButton.class, editable, status, pane, "status");
 
             setupTabs(pane, editable);
         }
@@ -153,7 +155,7 @@ public class Webcast extends ContentItem {
     }
 
     private void changeSpeaker(Button btn, boolean editable, TableView table) {
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        btn.setOnAction(new EventHandler<ActionEvent>() {   
             @Override
             public void handle(ActionEvent event) {
                 btn.setText("change to selected Speaker");
@@ -162,10 +164,12 @@ public class Webcast extends ContentItem {
                 btn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+                        Speaker speaker = (Speaker)table.getSelectionModel().getSelectedItem();
+                        if (speaker == null) {return;}
                         btn.setText("change Speaker");
                         DatabaseWebcast.updateWebcast(id, title, publicationDate, 
                         status, description, url, 
-                        ((Speaker)table.getSelectionModel().getSelectedItem()).getId());
+                        speaker.getId());
                         speaker = (Speaker)table.getSelectionModel().getSelectedItem();
                         GUIController.clearTable(table);
                         Speaker.generateTable(table, false, speaker.getId());

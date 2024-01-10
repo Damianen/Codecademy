@@ -60,6 +60,7 @@ public class GUIController {
     private Scene scene;
     private Parent root;
     private boolean skip = false;
+    static private boolean update = false;
 
     public void switchPage(ActionEvent event) throws IOException {
         try {
@@ -86,19 +87,19 @@ public class GUIController {
                     clearTable((TableView)node);
                     switch (pane.getId()) {
                     case "course":
-                        Course.generateTable((TableView)node, false, null);
+                        Course.generateTable((TableView)node, update, null);
                         break;
                     case "user":
-                        User.generateTable((TableView)node, false, null);
+                        User.generateTable((TableView)node, update, null);
                         break;
                     case "contentItem":
-                        ContentItem.generateContentItemTable((TableView)node, false, null);
+                        ContentItem.generateContentItemTable((TableView)node, update, null);
                         break;
                     case "module":
-                        ContactPerson.generateTable((TableView)node, false, null);
+                        ContactPerson.generateTable((TableView)node, update, null);
                         break;
                     case "webcast":
-                        Speaker.generateTable((TableView)node, false, null);
+                        Speaker.generateTable((TableView)node, update, null);
                         break;
                     }
                 }
@@ -112,6 +113,7 @@ public class GUIController {
         Button clickedButton = (Button) obj;
         switch (clickedButton.getId()) {
             case ("updateButton"):
+                update = true;
                 return "/com/example/javafx/fxml/Update.fxml";
             case ("createButton"):
                 return "/com/example/javafx/fxml/Create.fxml";
@@ -120,6 +122,7 @@ public class GUIController {
             case ("readButton"):
                 return "/com/example/javafx/fxml/Read.fxml";
             case ("homeButton"):
+                update = false;
                 return "/com/example/javafx/fxml/Start.fxml";
             case ("newButton"):
                 return "/com/example/javafx/fxml/Start.fxml";
@@ -267,7 +270,7 @@ public class GUIController {
                     HashMap<String, String> moduleMap = Module.getArgsHashMap(tabRoot);
                     DatabaseModule.createModule(moduleMap.get("title"), ((DatePicker)tabRoot.lookup("#publicationDate")).getValue(), 
                         Status.valueOf(moduleMap.get("status").toUpperCase()), moduleMap.get("description"), 
-                        Double.valueOf(moduleMap.get("version")), new Random().nextInt(10000000) + 1, 
+                        Double.valueOf(moduleMap.get("version")), 0, 
                         ((ContactPerson)((TableView)tabRoot.lookup("#table")).getSelectionModel().getSelectedItem()).getEmail());
                     break;
                 case "webcast":

@@ -116,8 +116,9 @@ public class DatabaseSpeaker extends Database{
             while (rs.next()) {
                 String name = rs.getString("name");
                 String organization = rs.getString("organization");
+                int newId = rs.getInt("ID");
 
-                data.add(new Speaker(id, name, organization));
+                data.add(new Speaker(newId, name, organization));
             }
             
             return data;

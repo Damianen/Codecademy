@@ -183,7 +183,7 @@ public class User {
         }
         searchArgs.put("address", GUIController.searchForNodeText("address", TextField.class, pane));
         searchArgs.put("country", GUIController.searchForNodeText("country", TextField.class, pane));
-        searchArgs.put("zipCode", GUIController.searchForNodeText("zipCode", TextField.class, pane));
+        searchArgs.put("postalCode", GUIController.searchForNodeText("zipCode", TextField.class, pane));
         return searchArgs;
     }
 
@@ -250,7 +250,7 @@ public class User {
             GUIController.setUpNode(TextField.class, editable, postalCode, pane, "zipCode");
             GUIController.setUpNode(TextField.class, editable, country, pane, "country");
             GUIController.setUpNode(MenuButton.class, editable, gender, pane, "gender");
-            GUIController.setUpNode(DatePicker.class, editable, dateOfBirth, pane, "dateOfBirth");
+            GUIController.setUpNode(DatePicker.class, editable, dateOfBirth, pane, "birthDate");
             setupTabs(pane, editable);
         }
     }

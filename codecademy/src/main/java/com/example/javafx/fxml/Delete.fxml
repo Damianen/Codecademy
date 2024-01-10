@@ -22,10 +22,9 @@
                <content>
                   <AnchorPane fx:id="course" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="name" alignment="CENTER" layoutX="32.0" layoutY="115.0" promptText="Name" />
-                        <TextField alignment="CENTER" layoutX="32.0" layoutY="159.0" promptText="Subject" />
-                        <TextField alignment="CENTER" layoutX="32.0" layoutY="202.0" promptText="intro Text" />
-                        <Button fx:id="searchButton" layoutX="32.0" layoutY="298.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="150.0" text="Search!" />
+                        <TextField fx:id="title" alignment="CENTER" layoutX="32.0" layoutY="115.0" promptText="Title" />
+                        <TextField fx:id="subject" alignment="CENTER" layoutX="32.0" layoutY="159.0" promptText="Subject" />
+                        <Button fx:id="searchButton" layoutX="33.0" layoutY="435.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="150.0" text="Search!" />
                         <Text layoutX="38.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What are you looking for?" wrappingWidth="137.537109375">
                            <font>
                               <Font size="22.0" />
@@ -36,14 +35,16 @@
                               <Font size="22.0" />
                            </font>
                         </Text>
-                        <SplitMenuButton layoutX="32.0" layoutY="247.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Difficulty Level">
-                           <items>
-                              <MenuItem mnemonicParsing="false" text="Action 1" />
-                              <MenuItem mnemonicParsing="false" text="Action 2" />
-                           </items>
-                        </SplitMenuButton>
                         <TableView fx:id="table" layoutX="240.0" layoutY="52.0" prefHeight="453.0" prefWidth="708.0" />
                         <Button fx:id="deleteButton" layoutX="684.0" layoutY="21.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="150.0" text="Delete" />
+                        <TextArea fx:id="introText" layoutX="33.0" layoutY="203.0" prefHeight="173.0" prefWidth="148.0" promptText="Intro Text" />
+                        <SplitMenuButton fx:id="difficultyLevel" layoutX="34.0" layoutY="393.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Difficulty Level">
+                           <items>
+                              <MenuItem mnemonicParsing="false" text="Beginner" />
+                              <MenuItem mnemonicParsing="false" text="Advanced" />
+                              <MenuItem mnemonicParsing="false" text="Expert" />
+                           </items>
+                        </SplitMenuButton>
                      </children>
                   </AnchorPane>
                </content>
@@ -72,7 +73,7 @@
                         </SplitMenuButton>
                         <TableView fx:id="table" layoutX="241.0" layoutY="50.0" prefHeight="455.0" prefWidth="708.0" />
                         <TextField fx:id="email" alignment="CENTER" layoutX="32.0" layoutY="158.0" promptText="E-mail" />
-                        <TextField fx:id="adress" alignment="CENTER" layoutX="33.0" layoutY="238.0" promptText="Adress" />
+                        <TextField fx:id="address" alignment="CENTER" layoutX="33.0" layoutY="238.0" promptText="Adress" />
                         <TextField fx:id="residence" alignment="CENTER" layoutX="33.0" layoutY="314.0" promptText="Residence" />
                         <TextField fx:id="country" alignment="CENTER" layoutX="33.0" layoutY="349.0" promptText="country" />
                         <DatePicker fx:id="birthDate" layoutX="33.0" layoutY="198.0" prefHeight="25.0" prefWidth="149.0" promptText="Birth Date" />

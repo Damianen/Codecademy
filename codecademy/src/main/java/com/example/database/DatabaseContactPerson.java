@@ -36,7 +36,7 @@ public class DatabaseContactPerson extends Database{
                 String name = rs.getString("name");
                 String email = rs.getString("email");
 
-                data.add(new ContactPerson(name, email));
+                data.add(new ContactPerson(email, name));
             }
 
             return data;

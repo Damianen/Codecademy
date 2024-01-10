@@ -225,13 +225,17 @@ public class DatabaseModule extends Database{
 
         Module module = readModule(id);
 
-        int orderNumberMax = getCourseModules(courseTitle).size();
+        if (courseTitle != null) {
+            int orderNumberMax = getCourseModules(courseTitle).size();
 
-        if(orderNumber > orderNumberMax){
-            throw new IllegalArgumentException("Order number may not exceed the number of modules in this course (" + orderNumberMax + ")");
+            if(orderNumber > orderNumberMax){
+                throw new IllegalArgumentException("Order number may not exceed the number of modules in this course (" + orderNumberMax + ")");
+                //moet gecontrolleerd worden dat het nieuwe orderNumber niet 0 is
+            }
         }
         
-        //moet gecontrolleerd worden dat het nieuwe orderNumber niet 0 is
+        
+        
 
         if(module.getOrderNumber() != 0 && orderNumber != 0){
             if(checkIfCourseTitleOrderNumberExists(courseTitle, orderNumber)){
