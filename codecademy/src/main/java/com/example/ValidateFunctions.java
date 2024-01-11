@@ -53,7 +53,7 @@ public class ValidateFunctions {
             return true;
         } 
         else {
-            return false;
+            return true;
         }
     }
 

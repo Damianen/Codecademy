@@ -50,7 +50,7 @@
                            </font>
                         </MenuButton>
                         <TextArea fx:id="introText" layoutX="266.0" layoutY="238.0" prefHeight="116.0" prefWidth="398.0" promptText="Intro text" />
-                        <Label fx:id="errorMessage" layoutX="276.0" layoutY="490.0" prefHeight="17.0" prefWidth="398.0" />
+                        <Label fx:id="errorMessage" layoutX="265.0" layoutY="480.0" prefHeight="17.0" prefWidth="398.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -70,13 +70,13 @@
                         </Text>
                         <TextField fx:id="residence" alignment="CENTER" layoutX="480.0" layoutY="157.0" prefHeight="36.0" prefWidth="397.0" promptText="residence" />
                         <TextField fx:id="country" alignment="CENTER" layoutX="480.0" layoutY="205.0" prefHeight="36.0" prefWidth="397.0" promptText="country" />
-                        <MenuButton fx:id="gender" layoutX="69.0" layoutY="205.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="397.0" text="Gender">
+                        <MenuButton fx:id="gender" layoutX="69.0" layoutY="205.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="397.0" text="gender">
                           <items>
                             <MenuItem mnemonicParsing="false" text="Female" />
                             <MenuItem mnemonicParsing="false" text="Male" />
                           </items>
                         </MenuButton>
-                        <Label fx:id="errorMessage" layoutX="238.0" layoutY="480.0" prefHeight="17.0" prefWidth="398.0" />
+                        <Label fx:id="errorMessage" layoutX="281.0" layoutY="384.0" prefHeight="17.0" prefWidth="398.0" />
                         <DatePicker fx:id="birthDate" layoutX="481.0" layoutY="256.0" prefHeight="36.0" prefWidth="405.0" promptText="Date Of Birth" />
                         <TextField fx:id="zipCode" alignment="CENTER" layoutX="69.0" layoutY="256.0" prefHeight="36.0" prefWidth="397.0" promptText="Zip Code" />
                      </children>

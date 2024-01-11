@@ -57,7 +57,7 @@ public class Speaker {
         return searchArgs;
     }
 
-    static public void generateTable(TableView<Speaker> table, boolean editable, String Contactorganization) {
+    static public void generateTable(TableView<Speaker> table, boolean editable, Integer id) {
         TableColumn<Speaker, String> name = new TableColumn<Speaker, String>("Name");
         TableColumn<Speaker, String> organization = new TableColumn<Speaker, String>("Organization");     
 
@@ -69,6 +69,15 @@ public class Speaker {
         name.setCellValueFactory(new PropertyValueFactory<Speaker, String>("name"));
         organization.setCellValueFactory(new PropertyValueFactory<Speaker, String>("organization"));
 
-        table.setItems(DatabaseSpeaker.getSpeakerListSearch());
+        if (id == null) {
+            table.setItems(DatabaseSpeaker.getSpeakerListSearch());
+        } else if (editable) {
+            table.setItems(DatabaseSpeaker.readForNewSpeaker(id));
+        } else {
+            ObservableList<Speaker> list = FXCollections.observableArrayList();
+            list.add(DatabaseSpeaker.readSpeaker(id));
+            table.setItems(list);
+        }
+        
     }
 }

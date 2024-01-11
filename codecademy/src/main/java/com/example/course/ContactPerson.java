@@ -62,6 +62,8 @@ public class ContactPerson {
 
         if (ContactEmail == null) {
             table.setItems(DatabaseContactPerson.getContactPersonListSearch());
+        } else if (editable) {
+            table.setItems(DatabaseContactPerson.readForNewContactPerson(ContactEmail));
         } else {
             ObservableList<ContactPerson> list = FXCollections.observableArrayList();
             list.add(DatabaseContactPerson.readContactPerson(ContactEmail));

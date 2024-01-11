@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import com.example.database.DatabaseModule;
 import com.example.database.DatabaseSpeaker;
+import com.example.database.DatabaseWebcast;
 import com.example.javafx.GUIController;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -18,7 +19,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -68,7 +72,9 @@ public class Webcast extends ContentItem {
         searchArgs.put("url", GUIController.searchForNodeText("url", TextField.class, pane));
         TableView table = (TableView)pane.lookup("#table");
         Speaker speaker = (Speaker)table.getSelectionModel().getSelectedItem();
-        searchArgs.put("speakerID", String.valueOf(speaker.getId()));
+        if (speaker != null) {
+            searchArgs.put("speakerID", String.valueOf(speaker.getId()));
+        }
         return searchArgs;
     }
 
@@ -131,6 +137,7 @@ public class Webcast extends ContentItem {
             GUIController.setUpNode(TextField.class, editable, url, pane, "url");
             GUIController.setUpNode(DatePicker.class, editable, publicationDate, pane, "publicationDate");
             GUIController.setUpNode(TextArea.class, editable, description, pane, "description");
+            GUIController.setUpNode(MenuButton.class, editable, status, pane, "status");
 
             setupTabs(pane, editable);
         }
@@ -141,7 +148,37 @@ public class Webcast extends ContentItem {
         for (Tab tab : tabs) {
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
-            Speaker.generateTable(table, editable, speaker.getOrganization());
+            Button btn = (Button) rootTabPane.lookup("#change");
+            btn.setVisible(editable);
+            Speaker.generateTable(table, false, speaker.getId());
+            changeSpeaker(btn, editable, table, pane);
         }
+    }
+
+    private void changeSpeaker(Button btn, boolean editable, TableView table, AnchorPane pane) {
+        btn.setOnAction(new EventHandler<ActionEvent>() {   
+            @Override
+            public void handle(ActionEvent event) {
+                btn.setText("change to selected Speaker");
+                GUIController.clearTable(table);
+                Speaker.generateTable(table, editable, speaker.getId());
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        Speaker speaker = (Speaker)table.getSelectionModel().getSelectedItem();
+                        if (speaker == null) {return;}
+                        btn.setText("change Speaker");
+                        DatabaseWebcast.updateWebcast(id, title, publicationDate, 
+                        status, description, url, 
+                        speaker.getId());
+                        speaker = (Speaker)table.getSelectionModel().getSelectedItem();
+                        GUIController.clearTable(table);
+                        Speaker.generateTable(table, false, speaker.getId());
+                        changeSpeaker(btn, editable, table, pane);
+                        ((Label)pane.lookup("#errorMessage")).setText("Change was successful");
+                    }
+                });
+            }
+        });
     }
 }

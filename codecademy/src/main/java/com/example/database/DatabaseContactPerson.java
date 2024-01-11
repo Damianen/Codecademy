@@ -36,7 +36,7 @@ public class DatabaseContactPerson extends Database{
                 String name = rs.getString("name");
                 String email = rs.getString("email");
 
-                data.add(new ContactPerson(name, email));
+                data.add(new ContactPerson(email, name));
             }
 
             return data;
@@ -83,6 +83,40 @@ public class DatabaseContactPerson extends Database{
                 String nameDB = rs.getString("name");
 
                 data = new ContactPerson(emailDB, nameDB);
+            }
+            
+            return data;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return data;
+        }finally {
+            if (rs != null) try { rs.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (con != null) try { con.close(); } catch(Exception e) {}
+        }
+    }
+
+    public static ObservableList<ContactPerson> readForNewContactPerson(String email) {
+
+        String SQL = "SELECT * FROM [ContactPerson] WHERE NOT email = '" + email + "'";
+
+        Connection con = getDbConnection();
+
+        Statement stmt = null;
+        ResultSet rs = null;
+        ObservableList<ContactPerson> data = FXCollections.observableArrayList();
+
+        try {
+
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+
+            while (rs.next()) {
+                String emailDB = rs.getString("email");
+                String nameDB = rs.getString("name");
+
+                data.add(new ContactPerson(emailDB, nameDB));
             }
             
             return data;

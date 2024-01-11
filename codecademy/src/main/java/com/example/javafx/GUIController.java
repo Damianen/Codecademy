@@ -45,6 +45,7 @@ import javafx.scene.control.Labeled;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
@@ -60,6 +61,7 @@ public class GUIController {
     private Scene scene;
     private Parent root;
     private boolean skip = false;
+    static private boolean update = false;
 
     public void switchPage(ActionEvent event) throws IOException {
         try {
@@ -83,28 +85,32 @@ public class GUIController {
                     setMenuButtonActions((MenuButton) node, true);
                 }
                 if (node instanceof TableView) {
-                    clearTable((TableView)node);
-                    switch (pane.getId()) {
-                    case "course":
-                        Course.generateTable((TableView)node, false, null);
-                        break;
-                    case "user":
-                        User.generateTable((TableView)node, false, null);
-                        break;
-                    case "contentItem":
-                        ContentItem.generateContentItemTable((TableView)node, false, null);
-                        break;
-                    case "module":
-                        ContactPerson.generateTable((TableView)node, false, null);
-                        break;
-                    case "webcast":
-                        Speaker.generateTable((TableView)node, false, null);
-                        break;
-                    }
+                    refreshTable((TableView)node, pane);
                 }
             }
         } else {
             skip = false;
+        }
+    }
+
+    static private void refreshTable(TableView table, AnchorPane pane) {
+        clearTable(table);
+        switch (pane.getId()) {
+            case "course":
+                Course.generateTable(table, update, null);
+                break;
+            case "user":
+                User.generateTable(table, update, null);
+                break;
+            case "contentItem":
+                ContentItem.generateContentItemTable(table, update, null);
+                break;
+            case "module":
+                ContactPerson.generateTable(table, update, null);
+                break;
+            case "webcast":
+                Speaker.generateTable(table, update, null);
+                break;
         }
     }
 
@@ -114,6 +120,7 @@ public class GUIController {
             case ("overviewsButton"):
                 return "/com/example/javafx/fxml/Overviews.fxml";
             case ("updateButton"):
+                update = true;
                 return "/com/example/javafx/fxml/Update.fxml";
             case ("createButton"):
                 return "/com/example/javafx/fxml/Create.fxml";
@@ -122,6 +129,7 @@ public class GUIController {
             case ("readButton"):
                 return "/com/example/javafx/fxml/Read.fxml";
             case ("homeButton"):
+                update = false;
                 return "/com/example/javafx/fxml/Start.fxml";
             case ("newButton"):
                 return "/com/example/javafx/fxml/Start.fxml";
@@ -169,6 +177,7 @@ public class GUIController {
     public static void closePopupWindow(AnchorPane popupPane, Rectangle rect) {
         AnchorPane root = (AnchorPane) popupPane.getScene().getRoot();
         root.getChildren().removeAll(popupPane, rect);
+        
     }
 
     public static void setMenuButtonActions(MenuButton menuButton, boolean editable) {
@@ -262,14 +271,14 @@ public class GUIController {
                 case "user":
                     HashMap<String, String> userMap = User.getArgsHashMap(tabRoot);
                     DatabaseUser.createUser(userMap.get("email"), userMap.get("name"), ((DatePicker)tabRoot.lookup("#birthDate")).getValue(),
-                        Gender.valueOf(String.valueOf(userMap.get("gender").charAt(0))), userMap.get("address"), userMap.get("zipCode"), 
+                        Gender.valueOf(String.valueOf(userMap.get("gender").charAt(0))), userMap.get("address"), userMap.get("postalCode"), 
                         userMap.get("residence"), userMap.get("country"));
                     break;
                 case "module":
                     HashMap<String, String> moduleMap = Module.getArgsHashMap(tabRoot);
                     DatabaseModule.createModule(moduleMap.get("title"), ((DatePicker)tabRoot.lookup("#publicationDate")).getValue(), 
                         Status.valueOf(moduleMap.get("status").toUpperCase()), moduleMap.get("description"), 
-                        Double.valueOf(moduleMap.get("version")), new Random().nextInt(10000000) + 1, 
+                        Double.valueOf(moduleMap.get("version")), 0, 
                         ((ContactPerson)((TableView)tabRoot.lookup("#table")).getSelectionModel().getSelectedItem()).getEmail());
                     break;
                 case "webcast":
@@ -287,13 +296,42 @@ public class GUIController {
                     DatabaseSpeaker.createSpeaker(speakerMap.get("name"), speakerMap.get("organization"));
                     break;
             }
-            switchPage(event);
-        } catch (AlreadyExistsException e) {
-            ((Label) tabRoot.lookup("#errorMessage")).setText(e.getMessage());
-        } catch (CannotBeEmptyException e) {
-            ((Label) tabRoot.lookup("#errorMessage")).setText(e.getMessage());
-        }
+            
+            ((Label)tabRoot.lookup("#errorMessage")).setText("Create was successful");
 
+            for (Node node : tabRoot.getChildren()) {
+                if (node instanceof TextField) {
+                    ((TextField)node).setText("");
+                } else if (node instanceof TextArea) {
+                    ((TextArea)node).setText("");
+                } else if (node instanceof DatePicker) {
+                    ((DatePicker)node).setValue(null);
+                } else if (node instanceof MenuButton) {
+                    switch (tabRoot.getId()) {
+                        case "user":
+                            ((MenuButton)node).setText("gender");
+                            break;
+                        case "course":
+                            ((MenuButton)node).setText("Difficulty level");
+                            break;
+                        default:
+                            ((MenuButton)node).setText("Status");
+                            break;      
+                    }
+                }
+            }
+        } catch (AlreadyExistsException e) {
+            ((Label)tabRoot.lookup("#errorMessage")).setText(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("No enum constant")) {
+                String[] arr = e.getMessage().split("\\.");
+                ((Label)tabRoot.lookup("#errorMessage")).setText("Please select a " + arr[arr.length - 2]);
+            } else {
+                ((Label)tabRoot.lookup("#errorMessage")).setText(e.getMessage());
+            }
+        } catch (CannotBeEmptyException e) {
+            ((Label)tabRoot.lookup("#errorMessage")).setText(e.getMessage());
+        }
     }
 
     public void delete(ActionEvent event) throws IOException {
@@ -312,6 +350,8 @@ public class GUIController {
                 DatabaseContentItem.deleteContentItem(((ContentItem)obj).getContentItemId());
                 break;
         }
+
+        refreshTable(table, tabRoot);
     }
 
     static public void update(ActionEvent event, Object obj)
@@ -331,19 +371,45 @@ public class GUIController {
                 case "userPopup":
                     HashMap<String, String> userMap = User.getArgsHashMap(pane);
                     User u = (User) obj;
-                    DatabaseUser.updateUser(u.getEmail(), userMap.get("email"), userMap.get("name"), ((DatePicker)tabRoot.lookup("#birthDate")).getValue(),
-                        Gender.valueOf(String.valueOf(userMap.get("gender").charAt(0))), userMap.get("address"), userMap.get("zipCode"), 
+                    DatabaseUser.updateUser(u.getEmail(), userMap.get("email"), userMap.get("name"), ((DatePicker)pane.lookup("#birthDate")).getValue(),
+                        Gender.valueOf(String.valueOf(userMap.get("gender").charAt(0))), userMap.get("address"), userMap.get("postalCode"), 
                         userMap.get("residence"), userMap.get("country"));
                     break;
                 case "modulePopup":
                     HashMap<String, String> moduleMap = Module.getArgsHashMap(pane);
                     Module m = (Module) obj;
+                    DatabaseModule.updateModule(m.getId(), moduleMap.get("title"), 
+                        ((DatePicker)pane.lookup("#publicationDate")).getValue(), 
+                        Status.valueOf(moduleMap.get("status").toUpperCase()), moduleMap.get("description"), 
+                        Double.valueOf(moduleMap.get("version")), m.getOrderNumber(), 
+                        m.getContactPerson().getEmail(), DatabaseModule.readModuleCourseTitle(m.getContentItemId()));
                     break;
                 case "webcastPopup":
+                    HashMap<String, String> webMap = Webcast.getArgsHashMap(pane);
+                    Webcast w = (Webcast) obj;
+                    DatabaseWebcast.updateWebcast(w.getId(), webMap.get("title"), 
+                        ((DatePicker)pane.lookup("#publicationDate")).getValue(), 
+                        Status.valueOf(webMap.get("status").toUpperCase()), webMap.get("description"), 
+                        webMap.get("url"), w.getSpeaker().getId());
                     break;
             }
+
+            ((Label)pane.lookup("#errorMessage")).setText("Update was successful");
+
+            AnchorPane rootPane = (AnchorPane)pane.getScene().getRoot();
+            
+            for (Node node : rootPane.getChildren()) {
+                if (node instanceof TabPane) {
+                    Tab tab = ((TabPane)node).getSelectionModel().getSelectedItem();
+                    AnchorPane tabPane = (AnchorPane)tab.getContent();
+                    refreshTable((TableView)tabPane.lookup("#table"), tabPane);
+                }
+            }
+
         } catch (AlreadyExistsException e) {
-            // ((Label)tabRoot.lookup("#errorMessage")).setText(e.getMessage());
+            ((Label)pane.lookup("#errorMessage")).setText(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            ((Label)pane.lookup("#errorMessage")).setText(e.getMessage());
         }
     }
 }

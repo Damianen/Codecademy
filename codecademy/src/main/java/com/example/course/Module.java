@@ -20,7 +20,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -85,7 +87,10 @@ public class Module extends ContentItem {
         searchArgs.put("version", GUIController.searchForNodeText("version", TextField.class, pane));
         TableView table = (TableView)pane.lookup("#table");
         ContactPerson person = (ContactPerson)table.getSelectionModel().getSelectedItem();
-        searchArgs.put("contactPersonEmail", person.getEmail());
+        if (person != null) {
+            searchArgs.put("contactPersonEmail", person.getEmail());
+        }
+        
         return searchArgs;
     }
 
@@ -151,6 +156,7 @@ public class Module extends ContentItem {
             GUIController.setUpNode(TextField.class, editable, version, pane, "version");
             GUIController.setUpNode(TextArea.class, editable, description, pane, "description");
             GUIController.setUpNode(DatePicker.class, editable, publicationDate, pane, "publicationDate");
+            GUIController.setUpNode(MenuButton.class, editable, status, pane, "status");
 
             setupTabs(pane, editable);
         }
@@ -161,13 +167,59 @@ public class Module extends ContentItem {
         for (Tab tab : tabs) {
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
+            Button btn = (Button) rootTabPane.lookup("#change");
+            btn.setVisible(editable);
             if (tab.getId().equals("course")) {
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("title", DatabaseModule.readModuleCourseTitle(contentItemId));
-                Course.generateTable(table, editable, map);
+                String title = DatabaseModule.readModuleCourseTitle(contentItemId);
+                if (title != null) { 
+                    map.put("title", title);
+                    Course.generateTable(table, editable, map);     
+                } else {
+                    btn.setText("add Course");
+                }
+                
             } else {
-                ContactPerson.generateTable(table, editable, contactPerson.getEmail());
+                ContactPerson.generateTable(table, false, contactPerson.getEmail());
+                changeContactPerson(btn, editable, table, pane);
             }
         }
+    }
+
+    private void changeCourse(Button btn, boolean editable, TableView table) {
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                btn.setText("change to selected course");
+            }
+        });
+    }
+
+    private void changeContactPerson(Button btn, boolean editable, TableView table, AnchorPane pane) {
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                btn.setText("change to selected ContentItem");
+                GUIController.clearTable(table);
+                ContactPerson.generateTable(table, editable, contactPerson.getEmail());
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        ContactPerson newContactPerson = ((ContactPerson)table.getSelectionModel().getSelectedItem());
+                        if (newContactPerson == null) {return;}
+                        GUIController.clearTable(table);
+                        btn.setText("change Content Person");
+                        DatabaseModule.updateModule(id, title, publicationDate, 
+                        status, description, version, orderNumber, 
+                        newContactPerson.getEmail(), 
+                        DatabaseModule.readModuleCourseTitle(contentItemId));
+                        contactPerson = newContactPerson;
+                        ContactPerson.generateTable(table, false, contactPerson.getEmail());
+                        changeContactPerson(btn, editable, table, pane);
+                        ((Label)pane.lookup("#errorMessage")).setText("Change was successful");
+                    }
+                });
+            }
+        });
     }
 }

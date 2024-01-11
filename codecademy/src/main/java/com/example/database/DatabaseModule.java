@@ -225,7 +225,8 @@ public class DatabaseModule extends Database{
 
         Module module = readModule(id);
 
-        int orderNumberMax = getCourseModules(courseTitle).size();
+        if (courseTitle != null) {
+            int orderNumberMax = getCourseModules(courseTitle).size();
 
         if(orderNumber > orderNumberMax){
             throw new IllegalArgumentException("Order number may not exceed the number of modules in this course (" + orderNumberMax + ")");
