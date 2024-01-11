@@ -111,6 +111,8 @@ public class GUIController {
     private String getFXMLPath(Object obj) {
         Button clickedButton = (Button) obj;
         switch (clickedButton.getId()) {
+            case ("overviewsButton"):
+                return "/com/example/javafx/fxml/Overviews.fxml";
             case ("updateButton"):
                 return "/com/example/javafx/fxml/Update.fxml";
             case ("createButton"):

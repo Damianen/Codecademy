@@ -2,6 +2,7 @@ package com.example;
 
 import java.sql.DatabaseMetaData;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.HashMap;
 
 import com.example.course.ContentItem;
@@ -24,13 +25,12 @@ import com.example.user.Enrollment;
 import com.example.user.User;
 import com.example.user.User.Gender;
 
+import javafx.fxml.LoadException;
 import javafx.scene.control.ContentDisplay;
 
 public class Main {
     public static void main(String[] args) {
         GUI gui = new GUI();
         gui.startGui(args);
-
-        
     }
 }

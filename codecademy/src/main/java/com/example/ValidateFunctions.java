@@ -39,19 +39,17 @@ public class ValidateFunctions {
     * }
     * 
     */ 
-    public static boolean validateDate(int day, Month month, int year) {
-        
-
-        if ((month == Month.JANUARY || month == Month.MARCH || month == Month.MAY || month == Month.JULY ||month == Month.AUGUST || month == Month.OCTOBER || month == Month.DECEMBER) && day >= 1 && day <= 31) {
+    public static boolean validateDate(int day, int month, int year) {
+        if ((month == 1 || month == 3 || month == 5 || month == 7 ||month == 8 || month == 10 || month == 12) && day >= 1 && day <= 31) {
             return true;
         } 
-        else if ((month == Month.APRIL || month == Month.JUNE || month == Month.SEPTEMBER || month == Month.NOVEMBER) && day >= 1 && day <= 30) {
+        else if ((month == 4 || month == 6 || month == 9 || month == 11) && day >= 1 && day <= 30) {
             return true;
         } 
-        else if (month == Month.FEBRUARY && day >= 1 && day <= 29 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))) {
+        else if (month == 2 && day >= 1 && day <= 29 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))) {
             return true;
         } 
-        else if (month == Month.FEBRUARY && day >= 1 && day <= 28 && (year % 4 != 0 || (year % 100 == 0 && year % 400 != 0))) {
+        else if (month == 2 && day >= 1 && day <= 28 && (year % 4 != 0 || (year % 100 == 0 && year % 400 != 0))) {
             return true;
         } 
         else {

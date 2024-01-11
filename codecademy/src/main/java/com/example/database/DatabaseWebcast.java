@@ -146,7 +146,7 @@ public class DatabaseWebcast extends Database{
 
         
 
-        if (ValidateFunctions.validateDate(publicationDate.getDayOfMonth(), publicationDate.getMonth(), publicationDate.getYear()) == false) {
+        if (ValidateFunctions.validateDate(publicationDate.getDayOfMonth(), publicationDate.getMonthValue(), publicationDate.getYear()) != true) {
             throw new IllegalArgumentException("The Date \"" + publicationDate + "\" is invalid");
         }
 
@@ -190,7 +190,7 @@ public class DatabaseWebcast extends Database{
 
        
 
-        if (ValidateFunctions.validateDate(publicationDate.getDayOfMonth(), publicationDate.getMonth(), publicationDate.getYear()) == false) {
+        if (ValidateFunctions.validateDate(publicationDate.getDayOfMonth(), publicationDate.getMonthValue(), publicationDate.getYear()) != true) {
             throw new IllegalArgumentException("The Date \"" + publicationDate + "\" is invalid");
         }
 

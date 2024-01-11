@@ -181,7 +181,7 @@ public class DatabaseModule extends Database{
 
     public static boolean createModule(String title, LocalDate publicationDate, Status status, String description, double version, int orderNumber, String emailContactPerson) {
 
-        if (ValidateFunctions.validateDate(publicationDate.getDayOfMonth(), publicationDate.getMonth(), publicationDate.getYear())) {
+        if (ValidateFunctions.validateDate(publicationDate.getDayOfMonth(), publicationDate.getMonthValue(), publicationDate.getYear()) != true) {
                 throw new IllegalArgumentException("The Date \"" + publicationDate + "\" is invalid");
         }
 
@@ -219,7 +219,7 @@ public class DatabaseModule extends Database{
 
     public static boolean updateModule(int id, String title, LocalDate publicationDate, Status status, String description, double version, int orderNumber, String emailContactPerson, String courseTitle) {
 
-        if (ValidateFunctions.validateDate(publicationDate.getDayOfMonth(), publicationDate.getMonth(), publicationDate.getYear())) {
+        if (ValidateFunctions.validateDate(publicationDate.getDayOfMonth(), publicationDate.getMonthValue(), publicationDate.getYear()) != true) {
                 throw new IllegalArgumentException("The Date \"" + publicationDate + "\" is invalid");
         }
 
@@ -229,16 +229,6 @@ public class DatabaseModule extends Database{
 
         if(orderNumber > orderNumberMax){
             throw new IllegalArgumentException("Order number may not exceed the number of modules in this course (" + orderNumberMax + ")");
-        }
-        
-        //moet gecontrolleerd worden dat het nieuwe orderNumber niet 0 is
-
-        if(module.getOrderNumber() != 0 && orderNumber != 0){
-            if(checkIfCourseTitleOrderNumberExists(courseTitle, orderNumber)){
-                if(updateOrderNumbersInCourse(id, module.getOrderNumber(), orderNumber, courseTitle) == false){
-                    return false;
-                }
-            }
         }
         
         if(DatabaseContentItem.updateContentItem(module.getContentItemId(), title, publicationDate, status, description) == true){
@@ -333,55 +323,14 @@ public class DatabaseModule extends Database{
         }
     }
 
-    public static boolean checkIfCourseTitleOrderNumberExists(String courseTitle, int orderNumber) {
-        
-        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module.emailContactPerson FROM Module INNER JOIN ContentItem ON ContentItem.ID = Module.contentItemID WHERE courseTitle = '" + courseTitle + "' AND orderNumber = " + orderNumber;
+    public static boolean updateOrderNumbersInCourse(int moduleID, int newOrderNumber, String courseTitle) {
 
-        Connection con = getDbConnection();
-
-        Statement stmt = null;
-        ResultSet rs = null;
-        Module data = null;
-
-        try {
-
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(SQL);
-
-            while (rs.next()) {
-
-                int contentItemID = rs.getInt("contentItemID");
-                String title = rs.getString("title");
-                LocalDate publicationDate = rs.getDate("publicationDate").toLocalDate();
-                Status status = Status.valueOf(rs.getString("status"));
-                String description = rs.getString("description");
-                
-                int id = rs.getInt("ModuleID");
-                double version = rs.getDouble("version");
-                int orderNumberDB = rs.getInt("orderNumber");
-                String emailContactPerson = rs.getString("emailContactPerson");
-
-                data = new Module(contentItemID, title, publicationDate, status, description, id, version, emailContactPerson, orderNumberDB);
-
-            }
-
-            if(data == null){
-                return false;
-            }else{
-                return true;
-            }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            return true;
-        }finally {
-            if (rs != null) try { rs.close(); } catch(Exception e) {}
-            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
-            if (con != null) try { con.close(); } catch(Exception e) {}
+        if(newOrderNumber < 1){
+            throw new IllegalArgumentException("Order number cannot be lower than 1");
         }
-    }
 
-    public static boolean updateOrderNumbersInCourse(int moduleID, int oldOrderNumber, int newOrderNumber, String courseTitle) {
+        int oldOrderNumber = readModule(moduleID).getOrderNumber();
+ 
 
         String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module.emailContactPerson FROM Module INNER JOIN ContentItem ON ContentItem.ID = Module.contentItemID WHERE orderNumber >= " + newOrderNumber + " AND orderNumber < " + oldOrderNumber + " AND courseTitle = '" + courseTitle + "' ORDER BY orderNumber DESC";
         
@@ -421,6 +370,10 @@ public class DatabaseModule extends Database{
 
             for (Module module : data) {
                 updateModule(module.getId(), module.getTitle(), module.getPublicationDate(), module.getStatus(), module.getDescription(), module.getVersion(), module.getOrderNumber() + 1, module.getContactPerson().getEmail(), courseTitle);
+            }
+
+            if(updateModule(resetOrderNumberModule.getId(), resetOrderNumberModule.getTitle(), resetOrderNumberModule.getPublicationDate(), resetOrderNumberModule.getStatus(), resetOrderNumberModule.getDescription(), resetOrderNumberModule.getVersion(), newOrderNumber, resetOrderNumberModule.getContactPerson().getEmail(), courseTitle) == false){
+                return false;
             }
 
             return true;

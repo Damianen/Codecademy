@@ -41,7 +41,7 @@ public class ClassToTest{
     @Test
     public void testValidateDateWithThirtyFirstOfJanuaryTwoThousandReturnTrue() {
 
-        boolean validDate = ValidateFunctions.validateDate(31, Month.JANUARY, 2000);
+        boolean validDate = ValidateFunctions.validateDate(31, 1, 2000);
 
         assertTrue(validDate);
     }
@@ -49,7 +49,7 @@ public class ClassToTest{
     @Test
     public void testValidateDateWithThirtiethOfAprilTwoThousandReturnTrue() {
 
-        boolean validDate = ValidateFunctions.validateDate(30, Month.APRIL, 2000);
+        boolean validDate = ValidateFunctions.validateDate(30, 4, 2000);
 
         assertTrue(validDate);
     }
@@ -57,7 +57,7 @@ public class ClassToTest{
     @Test
     public void testValidateDateWithTwentyNinthOfFebruaryTwoThousandAndTwelveReturnTrue() {
 
-        boolean validDate = ValidateFunctions.validateDate(29, Month.FEBRUARY, 2012);
+        boolean validDate = ValidateFunctions.validateDate(29, 2, 2012);
 
         assertTrue(validDate);
     }
@@ -65,7 +65,7 @@ public class ClassToTest{
     @Test
     public void testValidateDateWithTwentyNinthOfFebruaryTwoThousandAndFourReturnTrue() {
 
-        boolean validDate = ValidateFunctions.validateDate(29, Month.FEBRUARY, 2004);
+        boolean validDate = ValidateFunctions.validateDate(29, 2, 2004);
 
         assertTrue(validDate);
     }
@@ -73,7 +73,7 @@ public class ClassToTest{
     @Test
     public void testValidateDateWithInvalidDateReturnsFalse() {
 
-        boolean validDate = ValidateFunctions.validateDate(32, Month.AUGUST, 203040);
+        boolean validDate = ValidateFunctions.validateDate(32, 8, 203040);
 
         assertFalse(validDate);
     }
