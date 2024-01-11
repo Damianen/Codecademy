@@ -130,6 +130,24 @@ public class Course {
         return true;
     }
 
+    public boolean updateModuleOrderNumber(Module module, int newOrderNumber) {
+
+        try {
+            //update orderNumber
+            DatabaseModule.updateOrderNumbersInCourse(module.getId(), newOrderNumber, this.getTitle());
+
+            //reset module arangement
+            this.modules = DatabaseModule.getCourseModules(this.title);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        
+    }
+
     public Course generateRecomendedCourse() {
         return null;
     }

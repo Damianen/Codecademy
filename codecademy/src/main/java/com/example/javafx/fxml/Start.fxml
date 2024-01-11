@@ -7,19 +7,19 @@
 
 <AnchorPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafx.GUIController">
     <children>
-        <Button fx:id="updateButton" layoutX="311.0" layoutY="317.0" mnemonicParsing="false" onAction="#switchPage" prefHeight="34.0" prefWidth="357.0" text="Update" textAlignment="CENTER">
+        <Button fx:id="updateButton" layoutX="312.0" layoutY="378.0" mnemonicParsing="false" onAction="#switchPage" prefHeight="34.0" prefWidth="357.0" text="Update" textAlignment="CENTER">
          <font>
             <Font size="27.0" />
          </font></Button>
-        <Button fx:id="readButton" layoutX="311.0" layoutY="242.0" mnemonicParsing="false" onAction="#switchPage" prefHeight="57.0" prefWidth="357.0" text="Read" textAlignment="CENTER">
+        <Button fx:id="readButton" layoutX="312.0" layoutY="303.0" mnemonicParsing="false" onAction="#switchPage" prefHeight="57.0" prefWidth="357.0" text="Read" textAlignment="CENTER">
          <font>
             <Font size="27.0" />
          </font></Button>
-        <Button fx:id="deleteButton" layoutX="310.0" layoutY="390.0" mnemonicParsing="false" onAction="#switchPage" prefHeight="57.0" prefWidth="357.0" text="Delete" textAlignment="CENTER">
+        <Button fx:id="deleteButton" layoutX="311.0" layoutY="451.0" mnemonicParsing="false" onAction="#switchPage" prefHeight="57.0" prefWidth="357.0" text="Delete" textAlignment="CENTER">
          <font>
             <Font size="27.0" />
          </font></Button>
-        <Button fx:id="createButton" layoutX="310.0" layoutY="161.0" mnemonicParsing="false" onAction="#switchPage" prefHeight="57.0" prefWidth="357.0" text="Create" textAlignment="CENTER">
+        <Button fx:id="createButton" layoutX="312.0" layoutY="224.0" mnemonicParsing="false" onAction="#switchPage" prefHeight="57.0" prefWidth="357.0" text="Create" textAlignment="CENTER">
          <font>
             <Font size="27.0" />
          </font></Button>
@@ -28,5 +28,10 @@
             <Font size="33.0" />
          </font>
       </Text>
+      <Button fx:id="overviewsButton" layoutX="312.0" layoutY="148.0" mnemonicParsing="false" onAction="#switchPage" prefHeight="57.0" prefWidth="357.0" text="Overviews" textAlignment="CENTER">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>
