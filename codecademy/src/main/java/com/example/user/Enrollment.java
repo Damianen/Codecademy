@@ -12,6 +12,7 @@ import com.example.course.Course;
 import com.example.database.DatabaseCertificate;
 import com.example.database.DatabaseCourse;
 import com.example.database.DatabaseEnrollment;
+import com.example.database.DatabaseUser;
 import com.example.course.*;
 import com.example.javafx.GUIController;
 import com.example.user.User.Gender;
@@ -160,9 +161,13 @@ public class Enrollment {
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
             if (tab.getId().equals("course")) {
-                Course.generateTable(table, editable, new HashMap<String, String>());
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("enrolmentTitle", course.getTitle());
+                Course.generateTable(table, editable, map);
             } else if (tab.getId().equals("user")) {
-                User.generateTable(table, editable, new HashMap<String, String>());
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("email", DatabaseEnrollment.getEnrollmentUser(id));
+                User.generateTable(table, editable, map);
             } else {
                 Certificate.generateTable(table, editable, id);
             }

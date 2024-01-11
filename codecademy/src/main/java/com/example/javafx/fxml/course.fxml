@@ -36,7 +36,7 @@
           <MenuItem mnemonicParsing="false" text="Expert" />
         </items>
       </MenuButton>
-      <TabPane fx:id="tables" layoutX="174.0" layoutY="47.0" prefHeight="313.0" prefWidth="419.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tables" layoutX="174.0" layoutY="47.0" prefHeight="317.0" prefWidth="419.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="enrolment" text="Enrolments">
             <content>
@@ -49,12 +49,12 @@
           </Tab>
           <Tab fx:id="module" text="Modules">
             <content>
-              <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="276.0" prefWidth="419.0">
                      <children>
-                        <Button fx:id="add" layoutX="7.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Add Modules" />
-                        <Button fx:id="updateButton11" layoutX="262.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Remove modules" />
+                        <Button fx:id="add" layoutX="8.0" layoutY="254.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Add Modules" />
+                        <Button fx:id="updateButton11" layoutX="265.0" layoutY="254.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Remove modules" />
                         <Label fx:id="promptText" layoutX="75.0" layoutY="266.0" prefHeight="17.0" prefWidth="264.0" textAlignment="CENTER" />
-                        <TableView fx:id="table" prefHeight="283.0" prefWidth="419.0" />
+                        <TableView fx:id="table" prefHeight="241.0" prefWidth="419.0" />
                      </children>
                   </AnchorPane>
             </content>

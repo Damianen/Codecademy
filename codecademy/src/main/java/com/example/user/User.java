@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.example.course.Course;
+import com.example.course.Webcast;
 import com.example.database.DatabaseEnrollment;
+import com.example.database.DatabaseProgress;
 import com.example.database.DatabaseUser;
 import com.example.exeptions.AlreadyExistsException;
 import com.example.javafx.GUIController;
@@ -155,6 +157,7 @@ public class User {
                 GUIController.clearTable(table);
                 Enrollment.generateTable(table, editable, map);
                 ((Label)pane.lookup("#errorMessage")).setText("Enrolment was successful");
+                btn.setText("Enroll in course");
                 btn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -264,9 +267,9 @@ public class User {
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
             HashMap<String, String> map = new HashMap<String, String>();
-            map.put("userEmail", email);               
-            if (tab.getId().equals("enrolment")) {  
-                Button btn = (Button)rootTabPane.lookup("#add");
+            map.put("userEmail", email);
+            Button btn = (Button)rootTabPane.lookup("#add");
+            if (tab.getId().equals("enrolment")) {
                 Enrollment.generateTable(table, editable, map);
                 EventHandler<ActionEvent> btnActionEventHandler = new EventHandler<ActionEvent>() {
                     @Override
@@ -277,12 +280,41 @@ public class User {
                 btn.setOnAction(btnActionEventHandler);
             } else {
                 Progress.generateTable(table, editable, map);
+                addWebCast(table, btn, editable, pane, map);
             }
         }
     }
 
-
+    public void addWebCast(TableView table, Button btn, boolean editable, AnchorPane pane, HashMap<String, String> map) {
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                GUIController.clearTable(table);
+                Webcast.generateTable(table, editable, email);
+                btn.setText("view selected webcast");
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        Webcast webcast = (Webcast)table.getSelectionModel().getSelectedItem();
+                        try {
+                            DatabaseProgress.createProgress((int)Math.random()*100, email, webcast.getContentItemId());
+                        } catch (AlreadyExistsException e) {
+                            e.printStackTrace();
+                        }
+                        GUIController.clearTable(table);
+                        Progress.generateTable(table, editable, map);
+                        ((Label)pane.lookup("#errorMessage")).setText("Webcast was successfully added!");
+                        btn.setText("Enroll in webcast");
+                        addWebCast(table, btn, editable, pane, map);
+                    }
+                });
+            }
+        });
+        
     }
+
+
+}
 
 
 

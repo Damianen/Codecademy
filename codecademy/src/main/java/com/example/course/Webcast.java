@@ -78,8 +78,7 @@ public class Webcast extends ContentItem {
         return searchArgs;
     }
 
-    static public void generateTable(TableView<ContentItem> table, boolean editable,
-            HashMap<String, String> searchArgs) {
+    static public void generateTable(TableView<ContentItem> table, boolean editable, String username) {
         generateContentTable(table);
 
         TableColumn<ContentItem, String> speaker = new TableColumn<ContentItem, String>("Speaker");
@@ -111,10 +110,9 @@ public class Webcast extends ContentItem {
             }
         });
 
-        final ObservableList<ContentItem> data = FXCollections.observableArrayList(
-                new Webcast(0, "test", LocalDate.now(), Status.ACTIVE, "test", 0, "test", 0));
+        
 
-        table.setItems(data);
+        table.setItems(DatabaseWebcast.getNotSeenWebcastListForUser(username));
     }
 
     @Override

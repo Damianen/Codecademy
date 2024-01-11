@@ -167,32 +167,21 @@ public class Module extends ContentItem {
         for (Tab tab : tabs) {
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
-            Button btn = (Button) rootTabPane.lookup("#change");
-            btn.setVisible(editable);
             if (tab.getId().equals("course")) {
                 HashMap<String, String> map = new HashMap<String, String>();
                 String title = DatabaseModule.readModuleCourseTitle(contentItemId);
-                if (title != null) { 
+                if (title != null) {
                     map.put("title", title);
                     Course.generateTable(table, editable, map);     
-                } else {
-                    btn.setText("add Course");
-                }
+                } 
                 
             } else {
+                Button btn = (Button) rootTabPane.lookup("#change");
+                btn.setVisible(editable);
                 ContactPerson.generateTable(table, false, contactPerson.getEmail());
                 changeContactPerson(btn, editable, table, pane);
             }
         }
-    }
-
-    private void changeCourse(Button btn, boolean editable, TableView table) {
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                btn.setText("change to selected course");
-            }
-        });
     }
 
     private void changeContactPerson(Button btn, boolean editable, TableView table, AnchorPane pane) {

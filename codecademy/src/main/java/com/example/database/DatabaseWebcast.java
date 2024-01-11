@@ -243,15 +243,15 @@ public class DatabaseWebcast extends Database{
         }
     }
 
-    public static Webcast getNotSeenWebcastListForUser(String userEmail) {
+    public static ObservableList<ContentItem> getNotSeenWebcastListForUser(String userEmail) {
 
-        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Webcast.ID AS WebcastID, Webcast.URL, Webcast.speakerID FROM ContentItem INNER JOIN Webcast ON ContentItem.ID = Webcast.contentItemID WHERE contentItemID NOT IN (SELECT ID FROM Progress WHERE userEmail = '" + userEmail + "')";
+        String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Webcast.ID AS WebcastID, Webcast.URL, Webcast.speakerID FROM ContentItem INNER JOIN Webcast ON ContentItem.ID = Webcast.contentItemID WHERE contentItemID NOT IN (SELECT contentItemID FROM Progress WHERE userEmail = '" + userEmail + "')";
 
         Connection con = getDbConnection();
 
         Statement stmt = null;
         ResultSet rs = null;
-        Webcast data = null;
+        ObservableList<ContentItem> data = FXCollections.observableArrayList();
 
         try {
 
@@ -270,7 +270,7 @@ public class DatabaseWebcast extends Database{
                 String url = rs.getString("URL");
                 int speakerID = rs.getInt("speakerID");
 
-                data = new Webcast(contentItemID, title, publicationDate, status, description, id, url, speakerID);
+                data.add(new Webcast(contentItemID, title, publicationDate, status, description, id, url, speakerID));
 
             }
             

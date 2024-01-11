@@ -27,6 +27,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -179,7 +180,11 @@ public class Course {
             table.setItems(DatabaseCourse.getCourseList());
         } else if (searchArgs.containsKey("userEmail")) {
             table.setItems(DatabaseCourse.getNotEnrolledCourseForUser(searchArgs.get("userEmail")));
-        } 
+        } else if (searchArgs.containsKey("enrolmentTitle")) {
+            ObservableList<Course> list = FXCollections.observableArrayList();
+            list.add(DatabaseCourse.readCourse(searchArgs.get("enrolmentTitle")));
+            table.setItems(list);
+        }
         else {
             table.setItems(DatabaseCourse.readCourseSearchAll(searchArgs));
         }
@@ -227,7 +232,7 @@ public class Course {
                 btn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        setAddModule(table, btn, editable);
+                        setAddModule(table, btn, editable, pane);
                     }
                 });
             } else {
@@ -238,7 +243,7 @@ public class Course {
         }
     }
 
-    public void setAddModule(TableView table, Button btn, boolean editable) {
+    public void setAddModule(TableView table, Button btn, boolean editable, AnchorPane pane) {
         GUIController.clearTable(table);
         btn.setText("Add selected module");
         HashMap<String, String> map = new HashMap<String, String>();
@@ -251,7 +256,7 @@ public class Course {
                 btn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        setAddModule(table, btn, editable);
+                        setAddModule(table, btn, editable, pane);
                     }
                 });
                 GUIController.clearTable(table);
@@ -259,6 +264,7 @@ public class Course {
                 map.put("courseTitle", title);
                 Module.generateTable(table, editable, map);
                 btn.setText("Add module");
+                ((Label)pane.lookup("#errorMessage")).setText("Module successfully added!");
             }
         });
     }

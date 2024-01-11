@@ -34,8 +34,7 @@
                <content>
                   <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="319.0" prefWidth="311.0">
                      <children>
-                        <TableView fx:id="table" layoutX="2.0" prefHeight="233.0" prefWidth="284.0" />
-                        <Button fx:id="change" layoutX="68.0" layoutY="247.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Change course" />
+                        <TableView fx:id="table" layoutX="2.0" prefHeight="280.0" prefWidth="284.0" />
                      </children>
                   </AnchorPane>
                </content>
