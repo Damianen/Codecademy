@@ -8,7 +8,6 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -17,11 +16,11 @@
    <children>
       <TabPane prefHeight="540.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab onSelectionChanged="#switchTab" text="Gender certificates">
+          <Tab fx:id="genderTab" onSelectionChanged="#switchTab" text="Gender certificates">
             <content>
               <AnchorPane fx:id="course" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="newButton" layoutX="276.0" layoutY="189.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
+                        <Button fx:id="calculate" layoutX="276.0" layoutY="189.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
                         <Text layoutX="43.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For what gender would you like to know the course completion percentage?">
                            <font>
                               <Font size="26.0" />
@@ -42,7 +41,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab onSelectionChanged="#switchTab" text="Average module progress">
+          <Tab fx:id="AMPTab" onSelectionChanged="#switchTab" text="Average module progress">
             <content>
               <AnchorPane fx:id="user" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -51,13 +50,13 @@
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <Button fx:id="newButton" layoutX="281.0" layoutY="194.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
+                        <Button fx:id="calculate" layoutX="281.0" layoutY="194.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
                         <MenuButton fx:id="course" layoutX="281.0" layoutY="134.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Course" textAlignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </MenuButton>
-                        <TableView layoutX="363.0" layoutY="264.0" prefHeight="200.0" prefWidth="285.0">
+                        <TableView layoutX="337.0" layoutY="256.0" prefHeight="200.0" prefWidth="285.0">
                           <columns>
                             <TableColumn prefWidth="108.79998779296875" text="Module title" />
                             <TableColumn prefWidth="174.39996337890625" text="Average Progress Percentage" />
@@ -67,7 +66,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab fx:id="module" onSelectionChanged="#switchTab" text="User modules progress">
+            <Tab fx:id="UMPTab" onSelectionChanged="#switchTab" text="User modules progress">
                <content>
                   <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -76,7 +75,7 @@
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <Button fx:id="newButton" layoutX="281.0" layoutY="206.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
+                        <Button fx:id="calculate" layoutX="281.0" layoutY="206.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
                         <MenuButton fx:id="user" layoutX="282.0" layoutY="94.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="User" textAlignment="CENTER">
                            <font>
                               <Font size="16.0" />
@@ -97,7 +96,7 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="webcast" onSelectionChanged="#switchTab" text="User certificates">
+            <Tab fx:id="UCTab" onSelectionChanged="#switchTab" text="User certificates">
                <content>
                   <AnchorPane fx:id="webcast" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -106,7 +105,7 @@
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <Button fx:id="newButton" layoutX="292.0" layoutY="175.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
+                        <Button fx:id="calculate" layoutX="292.0" layoutY="175.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
                         <MenuButton fx:id="user" layoutX="292.0" layoutY="104.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="User" textAlignment="CENTER">
                            <font>
                               <Font size="16.0" />
@@ -123,7 +122,7 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="contactPerson" onSelectionChanged="#switchTab" text="Top 3 webcasts">
+            <Tab fx:id="threeWebcastTab" onSelectionChanged="#switchTab" text="Top 3 webcasts">
                <content>
                   <AnchorPane fx:id="contactPerson" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -144,49 +143,68 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="speaker" onSelectionChanged="#switchTab" text="Top 3 courses">
+            <Tab fx:id="ThreeCourseTab" onSelectionChanged="#switchTab" text="Top 3 courses">
                <content>
                   <AnchorPane fx:id="speaker" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="name" alignment="CENTER" layoutX="294.0" layoutY="205.0" prefHeight="36.0" prefWidth="373.0" promptText="Name" />
-                        <TextField fx:id="organization" alignment="CENTER" layoutX="293.0" layoutY="256.0" prefHeight="36.0" prefWidth="374.0" promptText="Organization" />
-                        <Button fx:id="newButton" layoutX="282.0" layoutY="319.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="New" />
-                        <Text layoutX="103.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new Speaker?">
+                        <Text layoutX="357.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current top 3 courses">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <Label fx:id="errorMessage" layoutX="282.0" layoutY="376.0" prefHeight="17.0" prefWidth="398.0" />
+                        <TableView layoutX="298.0" layoutY="136.0" prefHeight="200.0" prefWidth="365.0">
+                           <columns>
+                              <TableColumn prefWidth="117.60003662109375" text="Course Title" />
+                              <TableColumn prefWidth="117.5999755859375" text="Subject" />
+                              <TableColumn prefWidth="125.60003662109375" text="Dificulty Level" />
+                           </columns>
+                        </TableView>
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="speaker" onSelectionChanged="#switchTab" text="View recommended courses">
+            <Tab fx:id="VRCTab" onSelectionChanged="#switchTab" text="View recommended courses">
                <content>
                   <AnchorPane fx:id="speaker1" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Text layoutX="103.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new Speaker?">
+                        <Text layoutX="112.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For what course would you like to see the recommended courses?">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Text>
+                        <TableView layoutX="307.0" layoutY="256.0" prefHeight="200.0" prefWidth="365.0">
+                           <columns>
+                              <TableColumn prefWidth="117.60003662109375" text="Course Title" />
+                              <TableColumn prefWidth="117.5999755859375" text="Subject" />
+                              <TableColumn prefWidth="125.60003662109375" text="Dificulty Level" />
+                           </columns>
+                        </TableView>
+                        <Button fx:id="calculate" layoutX="291.0" layoutY="185.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
+                        <MenuButton fx:id="course" layoutX="291.0" layoutY="127.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Course" textAlignment="CENTER">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </MenuButton>
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="speaker" onSelectionChanged="#switchTab" text="Course completions">
+            <Tab fx:id="CCTab" onSelectionChanged="#switchTab" text="Course completions">
                <content>
                   <AnchorPane fx:id="speaker2" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="name2" alignment="CENTER" layoutX="294.0" layoutY="205.0" prefHeight="36.0" prefWidth="373.0" promptText="Name" />
-                        <TextField fx:id="organization2" alignment="CENTER" layoutX="293.0" layoutY="256.0" prefHeight="36.0" prefWidth="374.0" promptText="Organization" />
-                        <Button fx:id="newButton2" layoutX="282.0" layoutY="319.0" mnemonicParsing="false" onAction="#create" prefHeight="44.0" prefWidth="397.0" text="New" />
-                        <Text layoutX="103.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like the new attributes to be of the new Speaker?">
+                        <Text layoutX="106.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For what course would you like to know the number of completions?">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <Label fx:id="errorMessage2" layoutX="282.0" layoutY="376.0" prefHeight="17.0" prefWidth="398.0" />
+                        <Label fx:id="errorMessage2" layoutX="300.0" layoutY="298.0" prefHeight="17.0" prefWidth="398.0" textAlignment="CENTER" />
+                        <Button fx:id="calculate" layoutX="301.0" layoutY="212.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
+                        <MenuButton fx:id="course" layoutX="301.0" layoutY="154.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Course" textAlignment="CENTER">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </MenuButton>
                      </children>
                   </AnchorPane>
                </content>

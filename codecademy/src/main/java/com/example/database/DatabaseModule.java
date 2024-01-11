@@ -327,13 +327,18 @@ public class DatabaseModule extends Database{
 
     public static boolean updateOrderNumbersInCourse(int moduleID, int newOrderNumber, String courseTitle) {
 
+        int oldOrderNumber = readModule(moduleID).getOrderNumber();
+
+        int orderNumberMax = getCourseModules(courseTitle).size();  
+
         if(newOrderNumber < 1){
             throw new IllegalArgumentException("Order number cannot be lower than 1");
         }
 
-        int oldOrderNumber = readModule(moduleID).getOrderNumber();
+        if(oldOrderNumber > orderNumberMax){
+            throw new IllegalArgumentException("Order number may not exceed the number of modules in this course (" + orderNumberMax + ")");
+        }
  
-
         String SQL = "SELECT ContentItem.ID AS ContentItemID, ContentItem.title, ContentItem.publicationDate, ContentItem.status, ContentItem.description, Module.ID AS ModuleID, Module.version, Module.orderNumber, Module.emailContactPerson FROM Module INNER JOIN ContentItem ON ContentItem.ID = Module.contentItemID WHERE orderNumber >= " + newOrderNumber + " AND orderNumber < " + oldOrderNumber + " AND courseTitle = '" + courseTitle + "' ORDER BY orderNumber DESC";
         
         Connection con = getDbConnection();
