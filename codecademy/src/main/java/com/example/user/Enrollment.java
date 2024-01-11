@@ -24,6 +24,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
@@ -93,7 +94,6 @@ public class Enrollment {
     }
 
     public boolean addCertificate() {
-
         try {
             DatabaseCertificate.createCertificate(this);
             return true;
@@ -170,6 +170,21 @@ public class Enrollment {
                 User.generateTable(table, editable, map);
             } else {
                 Certificate.generateTable(table, editable, id);
+                ObservableList items = table.getItems();
+                if (items.contains(null)) {
+                    ((Button)pane.lookup("#create")).setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            addCertificate();
+                            GUIController.clearTable(table);
+                            Certificate.generateTable(table, editable, id);
+                            ((Button)pane.lookup("#create")).setVisible(false);
+                        }
+                    });
+                } else {
+                    ((Button)pane.lookup("#create")).setVisible(false);
+                }
+                
             }
         }
     }

@@ -27,7 +27,7 @@
                <content>
                   <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="313.0" prefWidth="419.0">
                      <children>
-                        <Button layoutX="157.0" layoutY="241.0" mnemonicParsing="false" text="Create certificate" />
+                        <Button fx:id="create" layoutX="157.0" layoutY="241.0" mnemonicParsing="false" text="Create certificate" />
                         <TableView fx:id="table" layoutX="1.0" prefHeight="234.0" prefWidth="419.0" />
                         <Label fx:id="errorMessage" layoutX="1.0" layoutY="273.0" prefHeight="17.0" prefWidth="419.0" />
                      </children>
