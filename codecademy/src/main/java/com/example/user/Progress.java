@@ -1,38 +1,21 @@
 package com.example.user;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDate;
 import java.util.HashMap;
-
-import com.example.course.Module;
-import com.example.course.Webcast;
-import com.example.course.ContentItem.Status;
 import com.example.database.DatabaseContentItem;
 import com.example.database.DatabaseModule;
 import com.example.database.DatabaseProgress;
 import com.example.database.DatabaseWebcast;
-import com.example.javafx.GUIController;
-
 import com.example.course.ContentItem;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
 public class Progress {
@@ -114,6 +97,9 @@ public class Progress {
             @Override
             public void handle(MouseEvent event) {
                 Progress progress = (Progress) table.getSelectionModel().getSelectedItem();
+                if (progress == null) {
+                    return;
+                }
                 try {
                     progress.contentItem.generatePopupWindow(event, editable);
                 } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException

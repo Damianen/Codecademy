@@ -133,6 +133,9 @@ public abstract class ContentItem {
             @Override
             public void handle(MouseEvent event) {
                 ContentItem contentItem = (ContentItem) table.getSelectionModel().getSelectedItem();
+                if (contentItem == null) {
+                    return;
+                }
                 try {
                     contentItem.generatePopupWindow(event, editable);
                 } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException

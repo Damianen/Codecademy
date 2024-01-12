@@ -110,6 +110,9 @@ public class Webcast extends ContentItem {
             @Override
             public void handle(MouseEvent event) {
                 Webcast webcast = (Webcast) table.getSelectionModel().getSelectedItem();
+                if (webcast == null) {
+                    return;
+                }
                 try {
                     webcast.generatePopupWindow(event, editable);
                 } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException

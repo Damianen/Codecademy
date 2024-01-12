@@ -124,6 +124,9 @@ public class Module extends ContentItem {
             @Override
             public void handle(MouseEvent event) {
                 Module module = (Module) table.getSelectionModel().getSelectedItem();
+                if (module == null) {
+                    return;
+                }
                 try {
                     module.generatePopupWindow(event, editable);
                 } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException

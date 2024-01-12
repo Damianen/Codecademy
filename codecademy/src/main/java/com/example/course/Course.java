@@ -189,6 +189,9 @@ public class Course {
             @Override
             public void handle(MouseEvent event) {
                 Course course = (Course) table.getSelectionModel().getSelectedItem();
+                if (course == null) {
+                    return;
+                }
                 try {
                     course.generatePopupWindow(event, editable);
                 } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException

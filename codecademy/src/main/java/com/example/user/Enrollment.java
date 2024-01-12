@@ -1,7 +1,5 @@
 package com.example.user;
 
-import static com.example.course.Course.DifficultyLevel.BEGINNER;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
@@ -12,10 +10,7 @@ import com.example.course.Course;
 import com.example.database.DatabaseCertificate;
 import com.example.database.DatabaseCourse;
 import com.example.database.DatabaseEnrollment;
-import com.example.database.DatabaseUser;
-import com.example.course.*;
 import com.example.javafx.GUIController;
-import com.example.user.User.Gender;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,12 +21,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.MenuButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -126,6 +119,9 @@ public class Enrollment {
             @Override
             public void handle(MouseEvent event) {
                 Enrollment enrollment = (Enrollment) table.getSelectionModel().getSelectedItem();
+                if (enrollment == null) {
+                    return;
+                }                
                 try {
                     enrollment.generatePopupWindow(event, editable);
                 } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -208,7 +204,7 @@ public class Enrollment {
                             ((Button)pane.lookup("#create")).setVisible(false);
                         }
                     });
-                    
+
                 } else {
                     ((Button)pane.lookup("#create")).setVisible(false);
                 }

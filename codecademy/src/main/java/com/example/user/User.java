@@ -194,6 +194,9 @@ public class User {
             @Override
             public void handle(MouseEvent event) {
                 User user = (User) table.getSelectionModel().getSelectedItem();
+                if (user == null) {
+                    return;
+                }
                 try {
                     user.generatePopupWindow(event, editable);
                 } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
