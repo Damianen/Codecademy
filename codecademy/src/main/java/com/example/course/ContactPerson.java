@@ -40,15 +40,21 @@ public class ContactPerson {
         return name;
     }
 
+    // Get all of the all attributes from elements in a specific pane and return a hashmap with the values.
     static public HashMap<String, String> getArgsHashMap(AnchorPane pane) throws NoSuchMethodException,
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        
         HashMap<String, String> searchArgs = new HashMap<String, String>();
+        
         searchArgs.put("name", GUIController.searchForNodeText("name", TextField.class, pane));
         searchArgs.put("email", GUIController.searchForNodeText("email", TextField.class, pane));
+        
         return searchArgs;
     }
 
+    // Generate table function 
     static public void generateTable(TableView<ContactPerson> table, boolean editable, String ContactEmail) {
+        // Make table columns and add them to the table
         TableColumn<ContactPerson, String> name = new TableColumn<ContactPerson, String>("Name");
         TableColumn<ContactPerson, String> email = new TableColumn<ContactPerson, String>("Email");     
 
@@ -57,11 +63,13 @@ public class ContactPerson {
         columns.add(email);
         table.getColumns().addAll(columns);
 
+        // Set the a value factory so the table can get the data from the instance of the class
         name.setCellValueFactory(new PropertyValueFactory<ContactPerson, String>("name"));
         email.setCellValueFactory(new PropertyValueFactory<ContactPerson, String>("email"));
 
+        // Add the data to the table
         if (ContactEmail == null) {
-            table.setItems(DatabaseContactPerson.getContactPersonListSearch());
+            table.setItems(DatabaseContactPerson.getContactPersonList());
         } else if (editable) {
             table.setItems(DatabaseContactPerson.readForNewContactPerson(ContactEmail));
         } else {

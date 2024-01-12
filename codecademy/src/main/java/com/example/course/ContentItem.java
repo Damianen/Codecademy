@@ -79,24 +79,31 @@ public abstract class ContentItem {
         return description;
     }
 
+    // get the type of a content item so either a module or a webcast
     public String getType() {
         return DatabaseContentItem.getContentItemType(contentItemId);
     }
 
+    // Get all of the attributes from elements in a specific pane and return a hashmap with the values.
     static public HashMap<String, String> getArgsHashMap(AnchorPane pane) throws NoSuchMethodException,
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         HashMap<String, String> searchArgs = new HashMap<String, String>();
+        
         searchArgs.put("title", GUIController.searchForNodeText("title", TextField.class, pane));
         searchArgs.put("description", GUIController.searchForNodeText("description", TextArea.class, pane));
         searchArgs.put("status", GUIController.searchForNodeText("status",MenuButton.class, pane));
+        
         DatePicker date = (DatePicker) pane.lookup("#publicationDate");
         if (date.getValue() != null) {
             searchArgs.put("publicationDate", date.getValue().toString());
         }
+        
         return searchArgs;
     }
 
+    // Generate table function where we only set the table columns
     static protected void generateContentTable(TableView<ContentItem> table) {
+        // Make table columns and add them to the table
         TableColumn<ContentItem, String> title = new TableColumn<ContentItem, String>("Title");
         TableColumn<ContentItem, String> status = new TableColumn<ContentItem, String>("status");
         TableColumn<ContentItem, String> description = new TableColumn<ContentItem, String>("Description");
@@ -109,16 +116,19 @@ public abstract class ContentItem {
         columns.add(type);
         table.getColumns().addAll(columns);
 
+        // Set the a value factory so the table can get the data from the instance of the class
         title.setCellValueFactory(new PropertyValueFactory<ContentItem, String>("title"));
         status.setCellValueFactory(new PropertyValueFactory<ContentItem, String>("status"));
         description.setCellValueFactory(new PropertyValueFactory<ContentItem, String>("description"));
         type.setCellValueFactory(new PropertyValueFactory<ContentItem, String>("type"));
     }
 
+    // Generate table function specifically for the content item tables not for the module or webcast
     static public void generateContentItemTable(TableView<ContentItem> table, boolean editable,
             HashMap<String, String> searchArgs) {
         generateContentTable(table);
 
+        // Add a event handler to the table so that when we click it it will show us the popup window
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -132,6 +142,7 @@ public abstract class ContentItem {
             }
         });
 
+        // Add the data to the table
         final ObservableList<ContentItem> data = FXCollections.observableArrayList();
 
         for (Module module : DatabaseModule.readModuleList()) {

@@ -2,12 +2,8 @@ package com.example.course;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
-import javax.swing.Action;
 
 import com.example.database.DatabaseCourse;
 import com.example.database.DatabaseModule;
@@ -152,21 +148,27 @@ public class Course {
         return null;
     }
 
+    // Get all of the all attributes from elements in a specific pane and return a hashmap with the values.
     static public HashMap<String, String> getArgsHashMap(AnchorPane pane) throws NoSuchMethodException,
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        
         HashMap<String, String> searchArgs = new HashMap<String, String>();
+        
         searchArgs.put("title", GUIController.searchForNodeText("title", TextField.class, pane));
         searchArgs.put("introText", GUIController.searchForNodeText("introText", TextArea.class, pane));
         searchArgs.put("subject", GUIController.searchForNodeText("subject", TextField.class, pane));
+        
         String difficulty = GUIController.searchForNodeText("difficultyLevel", MenuButton.class, pane);
         if (!difficulty.equals("Difficulty Level")) {
             searchArgs.put("difficultyLevel", difficulty);
         }
+        
         return searchArgs;
     }
 
+    // Generate table function 
     static public void generateTable(TableView<Course> table, boolean editable, HashMap<String, String> searchArgs) {
-
+        // Make table columns and add them to the table
         TableColumn<Course, String> title = new TableColumn<Course, String>("Title");
         TableColumn<Course, String> subject = new TableColumn<Course, String>("Subject");
         TableColumn<Course, String> difficultyLevel = new TableColumn<Course, String>("Difficulty level");
@@ -177,10 +179,12 @@ public class Course {
         columns.add(difficultyLevel);
         table.getColumns().addAll(columns);
 
+        // Set the a value factory so the table can get the data from the instance of the class
         title.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
         subject.setCellValueFactory(new PropertyValueFactory<Course, String>("subject"));
         difficultyLevel.setCellValueFactory(new PropertyValueFactory<Course, String>("difficultyLevelString"));
 
+        // Add a event handler to the table so that when we click it it will show us the popup window
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -194,6 +198,7 @@ public class Course {
             }
         });
 
+        // Add the data to the table
         if (searchArgs == null) {
             table.setItems(DatabaseCourse.getCourseList());
         } else if (searchArgs.containsKey("userEmail")) {
@@ -209,11 +214,13 @@ public class Course {
 
     }
 
+    // Function to generate the popup window
     private void generatePopupWindow(MouseEvent event, boolean editable) throws NoSuchMethodException,
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         if (event.getClickCount() > 1) {
             AnchorPane pane;
 
+            // Try to get the popup window and load it into pane
             try {
                 pane = FXMLLoader.load(getClass().getResource("/com/example/javafx/fxml/course.fxml"));
             } catch (IOException e) {
@@ -221,10 +228,12 @@ public class Course {
                 return;
             }
 
+            // Setup the popup window and the update buttons
             Scene scene = ((Node) event.getSource()).getScene();
             GUIController.setupPopupWindow(pane, (AnchorPane) scene.getRoot());
             GUIController.setupUpdateButton(editable, pane, this);
 
+            // Setup the nodes in the popup window so they contain the values of the instance we opened the window of
             GUIController.setUpNode(TextField.class, editable, title, pane, "title");
             GUIController.setUpNode(TextField.class, editable, subject, pane, "subject");
             GUIController.setUpNode(TextArea.class, editable, introText, pane, "introText");
@@ -234,18 +243,27 @@ public class Course {
         }
     }
 
+    // Setup table tabs
     public void setupTabs(AnchorPane pane, boolean editable) {
         ObservableList<Tab> tabs = ((TabPane) pane.lookup("#tables")).getTabs();
+        
         for (Tab tab : tabs) {
+            // Get the pane of the tab and the table
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
+            
             if (tab.getId().equals("module")) {
+                
                 if (!editable) {
                     table.setPrefHeight(320);
                 }
+                
+                // Generate module table with all modules from course
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("courseTitle", title);
                 Module.generateTable(table, editable, map);
+                
+                // Set an event handler for the button to call setAddModule
                 Button btn = (Button)rootTabPane.lookup("#add");
                 btn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -254,6 +272,8 @@ public class Course {
                     }
                 });
             } else {
+                
+                // Generate enrollments table for the course
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("courseTitle", title);
                 Enrollment.generateTable(table, editable, map);
@@ -261,15 +281,20 @@ public class Course {
         }
     }
 
+    // Setup the add module button when clicked
     public void setAddModule(TableView table, Button btn, boolean editable, AnchorPane pane) {
-        GUIController.clearTable(table);
+        // Edit add button and generate the table with modules that don't have a course
         btn.setText("Add selected module");
+        GUIController.clearTable(table);
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("courseTitleNew", title);
         Module.generateTable(table, editable, map);
+        
+        // Add event listener to the button
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                // Add selected module to course
                 addModule((Module)table.getSelectionModel().getSelectedItem());
                 btn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -277,11 +302,15 @@ public class Course {
                         setAddModule(table, btn, editable, pane);
                     }
                 });
+
+                // Set the table back to original state 
                 GUIController.clearTable(table);
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("courseTitle", title);
                 Module.generateTable(table, editable, map);
                 btn.setText("Add module");
+
+                // Tell user the module was successfully added
                 ((Label)pane.lookup("#errorMessage")).setText("Module successfully added!");
             }
         });

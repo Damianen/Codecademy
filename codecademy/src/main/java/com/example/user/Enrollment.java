@@ -103,8 +103,9 @@ public class Enrollment {
         }
     }
 
-    static public void generateTable(TableView<Enrollment> table, boolean editable,
-            HashMap<String, String> searchArgs) {
+    // Generate table function 
+    static public void generateTable(TableView<Enrollment> table, boolean editable, HashMap<String, String> searchArgs) {
+        // Make table columns and add them to the table
         TableColumn<Enrollment, String> userEmail = new TableColumn<Enrollment, String>("User E-mail");
         TableColumn<Enrollment, String> courseTitle = new TableColumn<Enrollment, String>("Course Title");
         TableColumn<Enrollment, String> EnrolmentDate = new TableColumn<Enrollment, String>("Enrolment Date");
@@ -115,10 +116,12 @@ public class Enrollment {
         columns.add(courseTitle);
         table.getColumns().addAll(columns);
 
+        // Set the a value factory so the table can get the data from the instance of the class
         userEmail.setCellValueFactory(new PropertyValueFactory<Enrollment, String>("userEmail"));
         courseTitle.setCellValueFactory(new PropertyValueFactory<Enrollment, String>("courseTitle"));
         EnrolmentDate.setCellValueFactory(new PropertyValueFactory<Enrollment, String>("enrolmentDateString"));
 
+        // Add a event handler to the table so that when we click it it will show us the popup window
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -132,15 +135,18 @@ public class Enrollment {
             }
         });
 
+        // Add the data to the table
         table.setItems(DatabaseEnrollment.getEnrollmentsSearch(searchArgs));
         
     }
 
+    // Function to generate the popup window
     public void generatePopupWindow(MouseEvent event, boolean editable) throws NoSuchMethodException, SecurityException,
             IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         if (event.getClickCount() > 1) {
             AnchorPane pane;
 
+            // Try to get the popup window and load it into pane
             try {
                 pane = FXMLLoader.load(getClass().getResource("/com/example/javafx/fxml/enrollments.fxml"));
             } catch (IOException e) {
@@ -148,39 +154,61 @@ public class Enrollment {
                 return;
             }
 
+            // Setup the popup window
             Scene scene = ((Node) event.getSource()).getScene();
             GUIController.setupPopupWindow(pane, (AnchorPane) scene.getRoot());
+            
+            // Setup the node in the popup window so they contain the values of the instance we opened the window of
             GUIController.setUpNode(DatePicker.class, editable, enrollmentDate, pane, "enrollDate");
+            
             setupTabs(pane, editable);
         }
     }
 
+    // Setup table tabs
     public void setupTabs(AnchorPane pane, boolean editable) {
+        
         ObservableList<Tab> tabs = ((TabPane) pane.lookup("#tabPane")).getTabs();
+        
         for (Tab tab : tabs) {
+            // get the pane of the tab and the table
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
+            
             if (tab.getId().equals("course")) {
+                // Generate course table for the enrolment
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("enrolmentTitle", course.getTitle());
                 Course.generateTable(table, editable, map);
+            
             } else if (tab.getId().equals("user")) {
+                // Generate the user table for the enrolment
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("email", DatabaseEnrollment.getEnrollmentUser(id));
                 User.generateTable(table, editable, map);
+            
             } else {
+                // Generate the Certificate for the enrolment
                 Certificate.generateTable(table, editable, id);
+                
+                // if the table contains null which means its empty we set the event handler
+                // for the create button if not we do not show the create button
                 ObservableList items = table.getItems();
                 if (items.contains(null)) {
+                    
                     ((Button)pane.lookup("#create")).setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
+                            
                             addCertificate();
+
+                            // Regenerate the table after certificate was added and make button invisible
                             GUIController.clearTable(table);
                             Certificate.generateTable(table, editable, id);
                             ((Button)pane.lookup("#create")).setVisible(false);
                         }
                     });
+                    
                 } else {
                     ((Button)pane.lookup("#create")).setVisible(false);
                 }

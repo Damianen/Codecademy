@@ -84,11 +84,18 @@ public class Progress {
         return progressPercentage;
     }
 
+    // Generate table function 
     static public void generateTable(TableView<Progress> table, boolean editable, HashMap<String, String> searchArgs) {
-
+        // Make table columns and add them to the table
         TableColumn<Progress, String> contentItemName = new TableColumn<Progress, String>("Content item name");
         TableColumn<Progress, Integer> progressPercentage = new TableColumn<Progress, Integer>("Progress percentage");
 
+        final ObservableList<TableColumn<Progress, ?>> columns = FXCollections.observableArrayList();
+        columns.add(contentItemName);
+        columns.add(progressPercentage);
+        table.getColumns().addAll(columns);
+
+        // Make a callback so we can get the title form the content item that is associated with this instance of progress
         Callback<TableColumn.CellDataFeatures<Progress, String>, ObservableValue<String>> contentItemCallback;
         contentItemCallback = cellDataFeatures -> {
             Progress p = cellDataFeatures.getValue();
@@ -97,14 +104,12 @@ public class Progress {
             return titleObservableValue;
         };
 
-        final ObservableList<TableColumn<Progress, ?>> columns = FXCollections.observableArrayList();
-        columns.add(contentItemName);
-        columns.add(progressPercentage);
-        table.getColumns().addAll(columns);
-
+        // Set the a value factory so the table can get the data from the instance of the class
         contentItemName.setCellValueFactory(contentItemCallback);
         progressPercentage.setCellValueFactory(new PropertyValueFactory<Progress, Integer>("progressPercentage"));
 
+        // Add a event handler to the table so that when we click it it will show us the popup window
+        // Which in this case will link to the associated content item
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -118,6 +123,7 @@ public class Progress {
             }
         });
 
+        // Add the data to the table
         table.setItems(DatabaseProgress.getProgressListWithUserEmail(searchArgs.get("userEmail")));
     }
 }
