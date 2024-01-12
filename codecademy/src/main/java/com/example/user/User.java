@@ -5,7 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
+import com.example.ValidateFunctions;
 import com.example.course.Course;
 import com.example.course.Webcast;
 import com.example.database.DatabaseEnrollment;
@@ -299,7 +301,14 @@ public class User {
                     public void handle(ActionEvent event) {
                         Webcast webcast = (Webcast)table.getSelectionModel().getSelectedItem();
                         try {
-                            DatabaseProgress.createProgress((int)Math.random()*100, email, webcast.getContentItemId());
+                            Random rand = new Random();
+                            int randomNumber = rand.nextInt(101);
+
+                            if(ValidateFunctions.isValidPercentage(randomNumber) != true){
+                                throw new IllegalArgumentException(randomNumber + " is not a valid percentage");
+                            }
+
+                            DatabaseProgress.createProgress(randomNumber, email, webcast.getContentItemId());
                         } catch (AlreadyExistsException e) {
                             e.printStackTrace();
                         }

@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Random;
 
+import com.example.ValidateFunctions;
 import com.example.database.DatabaseCourse;
 import com.example.database.DatabaseModule;
 import com.example.database.DatabaseOverview;
@@ -99,6 +100,10 @@ public class Course {
 
             Random rand = new Random();
             int randomNumber = rand.nextInt(101);
+            
+            if(ValidateFunctions.isValidPercentage(randomNumber) != true){
+                throw new IllegalArgumentException(randomNumber + " is not a valid percentage");
+            }
 
             try {
                 DatabaseProgress.createProgress(randomNumber, user.getEmail(), module.getContentItemId());
