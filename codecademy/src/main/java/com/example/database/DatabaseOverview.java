@@ -19,10 +19,14 @@ public class DatabaseOverview extends Database {
     public static int getObtaintedCertificatesPercentageForGender(Gender gender) {
 
         // set up variables
-        String SQL = "SELECT ROUND(100 / (SELECT count(*) FROM Enrollment WHERE userEmail IN (SELECT email FROM [User] WHERE Gender = '"
+        String SQL = "SELECT CASE WHEN EXISTS (SELECT * FROM Enrollment WHERE userEmail IN (SELECT email FROM [User] WHERE Gender = '"
+                + gender
+                + "')) AND EXISTS (SELECT * FROM Certificate WHERE EnrollmentID IN (SELECT ID FROM Enrollment WHERE userEmail IN (SELECT email FROM [User] WHERE Gender = '"
+                + gender
+                + "'))) THEN ROUND(100 / (SELECT count(*) FROM Enrollment WHERE userEmail IN (SELECT email FROM [User] WHERE Gender = '"
                 + gender
                 + "')) * (SELECT count(*) FROM Certificate WHERE EnrollmentID IN (SELECT ID FROM Enrollment WHERE userEmail IN (SELECT email FROM [User] WHERE Gender = '"
-                + gender + "'))), 0) AS Percentage";
+                + gender + "'))), 0) ELSE 0 END AS Percentage";
         Connection con = getDbConnection();
         Statement stmt = null;
         ResultSet rs = null;
