@@ -146,8 +146,13 @@ public class Course {
     }
 
     public void generateRecommendedCourses(TableView<Course> table) {
+        // Generate the table so it has the columns
         Course.generateTable(table, false, null);
+
+        // Clear the table so it still has the columns but not the data
         table.getItems().clear();
+
+        // Add the correct data to the table
         table.setItems(DatabaseOverview.getRecommendedCourses(title));
     }
 

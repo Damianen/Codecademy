@@ -69,7 +69,7 @@ public class ContactPerson {
 
         // Add the data to the table
         if (ContactEmail == null) {
-            table.setItems(DatabaseContactPerson.getContactPersonListSearch());
+            table.setItems(DatabaseContactPerson.getContactPersonList());
         } else if (editable) {
             table.setItems(DatabaseContactPerson.readForNewContactPerson(ContactEmail));
         } else {

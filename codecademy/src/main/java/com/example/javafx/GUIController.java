@@ -194,7 +194,7 @@ public class GUIController {
         table.getColumns().clear();
     }
 
-    // search function
+    // Search function
     public void search(ActionEvent event) throws IOException, NoSuchMethodException,
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         // get the root node of the tab and the table in the root

@@ -13,7 +13,7 @@ public class Database {
 
         // Set up username
         String username = "group1";
-
+        
         // Set up password
         String password = "group12345";
 

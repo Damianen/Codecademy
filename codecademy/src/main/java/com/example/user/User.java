@@ -140,8 +140,13 @@ public class User {
     }
 
     public void generateUserCertificates(TableView<Certificate> table) {
+        // Generate the table so it has the columns
         Certificate.generateTable(table, false, 0);
+
+        // Clear the table so it still has the columns but not the data
         table.getItems().clear();
+
+        // Add the correct data to the table
         table.setItems(DatabaseOverview.getUserCertificates(email));
     }
 
