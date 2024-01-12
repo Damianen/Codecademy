@@ -478,6 +478,10 @@ public class DatabaseModule extends Database {
         int oldOrderNumber = readModule(moduleID).getOrderNumber();
         int orderNumberMax = getCourseModules(courseTitle).size();
 
+        if(oldOrderNumber == newOrderNumber){
+            throw new IllegalArgumentException("old order number cannot be the same a new order number");
+        }
+
         // check if ordernumber is smaller than 1
         if (newOrderNumber < 1) {
             throw new IllegalArgumentException("Order number cannot be lower than 1");
