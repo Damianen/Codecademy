@@ -79,7 +79,7 @@ public class Speaker {
 
         // Add the data to the table
         if (id == null) {
-            table.setItems(DatabaseSpeaker.getSpeakerListSearch());
+            table.setItems(DatabaseSpeaker.getSpeakerList());
         } else if (editable) {
             table.setItems(DatabaseSpeaker.readForNewSpeaker(id));
         } else {
