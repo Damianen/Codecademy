@@ -70,7 +70,7 @@ public class Speaker {
         organization.setCellValueFactory(new PropertyValueFactory<Speaker, String>("organization"));
 
         if (id == null) {
-            table.setItems(DatabaseSpeaker.getSpeakerListSearch());
+            table.setItems(DatabaseSpeaker.getSpeakerList());
         } else if (editable) {
             table.setItems(DatabaseSpeaker.readForNewSpeaker(id));
         } else {
