@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 
 public class GUI extends Application {
+    // Start for the GUI
     @Override
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafx/fxml/Start.fxml"));

@@ -44,7 +44,9 @@ public class Certificate {
         return employeeName;
     }
 
+    // Generate table function 
     static public void generateTable(TableView<Certificate> table, boolean editable, int enrolmentID) {
+        // Make table columns and add them to the table
         TableColumn<Certificate, Float> employeeName = new TableColumn<Certificate, Float>("employee Name");
         TableColumn<Certificate, String> rating = new TableColumn<Certificate, String>("Rating");     
 
@@ -53,13 +55,13 @@ public class Certificate {
         columns.add(rating);
         table.getColumns().addAll(columns);
 
+        // Set the a value factory so the table can get the data from the instance of the class
         employeeName.setCellValueFactory(new PropertyValueFactory<Certificate, Float>("employeeName"));
         rating.setCellValueFactory(new PropertyValueFactory<Certificate, String>("rating"));
 
-        final ObservableList<Certificate> data = FXCollections.observableArrayList(
-            DatabaseCertificate.getEnrollmentCertificate(enrolmentID)
-        );
-
+        // Add the data to the table
+        final ObservableList<Certificate> data = FXCollections.observableArrayList();
+        data.add(DatabaseCertificate.getEnrollmentCertificate(enrolmentID));
         table.setItems(data);
     }
 }

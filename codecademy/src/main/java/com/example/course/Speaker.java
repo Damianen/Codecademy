@@ -49,15 +49,22 @@ public class Speaker {
         this.organization = organization;
     }
 
+    // Get all of the all attributes from elements in a specific pane and return a hashmap with the values.
     static public HashMap<String, String> getArgsHashMap(AnchorPane pane) throws NoSuchMethodException,
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        
         HashMap<String, String> searchArgs = new HashMap<String, String>();
+        
         searchArgs.put("name", GUIController.searchForNodeText("name", TextField.class, pane));
         searchArgs.put("organization", GUIController.searchForNodeText("organization", TextField.class, pane));
+        
         return searchArgs;
     }
 
+    
+// Generate table function 
     static public void generateTable(TableView<Speaker> table, boolean editable, Integer id) {
+        // Make table columns and add them to the table
         TableColumn<Speaker, String> name = new TableColumn<Speaker, String>("Name");
         TableColumn<Speaker, String> organization = new TableColumn<Speaker, String>("Organization");     
 
@@ -66,9 +73,11 @@ public class Speaker {
         columns.add(organization);
         table.getColumns().addAll(columns);
 
+        // Set the a value factory so the table can get the data from the instance of the class
         name.setCellValueFactory(new PropertyValueFactory<Speaker, String>("name"));
         organization.setCellValueFactory(new PropertyValueFactory<Speaker, String>("organization"));
 
+        // Add the data to the table
         if (id == null) {
             table.setItems(DatabaseSpeaker.getSpeakerList());
         } else if (editable) {

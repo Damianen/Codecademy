@@ -7,9 +7,7 @@ import java.util.HashMap;
 
 import com.example.database.DatabaseContactPerson;
 import com.example.database.DatabaseModule;
-import com.example.database.DatabaseSpeaker;
 import com.example.javafx.GUIController;
-import com.example.user.Progress;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -30,7 +28,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
@@ -81,10 +78,14 @@ public class Module extends ContentItem {
         this.orderNumber = orderNumber;
     }
 
+    // Get all of the all attributes from elements in a specific pane and return a hashmap with the values.
     static public HashMap<String, String> getArgsHashMap(AnchorPane pane) throws NoSuchMethodException,
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        
         HashMap<String, String> searchArgs = ContentItem.getArgsHashMap(pane);
+        
         searchArgs.put("version", GUIController.searchForNodeText("version", TextField.class, pane));
+        
         TableView table = (TableView)pane.lookup("#table");
         ContactPerson person = (ContactPerson)table.getSelectionModel().getSelectedItem();
         if (person != null) {
@@ -94,16 +95,19 @@ public class Module extends ContentItem {
         return searchArgs;
     }
 
+    // Generate table function 
     static public void generateTable(TableView<ContentItem> table, boolean editable,
             HashMap<String, String> searchArgs) {
         generateContentTable(table);
 
+        // Make table columns and add them to the table
         TableColumn<ContentItem, String> version = new TableColumn<ContentItem, String>("Version");
 
         final ObservableList<TableColumn<ContentItem, ?>> columns = FXCollections.observableArrayList();
         columns.add(version);
         table.getColumns().addAll(columns);
 
+        // Make a callback so we can get the version of the module
         Callback<TableColumn.CellDataFeatures<ContentItem, String>, ObservableValue<String>> moduleCallback;
         moduleCallback = cellDataFeatures -> {
             Module m = (Module) cellDataFeatures.getValue();
@@ -112,12 +116,17 @@ public class Module extends ContentItem {
             return titleObservableValue;
         };
 
+        // Set the a value factory so the table can get the data from the instance of the class
         version.setCellValueFactory(moduleCallback);
 
+        // Add a event handler to the table so that when we click it it will show us the popup window
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 Module module = (Module) table.getSelectionModel().getSelectedItem();
+                if (module == null) {
+                    return;
+                }
                 try {
                     module.generatePopupWindow(event, editable);
                 } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -127,6 +136,7 @@ public class Module extends ContentItem {
             }
         });
 
+        // Add the data to the table
         if (searchArgs.containsKey("courseTitle")) {
             table.setItems(DatabaseModule.getCourseModules(searchArgs.get("courseTitle")));
         } else if (searchArgs.containsKey("courseTitleNew")) {
@@ -135,12 +145,14 @@ public class Module extends ContentItem {
         
     }
 
+    // Function to generate the popup window
     @Override
     public void generatePopupWindow(MouseEvent event, boolean editable) throws NoSuchMethodException, SecurityException,
             IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         if (event.getClickCount() > 1) {
             AnchorPane pane;
 
+            // Try to get the popup window and load it into pane
             try {
                 pane = FXMLLoader.load(getClass().getResource("/com/example/javafx/fxml/module.fxml"));
             } catch (IOException e) {
@@ -148,10 +160,12 @@ public class Module extends ContentItem {
                 return;
             }
 
+            // Setup the popup window and the update buttons
             Scene scene = ((Node) event.getSource()).getScene();
             GUIController.setupPopupWindow(pane, (AnchorPane) scene.getRoot());
             GUIController.setupUpdateButton(editable, pane, this);
 
+            // Setup the nodes in the popup window so they contain the values of the instance we opened the window of
             GUIController.setUpNode(TextField.class, editable, title, pane, "title");
             GUIController.setUpNode(TextField.class, editable, version, pane, "version");
             GUIController.setUpNode(TextArea.class, editable, description, pane, "description");
@@ -162,12 +176,19 @@ public class Module extends ContentItem {
         }
     }
 
+    
+    // Setup table tabs
     public void setupTabs(AnchorPane pane, boolean editable) {
+        
         ObservableList<Tab> tabs = ((TabPane) pane.lookup("#tables")).getTabs();
+        
         for (Tab tab : tabs) {
+            // get the pane of the tab and the table
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
+            
             if (tab.getId().equals("course")) {
+                // Generate course table if module has a course
                 HashMap<String, String> map = new HashMap<String, String>();
                 String title = DatabaseModule.readModuleCourseTitle(contentItemId);
                 if (title != null) {
@@ -176,36 +197,51 @@ public class Module extends ContentItem {
                 } 
                 
             } else {
+                // Generate contact person table
+                ContactPerson.generateTable(table, false, contactPerson.getEmail());
+                
+                // Setup the change button for the contact person
                 Button btn = (Button) rootTabPane.lookup("#change");
                 btn.setVisible(editable);
-                ContactPerson.generateTable(table, false, contactPerson.getEmail());
                 changeContactPerson(btn, editable, table, pane);
             }
         }
     }
 
+    // Setup for the change contact person button
     private void changeContactPerson(Button btn, boolean editable, TableView table, AnchorPane pane) {
+        // Set the event listener
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                // Change the text of the button
                 btn.setText("change to selected ContentItem");
+                
+                // Generate the table with the contact person that is currently its own
                 GUIController.clearTable(table);
                 ContactPerson.generateTable(table, editable, contactPerson.getEmail());
+                
+                // Reset the event listener of the button
                 btn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+                        // Get the selected contact person and add it to the database
                         ContactPerson newContactPerson = ((ContactPerson)table.getSelectionModel().getSelectedItem());
                         if (newContactPerson == null) {return;}
-                        GUIController.clearTable(table);
-                        btn.setText("change Content Person");
                         DatabaseModule.updateModule(id, title, publicationDate, 
-                        status, description, version, orderNumber, 
-                        newContactPerson.getEmail(), 
-                        DatabaseModule.readModuleCourseTitle(contentItemId));
+                            status, description, version, orderNumber, 
+                            newContactPerson.getEmail(), 
+                            DatabaseModule.readModuleCourseTitle(contentItemId));
+                        
+                        // Regenerate the table
                         contactPerson = newContactPerson;
+                        GUIController.clearTable(table);
                         ContactPerson.generateTable(table, false, contactPerson.getEmail());
+                        
+                        // Reset the button and tell the user the change was successful
                         changeContactPerson(btn, editable, table, pane);
                         ((Label)pane.lookup("#errorMessage")).setText("Change was successful");
+                        btn.setText("change Content Person");
                     }
                 });
             }

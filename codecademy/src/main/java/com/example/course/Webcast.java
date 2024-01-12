@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.HashMap;
 
-import com.example.database.DatabaseModule;
 import com.example.database.DatabaseSpeaker;
 import com.example.database.DatabaseWebcast;
 import com.example.javafx.GUIController;
@@ -66,27 +65,35 @@ public class Webcast extends ContentItem {
         return url;
     }
 
+    // Get all of the all attributes from elements in a specific pane and return a hashmap with the values.
     static public HashMap<String, String> getArgsHashMap(AnchorPane pane) throws NoSuchMethodException,
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        
         HashMap<String, String> searchArgs = ContentItem.getArgsHashMap(pane);
+        
         searchArgs.put("url", GUIController.searchForNodeText("url", TextField.class, pane));
+        
         TableView table = (TableView)pane.lookup("#table");
         Speaker speaker = (Speaker)table.getSelectionModel().getSelectedItem();
         if (speaker != null) {
             searchArgs.put("speakerID", String.valueOf(speaker.getId()));
         }
+        
         return searchArgs;
     }
 
+    // Generate table function 
     static public void generateTable(TableView<ContentItem> table, boolean editable, String username) {
         generateContentTable(table);
 
+        // Make table columns and add them to the table
         TableColumn<ContentItem, String> speaker = new TableColumn<ContentItem, String>("Speaker");
 
         final ObservableList<TableColumn<ContentItem, ?>> columns = FXCollections.observableArrayList();
         columns.add(speaker);
         table.getColumns().addAll(columns);
 
+        // Make a callback so the table can get the name of the speaker and show it in the table
         Callback<TableColumn.CellDataFeatures<ContentItem, String>, ObservableValue<String>> webcastCallback;
         webcastCallback = cellDataFeatures -> {
             Webcast m = (Webcast) cellDataFeatures.getValue();
@@ -95,12 +102,17 @@ public class Webcast extends ContentItem {
             return titleObservableValue;
         };
 
+        // Set the a value factory so the table can get the data from the instance of the class
         speaker.setCellValueFactory(webcastCallback);
 
+        // Add a event handler to the table so that when we click it it will show us the popup window
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 Webcast webcast = (Webcast) table.getSelectionModel().getSelectedItem();
+                if (webcast == null) {
+                    return;
+                }
                 try {
                     webcast.generatePopupWindow(event, editable);
                 } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -110,16 +122,17 @@ public class Webcast extends ContentItem {
             }
         });
 
-        
-
+        // Add the data to the table
         table.setItems(DatabaseWebcast.getNotSeenWebcastListForUser(username));
     }
 
+    // Function to generate the popup window
     @Override
     public void generatePopupWindow(MouseEvent event, boolean editable) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         if (event.getClickCount() > 1) {
             AnchorPane pane;
 
+            // Try to get the popup window and load it into pane
             try {
                 pane = FXMLLoader.load(getClass().getResource("/com/example/javafx/fxml/webcast.fxml"));
             } catch (IOException e) {
@@ -127,10 +140,12 @@ public class Webcast extends ContentItem {
                 return;
             }
 
+            // Setup the popup window and the update buttons
             Scene scene = ((Node) event.getSource()).getScene();
             GUIController.setupPopupWindow(pane, (AnchorPane) scene.getRoot());
             GUIController.setupUpdateButton(editable, pane, this);
 
+            // Setup the nodes in the popup window so they contain the values of the instance we opened the window of
             GUIController.setUpNode(TextField.class, editable, title, pane, "title");
             GUIController.setUpNode(TextField.class, editable, url, pane, "url");
             GUIController.setUpNode(DatePicker.class, editable, publicationDate, pane, "publicationDate");
@@ -141,39 +156,58 @@ public class Webcast extends ContentItem {
         }
     }
 
+    // Setup table tabs
     public void setupTabs(AnchorPane pane, boolean editable) {
+        
         ObservableList<Tab> tabs = ((TabPane) pane.lookup("#tables")).getTabs();
+        
         for (Tab tab : tabs) {
+            // get the pane of the tab and the table
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
+
+            // Find and setup the change button
             Button btn = (Button) rootTabPane.lookup("#change");
             btn.setVisible(editable);
-            Speaker.generateTable(table, false, speaker.getId());
             changeSpeaker(btn, editable, table, pane);
+
+            // Generate the window for speaker
+            Speaker.generateTable(table, false, speaker.getId());
         }
     }
 
+    // setup the change speaker function
     private void changeSpeaker(Button btn, boolean editable, TableView table, AnchorPane pane) {
+        // Set the event listener
         btn.setOnAction(new EventHandler<ActionEvent>() {   
             @Override
             public void handle(ActionEvent event) {
+                // Change the text of the button
                 btn.setText("change to selected Speaker");
+
+                // Generate the table with the speaker that is currently its own
                 GUIController.clearTable(table);
                 Speaker.generateTable(table, editable, speaker.getId());
+                
+                // Reset the event listener of the button
                 btn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+                        // Get the selected speaker and add it to the database
                         Speaker speaker = (Speaker)table.getSelectionModel().getSelectedItem();
                         if (speaker == null) {return;}
-                        btn.setText("change Speaker");
                         DatabaseWebcast.updateWebcast(id, title, publicationDate, 
-                        status, description, url, 
-                        speaker.getId());
-                        speaker = (Speaker)table.getSelectionModel().getSelectedItem();
+                            status, description, url, 
+                            speaker.getId());
+                        
+                        // Regenerate the table
                         GUIController.clearTable(table);
                         Speaker.generateTable(table, false, speaker.getId());
+
+                        // Reset the button and tell the user the change was successful
                         changeSpeaker(btn, editable, table, pane);
                         ((Label)pane.lookup("#errorMessage")).setText("Change was successful");
+                        btn.setText("change Speaker");
                     }
                 });
             }
