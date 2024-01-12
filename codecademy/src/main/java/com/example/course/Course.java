@@ -7,6 +7,7 @@ import java.util.Random;
 
 import com.example.database.DatabaseCourse;
 import com.example.database.DatabaseModule;
+import com.example.database.DatabaseOverview;
 import com.example.database.DatabaseProgress;
 import com.example.database.DatabaseUser;
 import com.example.javafx.GUIController;
@@ -144,8 +145,10 @@ public class Course {
         
     }
 
-    public Course generateRecomendedCourse() {
-        return null;
+    public void generateRecommendedCourses(TableView<Course> table) {
+        Course.generateTable(table, false, null);
+        table.getItems().clear();
+        table.setItems(DatabaseOverview.getRecommendedCourses(title));
     }
 
     // Get all of the all attributes from elements in a specific pane and return a hashmap with the values.

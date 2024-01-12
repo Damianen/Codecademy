@@ -24,6 +24,7 @@ import com.example.database.DatabaseUser;
 import com.example.database.DatabaseWebcast;
 import com.example.exeptions.AlreadyExistsException;
 import com.example.exeptions.CannotBeEmptyException;
+import com.example.overview.Overview;
 import com.example.user.User;
 import com.example.user.User.Gender;
 
@@ -56,6 +57,7 @@ public class GUIController {
     private Parent root;
     private boolean skip = false;
     static private boolean update = false;
+    static private boolean overview = false;
 
     // Switch page function
     public void switchPage(ActionEvent event) throws IOException {
@@ -84,14 +86,19 @@ public class GUIController {
             // Get the root Anchor pane of the tab
             AnchorPane pane = (AnchorPane) ((Tab) event.getSource()).getContent();
             
-            // For each menu button and table we set it up
+            // For each menu button, normal button (in overview) and table we set it up
             for (Node node : pane.getChildren()) {
                 
                 if (node instanceof MenuButton) {
                     setMenuButtonActions((MenuButton) node, true);
                 }
+
                 if (node instanceof TableView) {
                     refreshTable((TableView)node, pane);
+                }
+
+                if (node instanceof Button && overview) {
+                    Overview.setupOverviewButton((Button)node, pane);
                 }
             }
         } else {
@@ -106,20 +113,41 @@ public class GUIController {
         
         // based on the id of the pane we generate a table without any search arguments
         switch (pane.getId()) {
+            
             case "course":
                 Course.generateTable(table, update, null);
                 break;
+            
             case "user":
                 User.generateTable(table, update, null);
                 break;
+            
             case "contentItem":
                 ContentItem.generateContentItemTable(table, update, null);
                 break;
+            
             case "module":
                 ContactPerson.generateTable(table, update, null);
                 break;
+            
             case "webcast":
                 Speaker.generateTable(table, update, null);
+                break;
+
+            case "threeWebcast": 
+                Overview.generateTop3Webcasts(table);
+                break;
+
+            case "ThreeCourse":
+                Overview.generateTop3Course(table);
+                break;
+
+            default:
+                if (table.getId().equals("courseTable")) {
+                    Course.generateTable(table, false, null);
+                } else if (table.getId().equals("userTable")) {
+                    User.generateTable(table, false, null);
+                }
                 break;
         }
     }
@@ -130,20 +158,29 @@ public class GUIController {
         Button clickedButton = (Button) obj;
 
         switch (clickedButton.getId()) {
+            
             case ("overviewsButton"):
+                overview = true;
                 return "/com/example/javafx/fxml/Overviews.fxml";
+            
             case ("updateButton"):
                 update = true;
                 return "/com/example/javafx/fxml/Update.fxml";
+            
             case ("createButton"):
                 return "/com/example/javafx/fxml/Create.fxml";
+            
             case ("deleteButton"):
                 return "/com/example/javafx/fxml/Delete.fxml";
+            
             case ("readButton"):
                 return "/com/example/javafx/fxml/Read.fxml";
+            
             case ("homeButton"):
                 update = false;
+                overview = false;
                 return "/com/example/javafx/fxml/Start.fxml";
+            
             case ("newButton"):
                 return "/com/example/javafx/fxml/Start.fxml";
         }
