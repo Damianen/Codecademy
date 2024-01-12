@@ -296,6 +296,14 @@ public class Course {
                         setAddModule(table, btn, editable, pane);
                     }
                 });
+
+                Button removeBtn = (Button)rootTabPane.lookup("#remove");
+                removeBtn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setRemoveModule(table, btn, editable, pane);
+                    }
+                });
             } else {
                 
                 // Generate enrollments table for the course
@@ -320,7 +328,11 @@ public class Course {
             @Override
             public void handle(ActionEvent event) {
                 // Add selected module to course
-                addModule((Module)table.getSelectionModel().getSelectedItem());
+                Module module =  (Module)table.getSelectionModel().getSelectedItem();
+                if (module == null) {
+                    return;
+                }
+                addModule(module);
                 btn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -337,6 +349,42 @@ public class Course {
 
                 // Tell user the module was successfully added
                 ((Label)pane.lookup("#errorMessage")).setText("Module successfully added!");
+            }
+        });
+    }
+
+    // Setup the remove module button when clicked
+    public void setRemoveModule(TableView table, Button btn, boolean editable, AnchorPane pane) {
+        // Edit remove button
+        btn.setText("Remove selected module");
+        GUIController.clearTable(table);
+        
+        // Add event listener to the button
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // Remove selected module to course
+                Module module =  (Module)table.getSelectionModel().getSelectedItem();
+                if (module == null) {
+                    return;
+                }
+                removeModule(module);
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        setAddModule(table, btn, editable, pane);
+                    }
+                });
+
+                // Set the table back to original state 
+                GUIController.clearTable(table);
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("courseTitle", title);
+                Module.generateTable(table, editable, map);
+                btn.setText("Remove module");
+
+                // Tell user the module was successfully added
+                ((Label)pane.lookup("#errorMessage")).setText("Module successfully deleted!");
             }
         });
     }
