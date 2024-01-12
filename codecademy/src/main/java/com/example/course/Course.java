@@ -83,14 +83,18 @@ public class Course {
 
     public boolean addModule(Module module) {
 
+        //get next order number
         int orderNumber = DatabaseModule.getCourseModules(this.title).size() + 1;
         
+        //add the module to the course
         if(DatabaseModule.addModuleToCourse(module.getId(), orderNumber, this.title) == false){
             return false;
         }
 
+        //get all users enrolled in this course
         ObservableList<User> enrolledUsers = DatabaseUser.getEnrolledUsersForCourse(this);
 
+        //automaticly create progresses for all users with the new module
         for (User user : enrolledUsers) {
 
             Random rand = new Random();
@@ -103,6 +107,7 @@ public class Course {
             }
         }
         
+        //add to this.modules
         modules.add(module);
 
         return true;
@@ -110,18 +115,22 @@ public class Course {
 
     public boolean removeModule(Module module) {
 
+        //update the remaining order numbers
         if(DatabaseModule.updateOrderNumbersRemoveFromCourse(module.getId(), module.getOrderNumber(), this.title) == false){
             return false;
         }
 
+        //get all user enrolled in this course
         ObservableList<User> enrolledUsers = DatabaseUser.getEnrolledUsersForCourse(this);
 
+        //automaticly delete all progresses for that module
         for (User user : enrolledUsers) {
 
             Progress progress = DatabaseProgress.getProgressWithUserAndContentItem(user.getEmail(), module.getContentItemId());
             DatabaseProgress.deleteProgress(progress.getId());
         }
         
+        //remove module from this.modules
         modules.remove(module);
 
         return true;

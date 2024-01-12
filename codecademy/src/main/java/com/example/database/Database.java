@@ -9,7 +9,7 @@ public class Database {
     public static Connection getDbConnection() {
 
         // Set up your connection string
-        String connectionUrl = "jdbc:sqlserver://192.168.178.174:1433;databaseName=Codecademy;integratedSecurity=false;encrypt=true;trustServerCertificate=true;";
+        String connectionUrl = "jdbc:sqlserver://localhost;databaseName=Codecademy;integratedSecurity=false;encrypt=true;trustServerCertificate=true;";
 
         // Set up username
         String username = "group1";
