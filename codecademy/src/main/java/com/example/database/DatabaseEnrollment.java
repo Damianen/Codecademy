@@ -1,7 +1,7 @@
 package com.example.database;
 
 import com.example.user.Enrollment;
-import com.example.ValidateFunctions;
+import com.example.ValidateFunctions.ValidateFunctions;
 import com.example.course.ContentItem;
 import com.example.course.Course;
 import com.example.exeptions.AlreadyExistsException;

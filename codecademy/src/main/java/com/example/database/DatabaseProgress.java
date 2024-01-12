@@ -1,7 +1,7 @@
 package com.example.database;
 
 import com.example.user.Progress;
-import com.example.ValidateFunctions;
+import com.example.ValidateFunctions.ValidateFunctions;
 import com.example.exeptions.AlreadyExistsException;
 
 import javafx.collections.FXCollections;

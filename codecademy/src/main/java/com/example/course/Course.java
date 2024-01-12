@@ -5,7 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Random;
 
-import com.example.ValidateFunctions;
+import com.example.ValidateFunctions.ValidateFunctions;
 import com.example.database.DatabaseCourse;
 import com.example.database.DatabaseModule;
 import com.example.database.DatabaseOverview;

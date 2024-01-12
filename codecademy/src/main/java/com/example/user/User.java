@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import com.example.ValidateFunctions;
+import com.example.ValidateFunctions.ValidateFunctions;
 import com.example.course.Course;
 import com.example.course.Webcast;
 import com.example.database.DatabaseEnrollment;

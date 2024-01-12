@@ -10,7 +10,7 @@ import java.time.Month;
 
 import org.junit.Test;
 
-import com.example.ValidateFunctions;
+import com.example.ValidateFunctions.ValidateFunctions;
 
 
 public class ClassToTest{

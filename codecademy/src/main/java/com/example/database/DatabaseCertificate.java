@@ -2,7 +2,7 @@ package com.example.database;
 
 import com.example.user.Certificate;
 import com.example.user.Enrollment;
-import com.example.ValidateFunctions;
+import com.example.ValidateFunctions.ValidateFunctions;
 import com.example.exeptions.AlreadyExistsException;
 
 import java.sql.*;

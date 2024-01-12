@@ -1,6 +1,6 @@
 package com.example.database;
 
-import com.example.ValidateFunctions;
+import com.example.ValidateFunctions.ValidateFunctions;
 import com.example.course.ContentItem;
 import com.example.course.Webcast;
 import com.example.course.ContentItem.Status;

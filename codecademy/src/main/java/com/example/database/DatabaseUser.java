@@ -2,7 +2,7 @@ package com.example.database;
 
 import com.example.user.User;
 import com.example.user.User.Gender;
-import com.example.ValidateFunctions;
+import com.example.ValidateFunctions.ValidateFunctions;
 import com.example.course.Course;
 import com.example.exeptions.AlreadyExistsException;
 

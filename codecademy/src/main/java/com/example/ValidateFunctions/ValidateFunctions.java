@@ -1,4 +1,4 @@
-package com.example;
+package com.example.ValidateFunctions;
 
 import static org.junit.Assert.assertEquals;
 
