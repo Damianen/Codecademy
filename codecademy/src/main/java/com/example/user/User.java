@@ -9,6 +9,7 @@ import java.util.HashMap;
 import com.example.course.Course;
 import com.example.course.Webcast;
 import com.example.database.DatabaseEnrollment;
+import com.example.database.DatabaseOverview;
 import com.example.database.DatabaseProgress;
 import com.example.database.DatabaseUser;
 import com.example.exeptions.AlreadyExistsException;
@@ -138,8 +139,10 @@ public class User {
         return enrollments;
     }
 
-    public void generateUserCertificates() {
-        
+    public void generateUserCertificates(TableView<Certificate> table) {
+        Certificate.generateTable(table, false, 0);
+        table.getItems().clear();
+        table.setItems(DatabaseOverview.getUserCertificates(email));
     }
 
     // Get all of the all attributes from elements in a specific pane and return a hashmap with the values.

@@ -18,7 +18,7 @@
         <tabs>
           <Tab fx:id="genderTab" onSelectionChanged="#switchTab" text="Gender certificates">
             <content>
-              <AnchorPane fx:id="course" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="gender" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Button fx:id="calculate" layoutX="276.0" layoutY="189.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
                         <Text layoutX="43.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For what gender would you like to know the course completion percentage?">
@@ -26,7 +26,7 @@
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <MenuButton fx:id="gender" layoutX="276.0" layoutY="131.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Gender" textAlignment="CENTER">
+                        <MenuButton fx:id="genderBtn" layoutX="276.0" layoutY="131.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Gender" textAlignment="CENTER">
                           <items>
                             <MenuItem mnemonicParsing="false" text="Male" />
                               <MenuItem mnemonicParsing="false" text="Female" />
@@ -35,32 +35,32 @@
                               <Font size="16.0" />
                            </font>
                         </MenuButton>
-                        <Label fx:id="completionPercentage" layoutX="281.0" layoutY="293.0" prefHeight="17.0" prefWidth="398.0" textAlignment="CENTER" />
-                        <Button fx:id="homeButton" layoutX="890.0" layoutY="16.0" mnemonicParsing="false" onAction="#switchPage" text="home" />
+                        <Label fx:id="result" layoutX="281.0" layoutY="256.0" prefHeight="17.0" prefWidth="398.0" textAlignment="CENTER" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
           <Tab fx:id="AMPTab" onSelectionChanged="#switchTab" text="Average module progress">
             <content>
-              <AnchorPane fx:id="user" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="AMP" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Text layoutX="35.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For what course would you like all the modules average progress percentage?">
+                        <Text layoutX="14.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For what course would you like all the modules average progress percentage?">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <Button fx:id="calculate" layoutX="281.0" layoutY="194.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
-                        <MenuButton fx:id="course" layoutX="281.0" layoutY="134.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Course" textAlignment="CENTER">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </MenuButton>
-                        <TableView layoutX="337.0" layoutY="256.0" prefHeight="200.0" prefWidth="285.0">
+                        <Button fx:id="calculate" layoutX="24.0" layoutY="453.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="466.0" text="Calculate" />
+                        <TableView fx:id="result" layoutX="528.0" layoutY="61.0" prefHeight="427.0" prefWidth="411.0">
                           <columns>
                             <TableColumn prefWidth="108.79998779296875" text="Module title" />
                             <TableColumn prefWidth="174.39996337890625" text="Average Progress Percentage" />
                           </columns>
+                        </TableView>
+                        <TableView fx:id="courseTable" layoutX="24.0" layoutY="70.0" prefHeight="378.0" prefWidth="467.0">
+                           <columns>
+                              <TableColumn prefWidth="108.79998779296875" text="Module title" />
+                              <TableColumn prefWidth="174.39996337890625" text="Average Progress Percentage" />
+                           </columns>
                         </TableView>
                      </children>
                   </AnchorPane>
@@ -68,25 +68,27 @@
           </Tab>
             <Tab fx:id="UMPTab" onSelectionChanged="#switchTab" text="User modules progress">
                <content>
-                  <AnchorPane fx:id="module" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane fx:id="UMP" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Text layoutX="34.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For what user and course would you like to the module progress percentage?" wrappingWidth="891.6798400878906">
+                        <Text layoutX="14.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For what user and course would you like to the module progress percentage?" wrappingWidth="891.6798400878906">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <Button fx:id="calculate" layoutX="281.0" layoutY="206.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
-                        <MenuButton fx:id="user" layoutX="282.0" layoutY="94.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="User" textAlignment="CENTER">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </MenuButton>
-                        <MenuButton fx:id="course" layoutX="282.0" layoutY="148.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Course" textAlignment="CENTER">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </MenuButton>
-                        <TableView layoutX="373.0" layoutY="274.0" prefHeight="200.0" prefWidth="234.0">
+                        <Button fx:id="calculate" layoutX="20.0" layoutY="453.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="583.0" text="Calculate" />
+                        <TableView fx:id="userTable" layoutX="27.0" layoutY="86.0" prefHeight="348.0" prefWidth="277.0">
+                           <columns>
+                              <TableColumn prefWidth="108.79998779296875" text="Module title" />
+                              <TableColumn prefWidth="125.60003662109375" text="Progress Percentage" />
+                           </columns>
+                        </TableView>
+                        <TableView fx:id="courseTable" layoutX="329.0" layoutY="86.0" prefHeight="358.0" prefWidth="274.0">
+                           <columns>
+                              <TableColumn prefWidth="108.79998779296875" text="Module title" />
+                              <TableColumn prefWidth="125.60003662109375" text="Progress Percentage" />
+                           </columns>
+                        </TableView>
+                        <TableView fx:id="result" layoutX="648.0" layoutY="86.0" prefHeight="408.0" prefWidth="285.0">
                            <columns>
                               <TableColumn prefWidth="108.79998779296875" text="Module title" />
                               <TableColumn prefWidth="125.60003662109375" text="Progress Percentage" />
@@ -98,20 +100,22 @@
             </Tab>
             <Tab fx:id="UCTab" onSelectionChanged="#switchTab" text="User certificates">
                <content>
-                  <AnchorPane fx:id="webcast" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane fx:id="UC" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Text layoutX="172.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For what user would you like to know their certificates?" wrappingWidth="636.8621826171875">
+                        <Text layoutX="14.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For what user would you like to know their certificates?" wrappingWidth="636.8621826171875">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <Button fx:id="calculate" layoutX="292.0" layoutY="175.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
-                        <MenuButton fx:id="user" layoutX="292.0" layoutY="104.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="User" textAlignment="CENTER">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </MenuButton>
-                        <TableView layoutX="309.0" layoutY="256.0" prefHeight="200.0" prefWidth="363.0">
+                        <Button fx:id="calculate" layoutX="21.0" layoutY="449.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="438.0" text="Get" />
+                        <TableView fx:id="result" layoutX="583.0" layoutY="80.0" prefHeight="413.0" prefWidth="363.0">
+                           <columns>
+                              <TableColumn prefWidth="117.60003662109375" text="Course Title" />
+                              <TableColumn prefWidth="117.5999755859375" text="Rating" />
+                              <TableColumn prefWidth="125.60003662109375" text="Employee Name" />
+                           </columns>
+                        </TableView>
+                        <TableView fx:id="userTable" layoutX="26.0" layoutY="79.0" prefHeight="353.0" prefWidth="429.0">
                            <columns>
                               <TableColumn prefWidth="117.60003662109375" text="Course Title" />
                               <TableColumn prefWidth="117.5999755859375" text="Rating" />
@@ -124,14 +128,14 @@
             </Tab>
             <Tab fx:id="threeWebcastTab" onSelectionChanged="#switchTab" text="Top 3 webcasts">
                <content>
-                  <AnchorPane fx:id="contactPerson" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane fx:id="threeWebcast" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Text layoutX="347.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current top 3 webcasts">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <TableView layoutX="221.0" layoutY="126.0" prefHeight="200.0" prefWidth="518.0">
+                        <TableView fx:id="result" layoutX="221.0" layoutY="126.0" prefHeight="200.0" prefWidth="518.0">
                            <columns>
                               <TableColumn prefWidth="117.60003662109375" text="Webcast Title" />
                               <TableColumn prefWidth="117.5999755859375" text="URL" />
@@ -145,14 +149,14 @@
             </Tab>
             <Tab fx:id="ThreeCourseTab" onSelectionChanged="#switchTab" text="Top 3 courses">
                <content>
-                  <AnchorPane fx:id="speaker" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane fx:id="ThreeCourse" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Text layoutX="357.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current top 3 courses">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <TableView layoutX="298.0" layoutY="136.0" prefHeight="200.0" prefWidth="365.0">
+                        <TableView fx:id="result" layoutX="298.0" layoutY="136.0" prefHeight="200.0" prefWidth="365.0">
                            <columns>
                               <TableColumn prefWidth="117.60003662109375" text="Course Title" />
                               <TableColumn prefWidth="117.5999755859375" text="Subject" />
@@ -165,51 +169,56 @@
             </Tab>
             <Tab fx:id="VRCTab" onSelectionChanged="#switchTab" text="View recommended courses">
                <content>
-                  <AnchorPane fx:id="speaker1" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane fx:id="VRC" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Text layoutX="112.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For what course would you like to see the recommended courses?">
+                        <Text layoutX="6.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For what course would you like to see the recommended courses?">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <TableView layoutX="307.0" layoutY="256.0" prefHeight="200.0" prefWidth="365.0">
+                        <TableView fx:id="courseTable" layoutX="26.0" layoutY="55.0" prefHeight="381.0" prefWidth="397.0">
                            <columns>
                               <TableColumn prefWidth="117.60003662109375" text="Course Title" />
                               <TableColumn prefWidth="117.5999755859375" text="Subject" />
                               <TableColumn prefWidth="125.60003662109375" text="Dificulty Level" />
                            </columns>
                         </TableView>
-                        <Button fx:id="calculate" layoutX="291.0" layoutY="185.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
-                        <MenuButton fx:id="course" layoutX="291.0" layoutY="127.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Course" textAlignment="CENTER">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </MenuButton>
+                        <Button fx:id="calculate" layoutX="26.0" layoutY="444.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Get" />
+                        <TableView fx:id="result" layoutX="480.0" layoutY="49.0" prefHeight="442.0" prefWidth="465.0">
+                           <columns>
+                              <TableColumn prefWidth="117.60003662109375" text="Course Title" />
+                              <TableColumn prefWidth="117.5999755859375" text="Subject" />
+                              <TableColumn prefWidth="125.60003662109375" text="Dificulty Level" />
+                           </columns>
+                        </TableView>
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
             <Tab fx:id="CCTab" onSelectionChanged="#switchTab" text="Course completions">
                <content>
-                  <AnchorPane fx:id="speaker2" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane fx:id="CC" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Text layoutX="106.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For what course would you like to know the number of completions?">
+                        <Text layoutX="7.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For what course would you like to know the number of completions?">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Text>
-                        <Label fx:id="errorMessage2" layoutX="300.0" layoutY="298.0" prefHeight="17.0" prefWidth="398.0" textAlignment="CENTER" />
-                        <Button fx:id="calculate" layoutX="301.0" layoutY="212.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Calculate" />
-                        <MenuButton fx:id="course" layoutX="301.0" layoutY="154.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="397.0" text="Course" textAlignment="CENTER">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </MenuButton>
+                        <Label fx:id="result" layoutX="607.0" layoutY="83.0" prefHeight="17.0" prefWidth="296.0" textAlignment="CENTER" />
+                        <Button fx:id="calculate" layoutX="32.0" layoutY="421.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="531.0" text="Calculate" />
+                        <TableView fx:id="courseTable" layoutX="33.0" layoutY="72.0" prefHeight="336.0" prefWidth="530.0">
+                           <columns>
+                              <TableColumn prefWidth="117.60003662109375" text="Course Title" />
+                              <TableColumn prefWidth="117.5999755859375" text="Subject" />
+                              <TableColumn prefWidth="125.60003662109375" text="Dificulty Level" />
+                           </columns>
+                        </TableView>
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
         </tabs>
       </TabPane>
+      <Button fx:id="homeButton" layoutX="908.0" layoutY="33.0" mnemonicParsing="false" onAction="#switchPage" text="home" />
    </children>
 </AnchorPane>

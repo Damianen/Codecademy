@@ -1,17 +1,12 @@
 package com.example.user;
 
-import java.util.HashMap;
-
 import com.example.database.DatabaseCertificate;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 
 public class Certificate {
     private final int id;
