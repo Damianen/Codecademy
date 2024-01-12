@@ -84,24 +84,24 @@ public class Course {
 
     public boolean addModule(Module module) {
 
-        //get next order number
+        // get next order number
         int orderNumber = DatabaseModule.getCourseModules(this.title).size() + 1;
-        
-        //add the module to the course
-        if(DatabaseModule.addModuleToCourse(module.getId(), orderNumber, this.title) == false){
+
+        // add the module to the course
+        if (DatabaseModule.addModuleToCourse(module.getId(), orderNumber, this.title) == false) {
             return false;
         }
 
-        //get all users enrolled in this course
+        // get all users enrolled in this course
         ObservableList<User> enrolledUsers = DatabaseUser.getEnrolledUsersForCourse(this);
 
-        //automaticly create progresses for all users with the new module
+        // automaticly create progresses for all users with the new module
         for (User user : enrolledUsers) {
 
             Random rand = new Random();
             int randomNumber = rand.nextInt(101);
-            
-            if(ValidateFunctions.isValidPercentage(randomNumber) != true){
+
+            if (ValidateFunctions.isValidPercentage(randomNumber) != true) {
                 throw new IllegalArgumentException(randomNumber + " is not a valid percentage");
             }
 
@@ -111,8 +111,8 @@ public class Course {
                 e.printStackTrace();
             }
         }
-        
-        //add to this.modules
+
+        // add to this.modules
         modules.add(module);
 
         return true;
@@ -120,22 +120,24 @@ public class Course {
 
     public boolean removeModule(Module module) {
 
-        //update the remaining order numbers
-        if(DatabaseModule.updateOrderNumbersRemoveFromCourse(module.getId(), module.getOrderNumber(), this.title) == false){
+        // update the remaining order numbers
+        if (DatabaseModule.updateOrderNumbersRemoveFromCourse(module.getId(), module.getOrderNumber(),
+                this.title) == false) {
             return false;
         }
 
-        //get all user enrolled in this course
+        // get all user enrolled in this course
         ObservableList<User> enrolledUsers = DatabaseUser.getEnrolledUsersForCourse(this);
 
-        //automaticly delete all progresses for that module
+        // automaticly delete all progresses for that module
         for (User user : enrolledUsers) {
 
-            Progress progress = DatabaseProgress.getProgressWithUserAndContentItem(user.getEmail(), module.getContentItemId());
+            Progress progress = DatabaseProgress.getProgressWithUserAndContentItem(user.getEmail(),
+                    module.getContentItemId());
             DatabaseProgress.deleteProgress(progress.getId());
         }
-        
-        //remove module from this.modules
+
+        // remove module from this.modules
         modules.remove(module);
 
         return true;
@@ -144,10 +146,10 @@ public class Course {
     public boolean updateModuleOrderNumber(Module module, int newOrderNumber) {
 
         try {
-            //update orderNumber
+            // update orderNumber
             DatabaseModule.updateOrderNumbersInCourse(module.getId(), newOrderNumber, this.getTitle());
 
-            //reset module arangement
+            // reset module arangement
             this.modules = DatabaseModule.getCourseModules(this.title);
 
             return true;
@@ -156,7 +158,6 @@ public class Course {
             return false;
         }
 
-        
     }
 
     public void generateRecommendedCourses(TableView<Course> table) {
@@ -170,25 +171,26 @@ public class Course {
         table.setItems(DatabaseOverview.getRecommendedCourses(title));
     }
 
-    // Get all of the all attributes from elements in a specific pane and return a hashmap with the values.
+    // Get all of the all attributes from elements in a specific pane and return a
+    // hashmap with the values.
     static public HashMap<String, String> getArgsHashMap(AnchorPane pane) throws NoSuchMethodException,
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        
+
         HashMap<String, String> searchArgs = new HashMap<String, String>();
-        
+
         searchArgs.put("title", GUIController.searchForNodeText("title", TextField.class, pane));
         searchArgs.put("introText", GUIController.searchForNodeText("introText", TextArea.class, pane));
         searchArgs.put("subject", GUIController.searchForNodeText("subject", TextField.class, pane));
-        
+
         String difficulty = GUIController.searchForNodeText("difficultyLevel", MenuButton.class, pane);
         if (!difficulty.equals("Difficulty Level")) {
             searchArgs.put("difficultyLevel", difficulty);
         }
-        
+
         return searchArgs;
     }
 
-    // Generate table function 
+    // Generate table function
     static public void generateTable(TableView<Course> table, boolean editable, HashMap<String, String> searchArgs) {
         // Make table columns and add them to the table
         TableColumn<Course, String> title = new TableColumn<Course, String>("Title");
@@ -201,12 +203,14 @@ public class Course {
         columns.add(difficultyLevel);
         table.getColumns().addAll(columns);
 
-        // Set the a value factory so the table can get the data from the instance of the class
+        // Set the a value factory so the table can get the data from the instance of
+        // the class
         title.setCellValueFactory(new PropertyValueFactory<Course, String>("title"));
         subject.setCellValueFactory(new PropertyValueFactory<Course, String>("subject"));
         difficultyLevel.setCellValueFactory(new PropertyValueFactory<Course, String>("difficultyLevelString"));
 
-        // Add a event handler to the table so that when we click it it will show us the popup window
+        // Add a event handler to the table so that when we click it it will show us the
+        // popup window
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -232,8 +236,7 @@ public class Course {
             ObservableList<Course> list = FXCollections.observableArrayList();
             list.add(DatabaseCourse.readCourse(searchArgs.get("enrolmentTitle")));
             table.setItems(list);
-        }
-        else {
+        } else {
             table.setItems(DatabaseCourse.readCourseSearchAll(searchArgs));
         }
 
@@ -258,7 +261,8 @@ public class Course {
             GUIController.setupPopupWindow(pane, (AnchorPane) scene.getRoot());
             GUIController.setupUpdateButton(editable, pane, this);
 
-            // Setup the nodes in the popup window so they contain the values of the instance we opened the window of
+            // Setup the nodes in the popup window so they contain the values of the
+            // instance we opened the window of
             GUIController.setUpNode(TextField.class, editable, title, pane, "title");
             GUIController.setUpNode(TextField.class, editable, subject, pane, "subject");
             GUIController.setUpNode(TextArea.class, editable, introText, pane, "introText");
@@ -271,25 +275,25 @@ public class Course {
     // Setup table tabs
     public void setupTabs(AnchorPane pane, boolean editable) {
         ObservableList<Tab> tabs = ((TabPane) pane.lookup("#tables")).getTabs();
-        
+
         for (Tab tab : tabs) {
             // Get the pane of the tab and the table
             AnchorPane rootTabPane = (AnchorPane) tab.getContent();
             TableView table = (TableView) rootTabPane.lookup("#table");
-            
+
             if (tab.getId().equals("module")) {
-                
+
                 if (!editable) {
                     table.setPrefHeight(320);
                 }
-                
+
                 // Generate module table with all modules from course
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("courseTitle", title);
                 Module.generateTable(table, editable, map);
-                
+
                 // Set an event handler for the button to call setAddModule
-                Button btn = (Button)rootTabPane.lookup("#add");
+                Button btn = (Button) rootTabPane.lookup("#add");
                 btn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -297,7 +301,7 @@ public class Course {
                     }
                 });
 
-                Button removeBtn = (Button)rootTabPane.lookup("#remove");
+                Button removeBtn = (Button) rootTabPane.lookup("#remove");
                 removeBtn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -305,7 +309,7 @@ public class Course {
                     }
                 });
             } else {
-                
+
                 // Generate enrollments table for the course
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("courseTitle", title);
@@ -322,13 +326,13 @@ public class Course {
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("courseTitleNew", title);
         Module.generateTable(table, editable, map);
-        
+
         // Add event listener to the button
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 // Add selected module to course
-                Module module =  (Module)table.getSelectionModel().getSelectedItem();
+                Module module = (Module) table.getSelectionModel().getSelectedItem();
                 if (module == null) {
                     return;
                 }
@@ -340,7 +344,7 @@ public class Course {
                     }
                 });
 
-                // Set the table back to original state 
+                // Set the table back to original state
                 GUIController.clearTable(table);
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("courseTitle", title);
@@ -348,44 +352,28 @@ public class Course {
                 btn.setText("Add module");
 
                 // Tell user the module was successfully added
-                ((Label)pane.lookup("#errorMessage")).setText("Module successfully added!");
+                ((Label) pane.lookup("#errorMessage")).setText("Module successfully added!");
             }
         });
     }
 
     // Setup the remove module button when clicked
     public void setRemoveModule(TableView table, Button btn, boolean editable, AnchorPane pane) {
-        // Edit remove button
-        btn.setText("Remove selected module");
+        // Remove selected module to course
+        Module module = (Module) table.getSelectionModel().getSelectedItem();
+        if (module == null) {
+            return;
+        }
+        removeModule(module);
+
+        // Set the table back to original state
         GUIController.clearTable(table);
-        
-        // Add event listener to the button
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                // Remove selected module to course
-                Module module =  (Module)table.getSelectionModel().getSelectedItem();
-                if (module == null) {
-                    return;
-                }
-                removeModule(module);
-                btn.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        setAddModule(table, btn, editable, pane);
-                    }
-                });
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("courseTitle", title);
+        Module.generateTable(table, editable, map);
+        btn.setText("Remove module");
 
-                // Set the table back to original state 
-                GUIController.clearTable(table);
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("courseTitle", title);
-                Module.generateTable(table, editable, map);
-                btn.setText("Remove module");
-
-                // Tell user the module was successfully added
-                ((Label)pane.lookup("#errorMessage")).setText("Module successfully deleted!");
-            }
-        });
+        // Tell user the module was successfully removed
+        ((Label) pane.lookup("#errorMessage")).setText("Module successfully deleted!");
     }
 }
