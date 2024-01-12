@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.HashMap;
 
+import com.example.database.DatabaseContentItem;
 import com.example.database.DatabaseModule;
 import com.example.database.DatabaseWebcast;
 import com.example.javafx.GUIController;
@@ -78,6 +79,10 @@ public abstract class ContentItem {
         return description;
     }
 
+    public String getType() {
+        return DatabaseContentItem.getContentItemType(contentItemId);
+    }
+
     static public HashMap<String, String> getArgsHashMap(AnchorPane pane) throws NoSuchMethodException,
             SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         HashMap<String, String> searchArgs = new HashMap<String, String>();
@@ -95,16 +100,19 @@ public abstract class ContentItem {
         TableColumn<ContentItem, String> title = new TableColumn<ContentItem, String>("Title");
         TableColumn<ContentItem, String> status = new TableColumn<ContentItem, String>("status");
         TableColumn<ContentItem, String> description = new TableColumn<ContentItem, String>("Description");
+        TableColumn<ContentItem, String> type = new TableColumn<ContentItem, String>("Type");
 
         final ObservableList<TableColumn<ContentItem, ?>> columns = FXCollections.observableArrayList();
         columns.add(title);
         columns.add(status);
         columns.add(description);
+        columns.add(type);
         table.getColumns().addAll(columns);
 
         title.setCellValueFactory(new PropertyValueFactory<ContentItem, String>("title"));
         status.setCellValueFactory(new PropertyValueFactory<ContentItem, String>("status"));
         description.setCellValueFactory(new PropertyValueFactory<ContentItem, String>("description"));
+        type.setCellValueFactory(new PropertyValueFactory<ContentItem, String>("type"));
     }
 
     static public void generateContentItemTable(TableView<ContentItem> table, boolean editable,
